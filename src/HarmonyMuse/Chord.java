@@ -32,10 +32,11 @@ import java.util.Arrays;
 public abstract class Chord {
 
     private Note[] rawData;
+    private String quality; // i.e. "Major Triad", "Minor Seven"
 
     private ArrayList<Interval> intervals = new ArrayList<Interval>(0);
     //constructors
-    public Chord() {return; }
+    public Chord() { }
 
     public Chord(Note[] notes){
 
@@ -52,6 +53,8 @@ public abstract class Chord {
     public ArrayList<Interval> getIntervals(){return intervals;}
 
     public abstract Note getRoot(); // every chord has to have a root
+
+    public abstract void setQuality(String quality);
 
 
     @Override

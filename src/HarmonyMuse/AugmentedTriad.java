@@ -1,17 +1,18 @@
 package HarmonyMuse;
 
-public class MajorTriad extends Chord implements Triad {
+
+public class AugmentedTriad extends Chord implements Triad {
 
     private Note root;
     private Note third;
     private Note fifth;
     private String quality;
     private String inversion;
-    private boolean isOpen;
 
-    public MajorTriad(ChordBuilder data) {
+    public AugmentedTriad(ChordBuilder data) {
         super(data.getNotes());
         Note[] notes = data.getNotes();
+
     }
 
     public Note getRoot() {return this.root;}
@@ -20,9 +21,9 @@ public class MajorTriad extends Chord implements Triad {
 
     public Note getFifth() {return this.fifth;}
 
-    public String getInversion() {return inversion;}
+    public String getQuality() {return quality;}
 
-    public String getQuality() { return quality;}
+    public String getInversion() {return inversion;}
 
     public void setRoot(Note root) {this.root = root;}
 
@@ -33,8 +34,6 @@ public class MajorTriad extends Chord implements Triad {
     public void setQuality(String quality){this.quality = quality;}
 
     public void setInversion(String inversion){this.inversion = inversion;}
-
-    public void isOpen(){ }
 
     @Override
     public String toString(){

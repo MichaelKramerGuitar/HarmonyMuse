@@ -6,8 +6,10 @@ public class DominantSeventhChord extends Chord implements Triad, SeventhChord {
     private Note third;
     private Note fifth;
     private Note seventh;
+    private String quality;
+    private String inversion;
     // group the base triad
-    private Object[] triad = new Object[]{root, third, fifth};
+    private Note[] triad = new Note[]{root, third, fifth};
 
     public DominantSeventhChord(ChordBuilder data) {
         super(data.getNotes());
@@ -30,6 +32,19 @@ public class DominantSeventhChord extends Chord implements Triad, SeventhChord {
     public Note getFifth() {return this.fifth;}
 
     public Note getSeventh() {return this.seventh;}
+
+
+    public void setRoot(Note root) {this.root = root;}
+
+    public void setThird(Note third) {this.third = third;}
+
+    public void setFifth(Note fifth) {this.fifth = fifth;}
+
+    public void setSeventh(Note seventh){this.seventh = seventh;}
+
+    public void setQuality(String quality){this.quality = quality;}
+
+    public void setInversion(String inversion){this.inversion = inversion;}
 
 
     @Override

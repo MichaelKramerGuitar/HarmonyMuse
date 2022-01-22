@@ -2,7 +2,7 @@
 
 ##CS622 Assignement 1 
 
-**Current functionality is shown by running `HarmonyMuse.Main.java`**
+**Current functionality is shown by running `HarmonyMuse.Main1.java`**
 * Can simply Run the file `Main.java`
   * See document `metcs622_Assignment1_mgkramer.docx` in current dirctory for detailed project description 
 
