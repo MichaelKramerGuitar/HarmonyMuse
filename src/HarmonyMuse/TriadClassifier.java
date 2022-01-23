@@ -102,7 +102,6 @@ public class TriadClassifier {
             throw new InvalidTriadException(classified + " is not a valid triad");
         }
         return classified;
-
     }
 
     public Chord setRootPosClosed(@NotNull Triad triad, ChordBuilder chordBuilder){

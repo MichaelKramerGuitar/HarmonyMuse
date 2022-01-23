@@ -3,8 +3,9 @@ package HarmonyMuse;
 import java.util.ArrayList;
 
 /**
- * This class functions to clean input data then construct a chord which will
- * be classified into a specific quality from the subsequent object.
+ * The purpose of this class is to determine which classifier class to call for
+ * this ChordBuilder object to be properly classified based on the number of
+ * distinct notes
  *
  */
 
@@ -45,11 +46,11 @@ public class ChordBuilder extends Chord {
                 classified = triadClassifier.classifyTriad(chordBuilder, bottom_mid, bottom_top);
             } catch (InvalidTriadException e){
                 System.out.println(e);
-                // could continue here to try another three note Classifier
+                /*
+                TODO define another classifier threeNoteNonTriad and threeNoteCluster and call
+                 */
             }
-
         }
-        System.out.println("After catch");
         return classified;
     }
 
@@ -60,14 +61,6 @@ public class ChordBuilder extends Chord {
     public String[] getInversions(){
         return inversions;
     }
-
-//    public MajorTriad toMajorTriad(ChordBuilder chord){
-//
-//        String[] triadQualities = chord.getTriadQualities();
-//        majTriad.setQuality(triadQualities[majTriad.intervalHalfStepsSum() - triadIndexer]);
-//        return majTriad;
-//    }
-
 
     public void setQuality(String quality){
         quality = null;

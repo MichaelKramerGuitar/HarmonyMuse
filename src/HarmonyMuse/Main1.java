@@ -1,5 +1,5 @@
 package HarmonyMuse;
-
+// DO NOT USE 1/22/2022
 import java.util.Arrays;
 
 public class Main1 {
@@ -80,24 +80,7 @@ public class Main1 {
         System.out.println(domFifth);
         System.out.println(domSeventh);
 
-        // Actor creates array of Objects that extend the Chord abstract class
-        Chord[] progression = {majTriad, minTriad, dom};
 
-        System.out.println();
-        // iterate of the Chord array
-        for (Chord chord : progression){
-            Note r = chord.getRoot(); // polymorphically call getRoot on each chord in the progression
-            System.out.println("here's my root: " + r);
-            System.out.println("here are my intervals: " + chord.getIntervals());
-            if (chord instanceof DominantSeventhChord){
-                /*
-                downcast for access to the getSeventh() method and remember seventh
-                as DominantSeventhChord is the only Chord in array with this method
-                 */
-                Note seventh = ((DominantSeventhChord) chord).getSeventh();
-                System.out.println("\nHere is a seventh: " + seventh + ", here's this seventh's intValue: " + seventh.getIntValue());
-            }
-        }
         Integer[] i = new Integer[]{1, 2, 3};
         Integer[] j = new Integer[]{1, 2, 3};
         System.out.println("Testing Integer arrays == : " + (Arrays.equals(i, j)));
