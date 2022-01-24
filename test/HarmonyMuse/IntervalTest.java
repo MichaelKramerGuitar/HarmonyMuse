@@ -1,11 +1,11 @@
 package HarmonyMuse;
 
+import Builders.Interval;
+import Builders.Note;
 import javafx.util.Pair;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class IntervalTest {
     // copies from Interval class --- these are constants
