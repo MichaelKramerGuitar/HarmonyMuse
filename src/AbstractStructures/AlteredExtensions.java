@@ -10,13 +10,36 @@ package AbstractStructures;
  * @param <T> a generic object
  */
 public interface AlteredExtensions<T> {
-
+    /**
+     * Precondition: Methods to be called on a Chord object that extends this
+     * interface
+     * @return presumably a Note object, generic Type to facilitate code
+     * flexibility
+     */
     public abstract T getFlatNinth();
 
+    /**
+     * Precondition: Methods to be called on a Chord object that extends this
+     * interface
+     * @return presumably a Note object, generic Type to facilitate code
+     * flexibility
+     */
     public abstract T getSharpNinth();
 
+    /**
+     * Precondition: Methods to be called on a Chord object that extends this
+     * interface
+     * @return presumably a Note object, generic Type to facilitate code
+     * flexibility
+     */
     public abstract T getEleventh();
 
+    /**
+     * Precondition: Methods to be called on a Chord object that extends this
+     * interface
+     * @return presumably a Note object, generic Type to facilitate code
+     * flexibility
+     */
     public abstract T getThirteenth();
 
 }

@@ -24,6 +24,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Michael Kramer
+ * <p>
+ * CS622 Spring 1, 2022 Advanced Programming Techniques
+ * <p>
+ * The purpose of this class is to provide a data structure foundation for one
+ * of the main building blocks of harmony representation, the individual note.
+ */
 public class Note {
 
     /*
@@ -48,9 +56,25 @@ public class Note {
     private Map<Integer, ArrayList<String>> notesMap;
 
     // constructors
+
+    /**
+     * The purpose of this method is to instantiate an empty Note object
+     */
     public Note() {
     }
 
+    /**
+     * The purpose of this method is to instantiate a Note object from a
+     * given String (i.e. "c#"). We use "#" for sharps and "-" for flats
+     * for computational easy and these symbols can be replaced with their
+     * appropriate unicode characters for pretty printing in the UI
+     * <p>Precondition: A string has been provided from user input</p>
+     * <p>Postcondition: A note object is created from the input and the name,
+     * intValue and where applicable, enharmonic attributes are set</p>
+     * @throws IllegalArgumentException for invalid input. Input not in the
+     * character range "a" through "g" are illegal and if these are preceeded
+     * by accidental representations other than "#" or "-" they are illegal
+     */
     @Contract(pure = true)
     public Note(@NotNull String name) throws IllegalArgumentException {
         String n = name.toLowerCase(); // force input to lower case
@@ -76,53 +100,97 @@ public class Note {
 
 
     // getters
+    /**
+     * The purpose of this method is to get the name attribute of this Note object
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * The purpose of this method is to get the intValue attribute of this Note object
+     */
     public int getIntValue() {
         return intValue;
     }
 
+    /**
+     * The purpose of this method is to get the enharmonics attribute of this Note object
+     */
     public ArrayList<String> getEnharmonics() {return enharmonics;}
 
+    /**
+     * The purpose of this method is to get the midiInt attribute of this Note object
+     */
     public int getMidiInt() {
         return midiInt;
     }
 
+    /**
+     * The purpose of this method is to get the velocity attribute of this Note object
+     */
     public int getVelocity() {
         return velocity;
     }
 
+    /**
+     * The purpose of this method is to get the octave attribute of this Note object
+     */
     public int getOctave(){
         return octave;
     }
 
+    /**
+     * The purpose of this method is to get the goodNote attribute of this Note object
+     */
     public boolean getIsGoodNote(){
         return goodNote;
     }
 
     // setters
+    /**
+     * The purpose of this method is to set the name attribute of this Note object
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * The purpose of this method is to set the intValue attribute of this Note object
+     */
     public void setIntValue(int intValue) {
         this.intValue = intValue;
     }
 
+    /**
+     * The purpose of this method is to set the midiInt attribute of this Note object
+     */
     public void setMidiInt(int midiInt) {
         this.midiInt = midiInt;
     }
 
+    /**
+     * The purpose of this method is to set the velocity attribute of this Note object
+     */
     public void setVelocity(int velocity) {
         this.velocity = velocity;
     }
 
+    /**
+     * The purpose of this method is to set the octave attribute of this Note object
+     */
     public void setOctave(int octave) {
         this.octave = octave;
     }
 
+    /**
+     * The purpose of this method is build a map to enforce the input standards
+     * for Strings representing notes to the system. This map ensures that Notes
+     * are not instantiated from Invalidly formatted Strings.
+     * <p>Precondition: a Note is being instantiated </p>
+     * <p>Postcondition: a Note is instantiated as it corresponded to a
+     * value in this map </p>
+     */
     public void buildNotesMap(){
 
         Integer[] chromaticDigits = new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
@@ -190,6 +258,10 @@ public class Note {
         this.notesMap = notesMap;
     }
 
+    /**
+     * The purpose of this method is to return a human readible representation
+     * of this Note object
+     */
     @Override
     public String toString() {
         return name;

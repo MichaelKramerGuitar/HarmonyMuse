@@ -13,9 +13,12 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Michael Kramer
- * Date: 1/23/2022
- * Course: cs622 Spring1 Advanced Programming Techniques
- * The purpose of this class is...FOR EVERY CLASS
+ * <p>
+ * CS622 Spring 1, 2022 Advanced Programming Techniques
+ * <p>
+ * The purpose of this class is to determine whether a three note ChordBuilder
+ * structure meets the criteria for being classified and instantiated as a
+ * Triad
  */
 public class TriadClassifier {
 
@@ -24,19 +27,29 @@ public class TriadClassifier {
                                                           "major triad",
                                                           "augmented triad"};
 
+    /**
+     * The purpose of this method is to instantiate an empty TriadClassifier
+     * object
+     */
     public TriadClassifier(){ }
 
     /**
-     * Pre-conditions and post conditions and purpose of class for every function
-     * KEEP YOUR METHOD DEVELOPER FRIENDLY, i.e. in method block (doc block) make it obvious
-     * what this method expects and what it does
-     * YOU DON'T NEED TO DEFEND FOR EVERYTHING WITH YOUR METHODS BECAUSE YOU
-     * ASSUME DEVELOPERS WILL KNOW WHAT THEY'RE DOING
+     * The purpose of this method is to determine whether a three note ChordBuilder
+     * object meets the criterion for being classified and instantiated as a
+     * Triad
+     * <p>Precondition: A ChordBuilder object has exactly three Notes and
+     * two Intervals</p>
+     * <p>Postcondition: An object that meets the criterion for implementing
+     * the Triad interface is instantiated</p>
+     *
      * @param chordBuilder
      * @param bottom_mid
      * @param bottom_top
-     * @return
-     * @throws InvalidTriadException
+     * @return a Chord object that has been classified and instantiated as
+     * one of the four triad qualities and determined by its interval structure
+     * @throws InvalidTriadException when the three note ChordBuilder instance
+     * provided as an argument does not have an Interval signature that meets
+     * the criterion to be classified through instantiation as a Triad
      */
     public Chord classifyTriad(ChordBuilder chordBuilder, Interval bottom_mid, Interval bottom_top) throws InvalidTriadException {
         Chord classified = chordBuilder; // re-point chordBuilder to classify it
@@ -131,12 +144,31 @@ public class TriadClassifier {
         return classified;
     }
 
+    /**
+     * The purpose of this method is to set this triads degrees based on its
+     * interval signature and inversion
+     * <p>Precondition: This triad has been instantiated by meeting the criterion
+     * of one of the blocks in the classifyTriad() method</p>
+     * <p>Postcondition: The Triads' degrees are set according to its
+     * Intervals signature and its inversion</p>
+     * @return The Triad with degrees set
+     */
     public Chord setRootPosClosed(@NotNull Triad triad, ChordBuilder chordBuilder){
         triad.setRoot(chordBuilder.getNotes()[0]);
         triad.setThird(chordBuilder.getNotes()[1]);
         triad.setFifth(chordBuilder.getNotes()[2]);
         return (Chord) triad;
     }
+
+    /**
+     * The purpose of this method is to set this triads degrees based on its
+     * interval signature and inversion
+     * <p>Precondition: This triad has been instantiated by meeting the criterion
+     * of one of the blocks in the classifyTriad() method</p>
+     * <p>Postcondition: The Triads' degrees are set according to its
+     * Intervals signature and its inversion</p>
+     * @return The Triad with degrees set
+     */
     public Chord setRootPosOpen(@NotNull Triad triad, ChordBuilder chordBuilder){
 
         triad.setRoot(chordBuilder.getNotes()[0]);
@@ -145,6 +177,15 @@ public class TriadClassifier {
         return (Chord) triad;
     }
 
+    /**
+     * The purpose of this method is to set this triads degrees based on its
+     * interval signature and inversion
+     * <p>Precondition: This triad has been instantiated by meeting the criterion
+     * of one of the blocks in the classifyTriad() method</p>
+     * <p>Postcondition: The Triads' degrees are set according to its
+     * Intervals signature and its inversion</p>
+     * @return The Triad with degrees set
+     */
     public Chord setFirstInvClosed(@NotNull Triad triad, ChordBuilder chordBuilder){
         triad.setThird(chordBuilder.getNotes()[0]);
         triad.setFifth(chordBuilder.getNotes()[1]);
@@ -152,6 +193,15 @@ public class TriadClassifier {
         return (Chord) triad;
     }
 
+    /**
+     * The purpose of this method is to set this triads degrees based on its
+     * interval signature and inversion
+     * <p>Precondition: This triad has been instantiated by meeting the criterion
+     * of one of the blocks in the classifyTriad() method</p>
+     * <p>Postcondition: The Triads' degrees are set according to its
+     * Intervals signature and its inversion</p>
+     * @return The Triad with degrees set
+     */
     public Chord setFirstInvOpen(@NotNull Triad triad, ChordBuilder chordBuilder){
         triad.setThird(chordBuilder.getNotes()[0]);
         triad.setRoot(chordBuilder.getNotes()[1]);
@@ -159,6 +209,15 @@ public class TriadClassifier {
         return (Chord) triad;
     }
 
+    /**
+     * The purpose of this method is to set this triads degrees based on its
+     * interval signature and inversion
+     * <p>Precondition: This triad has been instantiated by meeting the criterion
+     * of one of the blocks in the classifyTriad() method</p>
+     * <p>Postcondition: The Triads' degrees are set according to its
+     * Intervals signature and its inversion</p>
+     * @return The Triad with degrees set
+     */
     public Chord setSecondInvClosed(@NotNull Triad triad, ChordBuilder chordBuilder){
         triad.setFifth(chordBuilder.getNotes()[0]);
         triad.setRoot(chordBuilder.getNotes()[1]);
@@ -166,6 +225,15 @@ public class TriadClassifier {
         return (Chord) triad;
     }
 
+    /**
+     * The purpose of this method is to set this triads degrees based on its
+     * interval signature and inversion
+     * <p>Precondition: This triad has been instantiated by meeting the criterion
+     * of one of the blocks in the classifyTriad() method</p>
+     * <p>Postcondition: The Triads' degrees are set according to its
+     * Intervals signature and its inversion</p>
+     * @return The Triad with degrees set
+     */
     public Chord setSecondInvOpen(@NotNull Triad triad, ChordBuilder chordBuilder){
         triad.setFifth(chordBuilder.getNotes()[0]);
         triad.setThird(chordBuilder.getNotes()[1]);
@@ -173,5 +241,9 @@ public class TriadClassifier {
         return (Chord) triad;
     }
 
+    /**
+     * The purpose of this method is to get the String array representation
+     * of possible triad qualities
+     */
     public String[] getTriadQualities(){return triadQualities;}
 }

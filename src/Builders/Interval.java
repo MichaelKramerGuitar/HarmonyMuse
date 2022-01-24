@@ -3,6 +3,14 @@ package Builders;
 import Utilities.CircularlyLinkedList;
 import javafx.util.Pair;
 
+/**
+ * @author Michael Kramer
+ * <p>
+ * CS622 Spring 1, 2022 Advanced Programming Techniques
+ * <p>
+ * The purpose of this class is to serve as a fundamental data structure for
+ * this system providing the ability to correctly classify Chord Objects
+ */
 public class Interval {
 
     private final int halfStepsInUnison = 0;
@@ -57,7 +65,23 @@ public class Interval {
 
 
     // Constructor
-    public Interval(Pair<Note, Note> rawInterval) throws IllegalArgumentException{
+
+    /**
+     * The purpose of this method is to construct an interval object from
+     * a javafx.util.Pair object of Notes, set the distance (i.e. any note
+     * in the "a" family is a third lower than any note in the "c" family), set
+     * the Intervals quality (i.e. "minor third"), set the rawInterval attribute
+     * (i.e. simple a Pair that remembers the Note objects passed), and set
+     * the intValue (see ReadMe "Examples of Interval Calculations" for more
+     * information)
+     * <p>Precondition: Two Note objects have been instantiated and these
+     * are passed as a parameter to this constructor</p>
+     * <p>Postcondition: The rawInterval, intValue, distance, and quality attributes
+     * of this Interval object are instantiated </p>
+     *
+     * @param rawInterval a javafx.util.Pair object mapping two Note objects
+     */
+    public Interval(Pair<Note, Note> rawInterval){
         this.rawInterval = rawInterval;
         Note bottom = rawInterval.getKey();
         Note top = rawInterval.getValue();
@@ -85,92 +109,229 @@ public class Interval {
         }
          */
     }
+
     /**
-     * @return Note, the higher voice of an interval
+     * The purpose of this method is to retrieve the top Note of this Interval
+     * objects rawInterval attribute
+     * <p>Precondition: This interval object has been instantiated and the
+     * rawInterval attribute has been set</p>
+     * <p>Postcondition: The appropriate Note object is returned</p>
+     *
+     * @return Note object, the higher voice of an interval
      */
     public Note getTopNote() {
         return rawInterval.getValue();
     }
 
+
     /**
-     * @return and Integer the lower voice of an interval
+     * The purpose of this method is to retrieve the bottom Note of this Interval
+     * objects rawInterval attribute
+     * <p>Precondition: This interval object has been instantiated and the
+     * rawInterval attribute has been set</p>
+     * <p>Postcondition: The appropriate Note object is returned</p>
+     *
+     * @return Note object, the lower voice of an interval
      */
     public Note getBottomNote() {
         return this.rawInterval.getKey();
     }
 
+    /**
+     * The purpose of this method is to retrieve the intValue of this Interval
+     * object
+     * <p>Precondition: This interval object has been instantiated and the
+     * intValue has been set</p>
+     * <p>Postcondition: The intValue attribute of this Interval object is
+     * returned as an Integer object</p>
+     *
+     * @return an Integer object representing the intValue attribute on this
+     * object
+     */
     public Integer getIntValue() {
         return intValue;
     }
 
+    /**
+     * The purpose of this method is to get the enharmonic attribute associated
+     * with this object
+     * <p>Precondition: This Interval objects quality required its enharmonic
+     * attribute to be instantiated. See the below setQuality() method</p>
+     * <p>Postcondition: The enharmonic is returned as a String</p>
+     *
+     * @return a String representing the enharmonic interval (i.e. this Interval
+     * has a quality that can be more clearly represented by its enharmonic,
+     * an "augmented second" is better represented as "minor third")
+     */
     public String getEnharmonic() {
         return enharmonic;
     }
 
+    /**
+     * The purpose of this method is to get this Interval objects quality attribute
+     * <p>Precondition: This Interval object has been instantiated with the
+     * quality attribute being set</p>
+     * <p>Postcondition: The quality attribute is returned as a String</p>
+     *
+     * @return the String, quality attribute
+     */
     public String getQuality() {
         return quality;
     }
 
+    /**
+     * The purpose of this method is to get the String array interval qualities
+     * in order to set the appropriate quality
+     * <p>Precondition: A Note object's intValue is set and used as a indexer
+     * for this array, whose contents are organized such that the number of
+     * halfsteps in a given quality corresponds to its index placement in the
+     * array</p>
+     * <p>Postcondition: the String array is returned</p>
+     *
+     * @return the String array is returned
+     */
     public String[] getIntervalQualities(){
         return intervalQualities;
     }
 
+    /**
+     * The purpose of this method is to get the String array interval qualities
+     * in order to set the appropriate enharmonic sounding interval
+     * <p>Precondition: A Note object's intValue is set and used as a indexer
+     * for this array, whose contents are organized such that the number of
+     * halfsteps in a given enharmonic corresponds to its index placement in the
+     * array</p>
+     * <p>Postcondition: the String array is returned</p>
+     *
+     * @return the String array is returned
+     */
     public String[] getEnharmonicQualities(){
         return enharmonicQualities;
     }
 
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in a unison, 0
+     *
+     */
     public int getHalfStepsInUnison(){
         return halfStepsInUnison;
     }
 
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in a minor second, 1
+     *
+     */
     public int getHalfStepsInMinorSecond(){
         return halfStepsInMinorSecond;
     }
 
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in a major second, 2
+     *
+     */
     public int getHalfStepsInMajorSecond(){
         return halfStepsInMajorSecond;
     }
+
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in a minor third, 3
+     *
+     */
     public int getHalfStepsInMinorThird(){
         return halfStepsInMinorThird;
     }
 
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in a major third, 4
+     *
+     */
     public int getHalfStepsInMajorThird() {
         return halfStepsInMajorThird;
     }
 
-    public int getHalfStepsInPerfectFourth() {
-        return halfStepsInPerfectFourth;
-    }
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in a perfect fourth, 5
+     *
+     */
+    public int getHalfStepsInPerfectFourth() {return halfStepsInPerfectFourth;}
 
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in a tritone, 6
+     *
+     */
     public int getHalfStepsInTritone() {
         return halfStepsInTritone;
     }
 
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in a perfect fifth, 7
+     *
+     */
     public int getHalfStepsInPerfectFifth() {
         return halfStepsInPerfectFifth;
     }
 
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in a minor sixth, 8
+     *
+     */
     public int getHalfStepsInMinorSixth() {
         return halfStepsInMinorSixth;
     }
 
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in a major sixth, 9
+     *
+     */
     public int getHalfStepsInMajorSixth() {
         return halfStepsInMajorSixth;
     }
 
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in a minor seventh, 10
+     *
+     */
     public int getHalfStepsInMinorSeventh() {
         return halfStepsInMinorSeventh;
     }
 
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in a major seventh, 11
+     *
+     */
     public int getHalfStepsInMajorSeventh() {
         return halfStepsInMajorSeventh;
     }
 
+    /**
+     * The purpose of this method is to access the constant attribute
+     * representing half steps in an octave, 12
+     *
+     */
     public int getHalfStepsInOctave() {
         return halfStepsInOctave;
     }
 
+
     /**
+     * The purpose of this method is get the distance of two Note objects
+     * based on their alphabetical "name". This will be an int in range
+     * 1 to 7
+     * <p>Precondition: two Note objects have been instantated</p>
+     * <p>Postcondition: the int representation of the distance between
+     * the two notes is returned</p>
      *
      * @return an int representation of how many letters apart in the musical
      * alphabet two notes are, this indicates the intervals quality family
@@ -179,11 +340,14 @@ public class Interval {
     public int getDistance(){return distance;}
 
     /**
-     * Importantly, this method factors out the quality of the interval from
-     * the distance of the interval and also sets enharmonic interval where appropriate.
-     *
-     * >>>Uses the class attribute String arrays intervalQualities and enharmonicIntervals
+     * The purpose of this method is to factor out the quality of the interval from
+     * the distance attribute of the Interval and also sets enharmonic attribute where appropriate.
+     * This method uses the class attribute String arrays intervalQualities and enharmonicIntervals
      * by indexing them according to the half steps in the interval
+     * <p>Precondition: An Interval object is in the process of being instantiated/p>
+     * <p>Postcondition: The Interval being instantiated is given the appropriate
+     * quality and where applicable enharmonic attributes according to their
+     * distance and how many half steps separate them</p>
      */
     public void setQuality() {
 
@@ -324,7 +488,12 @@ public class Interval {
     }
 
 
-
+    /**
+     * The purpose of this method is to set the distance attribute of this Interval
+     * object. We utilize the Utilities.CircularlyLinkedList to accomplish this.
+     * <p>Precondition: this Interval object is being instantiated </p>
+     * <p>Postcondition: this Interval objects distance attribute is set</p>
+     */
     public void setDistance(){
         // Use Circularly Linked List to get distance
         CircularlyLinkedList cll = new CircularlyLinkedList();
@@ -348,8 +517,12 @@ public class Interval {
         }
     }
 
-
-
+    /**
+     * The purpose of this method is to provide a String representation of this
+     * Interval object
+     *
+     * @return a human readable String representation of this Interval object
+     */
     public String toString(){
         return this.getQuality();
     }
