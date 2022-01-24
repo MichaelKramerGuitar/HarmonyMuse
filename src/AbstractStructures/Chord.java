@@ -8,28 +8,14 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 /**
- * The abstract chord class' goal is to be flexible enough such that it might
- * provide tools to subclasses that handle various types of input data such as
- * strings, char arrays and eventually midi input hence the use of the
- * generic type in the class declaration.
+ * @author Michael Kramer
  *
- * 1) getPermutations() should take input data and output all harmonic
- * possibilities
+ * CS622 Spring 1, 2022
+ * Advanced Programming Techniques.
  *
- * 2) getDegrees() should map data to the respective chord degrees
+ * The purpose of this class is to provide a general framework for the chord
+ * datastructure, a fundamental structure to this application
  *
- * 3) digitize() should map characters
- * (c, c#, d-, d, d#, e-, e, f, f#, g-, g, g#, a-, a, a#, b-, b)
- * to digits in range 0-11 where enharmonic pitches are mapped to the same
- * digit:
- * c#/d- <--> 1
- * d#/e- <--> 3
- * f#/g- <--> 6
- * g#/a- <--> 8
- * a#/b- <--> 10
- *
- *
- * 5) quality() should remain abstract to be implemented by concrete subclasses
  */
 
 public abstract class Chord {
@@ -41,6 +27,12 @@ public abstract class Chord {
     //constructors
     public Chord() { }
 
+    /**
+     * The purpose of this constructor is to build a chord object out of note
+     * objects and determine the intervals of each note in the chord in relation
+     * to the "lowest" sounding note
+     * @param notes an array of Note objects
+     */
     public Chord(Note[] notes){
 
         this.rawData = notes;
@@ -59,6 +51,12 @@ public abstract class Chord {
 
     public abstract void setQuality(String quality);
 
+    /**
+     * The purpose of the method is to replace system placeholders for academic
+     * symbols with unicode strings, primarily for pretty printing in the UI
+     * @param note a Note object
+     * @return A String builder with accidental replaced by unicode symbol
+     */
     public StringBuilder replaceAccidental(Note note){
         CharactersTable cTable = new CharactersTable();
         String n = note.toString();

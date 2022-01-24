@@ -19,15 +19,15 @@ public class ChordEntryView {
         System.out.printf("%s%n%s%n%s%n%n%s%n%s%n%n", charTable.repeatStringNTimes(charTable.getBeamedEighths(), 20),
                 charTable.getTrebleClef() + "  Welcome to HarmonyMuse  " + charTable.getTrebleClef(),
                 charTable.repeatStringNTimes(charTable.getBeamedEighths(), 20),
-                charTable.getSmiley() + " Let's start classifying "
-                        + charTable.getSmiley(),
-                        charTable.getThumbsUp() +
-                " some chords, shall we?  " + charTable.getThumbsUp());
+                charTable.getPiano() + " Let's start classifying "
+                + charTable.getPiano(),
+                charTable.getGuitar() +
+                " some chords, shall we?  " + charTable.getGuitar());
     }
 
     public static int getNumNotes(){
         Scanner num = new Scanner(System.in);
-        System.out.printf("%s%n???", "How many notes in this chord?");
+        System.out.printf("%s%n%s", "How many notes in this chord?", charTable.getMicrophone());
         try{
             int num_notes = num.nextInt();
             return num_notes;

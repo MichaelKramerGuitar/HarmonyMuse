@@ -11,6 +11,10 @@ public class CharactersTable {
     private String thumbsUp = "\uD83D\uDC4D";
     private String smiley = "\u263A";
     private String doubleSharp = "\uD834\uDD2A";
+    private String guitar = "\uD83C\uDFB8";
+    private String piano = "\uD83C\uDFB9";
+    private String microphone = "\uD83C\uDFA4";
+
 
     public CharactersTable(){}
 
@@ -66,5 +70,16 @@ public class CharactersTable {
 
     public String getDoubleSharp() {
         return doubleSharp;
+    }
+    public String getGuitar(){
+        return guitar;
+    }
+
+    public String getPiano() {
+        return piano;
+    }
+
+    public String getMicrophone() {
+        return microphone;
     }
 }

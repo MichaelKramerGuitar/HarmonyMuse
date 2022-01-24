@@ -1,6 +1,8 @@
 package AbstractStructures;
 
 /**
+ * @author Michael Kramer
+ * CS622 Spring 1, 2022 Advance Programming Techniques.
  * An interface that can be implemented to voice a chord.
  * This concept is similar to drawing a shape and depends greatly on the
  * context of the voicing. A guitar voicing may differ greatly from piano
