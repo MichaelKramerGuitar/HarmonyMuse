@@ -1,17 +1,25 @@
 package Utilities;
 
 /**
- * Class modified from
+ * @author modified from
  * https://www.javatpoint.com/java-program-to-create-and-display-a-circular-linked-list
- * @author Michael Kramer, project author wrote distance() function
- * Use Case: 1. Put all letters of musical alphabet into a Circularly Linked List
- * 2. Use list to determine pure INTERVAL NUMBER between any two LETTER NAMES
- * i.e. any version of a note with prefix "c" ("c#", "c-" etc.) as bottom and
- * any version of note with prefic "e" as top ("e-", "e#") are a 3rd apart
+ * <p>Michael Kramer, author of below distance() function</p>
+ * <p>
+ * CS622 Spring 1, 2022 Advanced Programming Techniques
+ * <p>
+ * The purpose of this class is:
+ * <p>Use Case: 1. Put all letters of musical alphabet into a Circularly Linked List
+ *  </p>
+ *  <p>Use Case: 2. Use list to determine pure INTERVAL NUMBER between any two LETTER NAMES
+ *  i.e. any version of a note with prefix "c" ("c#", "c-" etc.) as bottom and
+ *  any version of note with prefic "e" as top ("e-", "e#") are a 3rd apart
  */
-
 public class CircularlyLinkedList {
-    //Represents the node of list.
+
+    /**
+     * The purpose of this embedded class is to create the Node data structure
+     * for each element in the CircularlyLinkedList class
+     */
     public class Node{
         Object data;
         Node next;
@@ -25,6 +33,17 @@ public class CircularlyLinkedList {
     public Node tail = null;
 
     //This function will add the new node at the end of the list.
+
+    /**
+     * The purpose of this method is to add a Node element to the end of the
+     * CircularlyLinkedList
+     * <p>Precondition: A CircularlyLinkedList has been instantiated</p>
+     * <p>Postcondition: A new Node with the Object pass as a parameter is
+     * at the end of the CircularlyLinkedList</p>
+     *
+     * @param data in the context of HarmonyMuse is a String of each letter in
+     *             the musical alphabet (range "a to g")
+     */
     public void add(Object data){
         //Create new node
         Node newNode = new Node(data);
@@ -46,6 +65,13 @@ public class CircularlyLinkedList {
     }
 
     //Displays all the nodes in the list
+
+    /**
+     * The purpose of this method is to print out the current contents of this
+     * CircularlyLinkedList
+     * <p>Precondition: a CircularlyLinkedList is instantiated</p>
+     * <p>Postcondition: the contents of the list are on the console </p>
+     */
     public void display() {
         Node current = head;
         if (head == null) {
@@ -61,10 +87,16 @@ public class CircularlyLinkedList {
         }
     }
 
+
     /**
-     * Code modified from:
+     * The purpose of this method is to get the number of elements in the
+     * CircularlyLinkedList. Code modified from:
      * https://stackoverflow.com/questions/30970211/size-for-doubly-circular-linked-list
-     * @return
+     * <p>Precondition: A CircularlyLinkedList has been instantiated</p>
+     * <p>Postcondition: The number of elements in the list is returned as
+     * an int</p>
+     *
+     * @return the number of elements in the list as an int
      */
     public int getSize() {
         int count = 0;
@@ -80,14 +112,26 @@ public class CircularlyLinkedList {
         return count;
     }
 
+
     /**
-     * @author Michael Kramer
-     * @param bottom an arbitrary object
-     * @param top an arbitrary object
-     * @return the integer representation of distance in circularly linked list
-     * (i.e. "a, b, c, d, e, f, g" distance of c = bottom and g = top is 5
-     * distance of g = bottom and b = top is 3)
-     * @throws Exception
+     * The purpose of this method is to get the integer representation of distance
+     * in circularly linked list (i.e. "a, b, c, d, e, f, g" distance of
+     * c = bottom and g = top is 5 distance of g = bottom and b = top is 3)
+     * <p>Precondition: A CircularlyLinkedList has been instantiated and the
+     * musical alphabet ("a" to "g") has been added to the list as String objects</p>
+     * <p>Postcondition: an integer representing the distance from a bottom
+     * letter to the top letter (counting the bottom letter as 1) </p>
+     *
+     * @param bottom a String Object letter representing a Note to begin searching
+     *               from and counting up from 1
+     *
+     * @param top a String Object letter representing a target Note (the count
+     *            will never exceed 7)
+     * @return an int representing the distance from a bottom
+     * letter to the top letter (counting the bottom letter as 1)
+     *
+     * @throws Exception when the list is empty or if one of the @params is
+     * not in the list (i.e. not in the range of the musical alphabet)
      */
     public int distance(Object bottom, Object top) throws Exception{
         boolean foundBottom = false;

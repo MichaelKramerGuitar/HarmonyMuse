@@ -5,9 +5,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Formatter;
 
-
+/**
+ * @author Michael Kramer
+ * <p>
+ * CS622 Spring 1, 2022 Advanced Programming Techniques
+ * <p>
+ * The purpose of this class is write cleaned String data that can be
+ * instantiated as a Builders.Note object to a file for persistent storage
+ */
 public class WriteToFile {
 
+    /**
+     * The purpose of this method is to flush a file of previous contents
+     * <p>Precondition: a file exists with contents that needs to be
+     * overwritten</p>
+     * <p>Postcondition: the overwritten file is blank</p>
+     */
     public static void clearFile(){
         try {
             File file = new File("data\\input.txt");
@@ -17,8 +30,18 @@ public class WriteToFile {
             System.out.println("Error flushing file");
             e.printStackTrace();
         }
-
     }
+
+    /**
+     * The purpose of this method is to write cleaned rawInput to a file
+     * <p>Precondition: a String array has been populated with cleaned
+     * rawInput that can later be instantiated as Note objects</p>
+     * <p>Postcondition: the file has the contents of each (later to be
+     * instantiated and classified) Chord on its own line</p>
+     *
+     * @param rawInput a String array that has been populated with cleaned
+     * and can later be instantiated as Note objects
+     */
     public static void writeToFile(String[] rawInput){
 
         try{

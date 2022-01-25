@@ -1,8 +1,8 @@
-#HarmonyMuse 
+#Builders 
 
 ##CS622 Spring 1 Advanced Programming Techniques Project
 
-**Current functionality is shown by running `HarmonyMuse.Main1.java`**
+**Current functionality is shown by running `Builders.Main1.java`**
 * Can simply Run the file `Main.java`
   * See document `metcs622_Assignment1_mgkramer.docx` in current dirctory for detailed project description 
 

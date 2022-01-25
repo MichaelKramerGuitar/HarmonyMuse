@@ -76,7 +76,7 @@ public class Note {
      * by accidental representations other than "#" or "-" they are illegal
      */
     @Contract(pure = true)
-    public Note(@NotNull String name) throws IllegalArgumentException {
+    public Note(@NotNull String name) throws InvalidNoteException {
         String n = name.toLowerCase(); // force input to lower case
         buildNotesMap();
         for (int i = 0; i < this.notesMap.size(); i++) {
@@ -94,7 +94,7 @@ public class Note {
             }
         }
         if(!this.goodNote){
-            throw new IllegalArgumentException("Could not create note from input->>> " + name);
+            throw new InvalidNoteException("Could not create note from input->>> " + name);
         }
     }
 
@@ -268,12 +268,16 @@ public class Note {
     }
 
     public static void main(String[] args) {
-        Note note = new Note("C#");
-        System.out.println("name: " + note.getName() + " Enharmonics: " + note.getEnharmonics()
-                + "\n" + "intValue: " + note.getIntValue());
-        Note note1 = new Note("G--");
-        System.out.println("name: " + note1.getName() + " Enharmonics: " + note1.getEnharmonics()
-                + "\n" + "intValue: " + note1.getIntValue());
+        try {
+            Note note = new Note("C#");
+            System.out.println("name: " + note.getName() + " Enharmonics: " + note.getEnharmonics()
+                    + "\n" + "intValue: " + note.getIntValue());
+            Note note1 = new Note("G--");
+            System.out.println("name: " + note1.getName() + " Enharmonics: " + note1.getEnharmonics()
+                    + "\n" + "intValue: " + note1.getIntValue());
+        }catch (InvalidNoteException e){
+            System.out.println(e);
+        }
 
     }
 }

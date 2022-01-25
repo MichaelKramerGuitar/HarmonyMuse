@@ -2,6 +2,7 @@ package Model;
 
 import AbstractStructures.Chord;
 import Builders.ChordBuilder;
+import Builders.InvalidNoteException;
 import Builders.Note;
 
 import java.io.IOException;
@@ -11,8 +12,26 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+/**
+ * @author Michael Kramer
+ * <p>
+ * CS622 Spring 1, 2022 Advanced Programming Techniques
+ * <p>
+ * The purpose of this class is to read data from a file, currently representing
+ * the applications database
+ */
 public class ReadFromFile {
 
+    /**
+     * The purpose of this method is to read in each line of a file, convert
+     * that line to a ChordBuilder and ultimately return an ArrayList containing
+     * each Chord in the file
+     * <p>Precondition: A file exists with cleaned data that can be used
+     * to instantiate Note objects</p>
+     * <p>Postcondition: An ArrayList of all the Chords in the file is returned</p>
+     *
+     * @return An ArrayList of all the Chords in the file is returned
+     */
     public static ArrayList<Chord> readFile(){
         ArrayList<Chord> chordsOnFile = new ArrayList<>(0);
         ArrayList<String> container = new ArrayList<>(0);
@@ -32,7 +51,7 @@ public class ReadFromFile {
                 for (int i = 0; i < data.length; i++) {
                     try {
                         notes[i] = new Note(data[i]);
-                    } catch (IllegalArgumentException e) {
+                    } catch (InvalidNoteException e) {
                             System.out.println(e);
                     }
                 }

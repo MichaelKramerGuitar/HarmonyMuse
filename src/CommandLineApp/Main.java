@@ -16,6 +16,7 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         ChordEntryView.welcome();
+        ChordEntryView.acceptedInput();
         WriteToFile.clearFile(); // reset file, this is temporary
         int num_notes = -1;
         boolean moreInput = true;

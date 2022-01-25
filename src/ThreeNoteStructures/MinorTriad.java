@@ -75,14 +75,40 @@ public class MinorTriad extends Chord implements Triad {
      */
     public void setRoot(Note root) {this.root = root;}
 
+    /**
+     * The purpose of this method is to set a Note object as the third of this
+     * triad in the Classifiers.TriadClassifier class
+     * @param third a Note object
+     */
     public void setThird(Note third) {this.third = third;}
 
+    /**
+     * The purpose of this method is to set a Note object as the fifth of this
+     * triad in the Classifiers.TriadClassifier class
+     * @param fifth a Note object
+     */
     public void setFifth(Note fifth) {this.fifth = fifth;}
 
+    /**
+     * The purpose of this method is to set a Note object as the root of this
+     * triad in the Classifiers.TriadClassifier class
+     * @param  quality is a String
+     */
     public void setQuality(String quality){this.quality = quality;}
 
+    /**
+     * The purpose of this method is to set a Note object as the root of this
+     * triad in the Classifiers.TriadClassifier class
+     * @param  inversion is a String
+     */
     public void setInversion(String inversion){this.inversion = inversion;}
 
+    /**
+     * The purpose of this method is to return a human-readable String
+     * representation of this object. Note that if accidentals are present
+     * these are replaced with their unicode strings for a prettier print
+     * @return a human-readable String representation of this object
+     */
     @Override
     public String toString(){
 

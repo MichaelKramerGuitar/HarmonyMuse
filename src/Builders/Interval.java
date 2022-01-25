@@ -528,69 +528,73 @@ public class Interval {
     }
 
     public static void main(String[] args) {
-        Note note = new Note("C#");
-        System.out.println("name: " + note.getName() + " Enharmonics: " + note.getEnharmonics()
-                + "\n" + "intValue: " + note.getIntValue());
-        Note note1 = new Note("G--");
-        System.out.println("name: " + note1.getName() + " Enharmonics: " + note1.getEnharmonics()
-                + "\n" + "intValue: " + note1.getIntValue());
+        try {
+            Note note = new Note("C#");
+            System.out.println("name: " + note.getName() + " Enharmonics: " + note.getEnharmonics()
+                    + "\n" + "intValue: " + note.getIntValue());
+            Note note1 = new Note("G--");
+            System.out.println("name: " + note1.getName() + " Enharmonics: " + note1.getEnharmonics()
+                    + "\n" + "intValue: " + note1.getIntValue());
 
-        Interval interval = new Interval(new Pair<>(note, note1));
+            Interval interval = new Interval(new Pair<>(note, note1));
 
-        System.out.println("Testing getBottomNote(): " + interval.getBottomNote());
-        System.out.println("Testing getTopNote(): " + interval.getTopNote());
-        System.out.println("Testing interval intValue: " + interval.intValue);
+            System.out.println("Testing getBottomNote(): " + interval.getBottomNote());
+            System.out.println("Testing getTopNote(): " + interval.getTopNote());
+            System.out.println("Testing interval intValue: " + interval.intValue);
 
-        System.out.println(interval);
+            System.out.println(interval);
 
-        Note note2 = new Note("c#");
-        System.out.println("name: " + note2.getName() + " Enharmonics: " + note2.getEnharmonics()
-                + "\n" + "intValue: " + note2.getIntValue());
-        Note note3 = new Note("c");
-        System.out.println("name: " + note3.getName() + " Enharmonics: " + note3.getEnharmonics()
-                + "\n" + "intValue: " + note3.getIntValue());
+            Note note2 = new Note("c#");
+            System.out.println("name: " + note2.getName() + " Enharmonics: " + note2.getEnharmonics()
+                    + "\n" + "intValue: " + note2.getIntValue());
+            Note note3 = new Note("c");
+            System.out.println("name: " + note3.getName() + " Enharmonics: " + note3.getEnharmonics()
+                    + "\n" + "intValue: " + note3.getIntValue());
 
-        Interval interval1 = new Interval(new Pair<>(note2, note3));
+            Interval interval1 = new Interval(new Pair<>(note2, note3));
 
-        System.out.println("Testing getBottomNote(): " + interval1.getBottomNote());
-        System.out.println("Testing getTopNote(): " + interval1.getTopNote());
-        System.out.println("Testing interval intValue: " + interval1.intValue);
+            System.out.println("Testing getBottomNote(): " + interval1.getBottomNote());
+            System.out.println("Testing getTopNote(): " + interval1.getTopNote());
+            System.out.println("Testing interval intValue: " + interval1.intValue);
 
-        System.out.println(interval1);
+            System.out.println(interval1);
 
-        Note note4 = new Note("b#");
-        System.out.println("name: " + note4.getName() + " Enharmonics: " + note4.getEnharmonics()
-                + "\n" + "intValue: " + note4.getIntValue());
-        Note note5 = new Note("c");
-        System.out.println("name: " + note3.getName() + " Enharmonics: " + note3.getEnharmonics()
-                + "\n" + "intValue: " + note3.getIntValue());
+            Note note4 = new Note("b#");
+            System.out.println("name: " + note4.getName() + " Enharmonics: " + note4.getEnharmonics()
+                    + "\n" + "intValue: " + note4.getIntValue());
+            Note note5 = new Note("c");
+            System.out.println("name: " + note3.getName() + " Enharmonics: " + note3.getEnharmonics()
+                    + "\n" + "intValue: " + note3.getIntValue());
 
-        Interval interval2 = new Interval(new Pair<>(note4, note5));
+            Interval interval2 = new Interval(new Pair<>(note4, note5));
 
-        System.out.println("Testing getBottomNote(): " + interval2.getBottomNote());
-        System.out.println("Testing getTopNote(): " + interval2.getTopNote());
-        System.out.println("Testing interval intValue: " + interval2.intValue);
+            System.out.println("Testing getBottomNote(): " + interval2.getBottomNote());
+            System.out.println("Testing getTopNote(): " + interval2.getTopNote());
+            System.out.println("Testing interval intValue: " + interval2.intValue);
 
-        System.out.println(interval2);
+            System.out.println(interval2);
 
-        System.out.println(interval2.getBottomNote().getEnharmonics().contains(interval2.getTopNote().getName()));
+            System.out.println(interval2.getBottomNote().getEnharmonics().contains(interval2.getTopNote().getName()));
 
-        System.out.println(interval1.getBottomNote().getName().charAt(0) == interval1.getTopNote().getName().charAt(0));
+            System.out.println(interval1.getBottomNote().getName().charAt(0) == interval1.getTopNote().getName().charAt(0));
 
-        Note note6 = new Note("c");
-        System.out.println("name: " + note6.getName() + " Enharmonics: " + note6.getEnharmonics()
-                + "\n" + "intValue: " + note6.getIntValue());
-        Note note7 = new Note("d#");
-        System.out.println("name: " + note7.getName() + " Enharmonics: " + note7.getEnharmonics()
-                + "\n" + "intValue: " + note7.getIntValue());
+            Note note6 = new Note("c");
+            System.out.println("name: " + note6.getName() + " Enharmonics: " + note6.getEnharmonics()
+                    + "\n" + "intValue: " + note6.getIntValue());
+            Note note7 = new Note("d#");
+            System.out.println("name: " + note7.getName() + " Enharmonics: " + note7.getEnharmonics()
+                    + "\n" + "intValue: " + note7.getIntValue());
 
-        Interval interval3 = new Interval(new Pair<>(note6, note7));
+            Interval interval3 = new Interval(new Pair<>(note6, note7));
 
-        System.out.println("Testing getBottomNote(): " + interval3.getBottomNote());
-        System.out.println("Testing getTopNote(): " + interval3.getTopNote());
-        System.out.println("Testing interval intValue: " + interval3.intValue);
+            System.out.println("Testing getBottomNote(): " + interval3.getBottomNote());
+            System.out.println("Testing getTopNote(): " + interval3.getTopNote());
+            System.out.println("Testing interval intValue: " + interval3.intValue);
 
-        System.out.println(interval3);
+            System.out.println(interval3);
+        }catch (InvalidNoteException e){
+            System.out.println(e);
+        }
 
     }
 }
