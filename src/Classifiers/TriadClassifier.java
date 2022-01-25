@@ -4,7 +4,6 @@ import AbstractStructures.Chord;
 import Builders.ChordBuilder;
 import AbstractStructures.Triad;
 import Builders.Interval;
-import ThreeNoteStructures.InvalidTriadException;
 import ThreeNoteStructures.AugmentedTriad;
 import ThreeNoteStructures.DiminishedTriad;
 import ThreeNoteStructures.MajorTriad;

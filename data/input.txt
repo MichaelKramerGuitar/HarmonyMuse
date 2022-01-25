@@ -1,1 +1,3 @@
-b c a 
+g c e 
+b-- d- g- 
+b d# f## 

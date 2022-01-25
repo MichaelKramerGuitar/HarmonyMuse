@@ -1,4 +1,4 @@
-package ThreeNoteStructures;
+package Classifiers;
 
 /**
  * @author Michael Kramer

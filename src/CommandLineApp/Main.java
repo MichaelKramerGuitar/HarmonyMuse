@@ -2,8 +2,8 @@ package CommandLineApp;
 
 import AbstractStructures.Chord;
 import Builders.InvalidNoteException;
-import Model.ReadFromFile;
-import Model.WriteToFile;
+import FileHandling.ReadFromFile;
+import FileHandling.WriteToFile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +24,6 @@ public class Main {
             while (num_notes < 0) {
                 num_notes = ChordEntryView.getNumNotes();
             }
-            System.out.println(num_notes);
             String[] chordInput = new String[num_notes];
             boolean goodInput = false;
             while (!goodInput) {

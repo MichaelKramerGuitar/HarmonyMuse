@@ -1,7 +1,7 @@
 package Builders;
 
 import AbstractStructures.Chord;
-import ThreeNoteStructures.InvalidTriadException;
+import Classifiers.InvalidTriadException;
 import Classifiers.TriadClassifier;
 
 import java.util.ArrayList;
@@ -25,7 +25,9 @@ public class ChordBuilder extends Chord {
                                                 "third inversion"};
 
 
-    // four note structures
+    /*TODO four note structures to be moved to the SeventhChordClassifier when created
+
+     */
     private String[] seventhQualities = new String[]{   "diminished 7",
                                                         "minor 7 b5",
                                                         "minor 7",
