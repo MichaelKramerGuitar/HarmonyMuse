@@ -43,7 +43,6 @@ public class WriteToFile {
      * and can later be instantiated as Note objects
      */
     public static void writeToFile(String[] rawInput){
-
         try{
             File file = new File("data\\input.txt");
             FileWriter fileWriter = new FileWriter(file, true);

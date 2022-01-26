@@ -59,7 +59,7 @@ public class ReadFromFile {
                 Chord chord = rawData.classify(rawData);
                 chordsOnFile.add(chord);
                 container.clear(); // clear for the next chord
-                }
+            }
             // try(with recources IMPLICITLY calls input.close()
             } catch (IOException | NoSuchElementException |
                 IllegalStateException e) {
