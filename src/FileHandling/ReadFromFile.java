@@ -32,11 +32,11 @@ public class ReadFromFile {
      *
      * @return An ArrayList of all the Chords in the file is returned
      */
-    public static ArrayList<Chord> readFile(){
+    public static ArrayList<Chord> readFile(String filename){
         ArrayList<Chord> chordsOnFile = new ArrayList<>(0);
         ArrayList<String> container = new ArrayList<>(0);
         // open input.txt, read its contents and close the file
-        try(Scanner input = new Scanner(Paths.get("data\\input.txt"))) {
+        try(Scanner input = new Scanner(Paths.get("data\\" + filename + ".txt"))) {
             // read record from file
             while (input.hasNext()) { // while there is more to read
                 StringTokenizer st = new StringTokenizer(input.nextLine());

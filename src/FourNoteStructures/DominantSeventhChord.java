@@ -1,10 +1,12 @@
 package FourNoteStructures;
 
-import AbstractStructures.Chord;
-import Builders.ChordBuilder;
 import AbstractStructures.SeventhChord;
-import AbstractStructures.Triad;
+import Builders.Interval;
 import Builders.Note;
+import ThreeNoteStructures.MajorTriad;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
 
 /**
  * @author Michael Kramer
@@ -14,7 +16,7 @@ import Builders.Note;
  * The purpose of this class is to provide a data structure for Chord objects
  * that have the Interval's signature of a Dominant Seventh Chord
  */
-public class DominantSeventhChord extends Chord implements Triad, SeventhChord {
+public class DominantSeventhChord extends MajorTriad implements SeventhChord {
 
     private Note root;
     private Note third;
@@ -23,7 +25,7 @@ public class DominantSeventhChord extends Chord implements Triad, SeventhChord {
     private String quality;
     private String inversion;
     // group the base triad
-    private Note[] triad = new Note[]{root, third, fifth};
+    private MajorTriad triad;
 
     /**
      * The purpose of this method is to instantiate a DominantSeventhChord from
@@ -33,36 +35,40 @@ public class DominantSeventhChord extends Chord implements Triad, SeventhChord {
      * interval signature of a Dominant Seventh Chord</p>
      * <p>Postcondition: a Dominant Seventh Chord is instantiated</p>
      *
-     * @param data is a ChordBuilder object with four Notes and three Intervals
+     * @param triad is a MajorTriad object
+     * @param seventh is a Note object
      */
-    public DominantSeventhChord(ChordBuilder data) {
-        super(data.getNotes());
-        Note[] notes = data.getNotes();
+    public DominantSeventhChord(MajorTriad triad, Note seventh) {
+        this.triad = triad;
+        this.seventh = seventh;
+        Interval interval = new Interval(new Pair<>(triad.getRoot(), seventh));
+        ArrayList<Interval> intervals = super.getIntervals();
+        intervals.add(interval);
     }
 
     /**
      * The purpose of this method is to get the Note root for this Seventh Chord
      * @return the Note object root
      */
-    public Note getRoot() {return this.root;}
+    public Note getRoot() {return triad.getRoot();}
 
     /**
      * The purpose of this method is to get the Note third for this Seventh Chord
      * @return the Note object third
      */
-    public Note getThird() {return this.third;}
+    public Note getThird() {return triad.getThird();}
 
     /**
      * The purpose of this method is to get the Note fifth for this Seventh Chord
      * @return the Note object fifth
      */
-    public Note getFifth() {return this.fifth;}
+    public Note getFifth() {return triad.getFifth();}
 
     /**
      * The purpose of this method is to get the Note seventh for this Seventh Chord
      * @return the Note object seventh
      */
-    public Note getSeventh() {return this.seventh;}
+    public Note getSeventh() {return seventh;}
 
     /**
      * The purpose of this method is to get the quality attribute for this
@@ -77,27 +83,6 @@ public class DominantSeventhChord extends Chord implements Triad, SeventhChord {
      * @return a String representation of the inversion of this Seventh Chord
      */
     public String getInversion() {return inversion;}
-
-    /**
-     * The purpose of this method is to set a Note object as the root of this
-     * Seventh Chord in the TODO Classifiers.SeventhChordClassifier class
-     * @param root a Note object
-     */
-    public void setRoot(Note root) {this.root = root;}
-
-    /**
-     * The purpose of this method is to set a Note object as the third of this
-     * Seventh Chord in the TODO Classifiers.SeventhChordClassifier class
-     * @param third a Note object
-     */
-    public void setThird(Note third) {this.third = third;}
-
-    /**
-     * The purpose of this method is to set a Note object as the fifth of this
-     * Seventh Chord in the TODO Classifiers.SeventhChordClassifier class
-     * @param fifth a Note object
-     */
-    public void setFifth(Note fifth) {this.fifth = fifth;}
 
     /**
      * The purpose of this method is to set a Note object as the seventh of this
@@ -141,8 +126,7 @@ public class DominantSeventhChord extends Chord implements Triad, SeventhChord {
 
 
         return String.format(root.toString().toUpperCase() + " " +
-                getQuality().toUpperCase() + " " + getInversion().toUpperCase() + " " +
-                super.toString() + "\n" +
+                getQuality().toUpperCase() + " " + getInversion().toUpperCase() + "\n" +
                 "root: " + root + "\n" +
                 "third: " + third + "\n" +
                 "fifth: " + fifth + "\n" +

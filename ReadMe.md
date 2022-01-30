@@ -4,7 +4,7 @@
 
 **Current functionality is shown by running `Builders.Main1.java`**
 * Can simply Run the file `Main.java`
-  * See document `metcs622_Assignment1_mgkramer.docx` in current dirctory for detailed project description 
+  * See document `metcs622_Assignment2_mgkramer.docx` in assignments dirctory for detailed project description 
 
 _All other classes containing main functions are for debugging purposes as this is a work in progress
 and are not intended for public use, however these can be run to see isolated class functionality_

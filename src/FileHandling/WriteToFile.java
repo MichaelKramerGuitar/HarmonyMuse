@@ -21,9 +21,9 @@ public class WriteToFile {
      * overwritten</p>
      * <p>Postcondition: the overwritten file is blank</p>
      */
-    public static void clearFile(){
+    public static void clearFile(String filename){
         try {
-            File file = new File("data\\input.txt");
+            File file = new File("data\\" + filename + ".txt");
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.flush();
         }catch (IOException e){
@@ -42,9 +42,10 @@ public class WriteToFile {
      * @param rawInput a String array that has been populated with cleaned
      * and can later be instantiated as Note objects
      */
-    public static void writeToFile(String[] rawInput){
+    public static void writeToFile(String filename, String[] rawInput){
+
         try{
-            File file = new File("data\\input.txt");
+            File file = new File("data\\" + filename + ".txt");
             FileWriter fileWriter = new FileWriter(file, true);
             //BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             Formatter outfile = new Formatter(fileWriter);

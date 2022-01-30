@@ -22,6 +22,8 @@ public class MajorTriad extends Chord implements Triad {
     private String inversion;
     private boolean isOpen;
 
+    public MajorTriad() {}
+
     /**
      * The purpose of this method is to instantiate a Major Triad from
      * a ChordBuilder object with the appropriate Interval's signature as

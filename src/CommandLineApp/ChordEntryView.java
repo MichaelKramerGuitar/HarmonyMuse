@@ -52,6 +52,41 @@ public class ChordEntryView {
                 " Example \"c#\" or \"a-\" " + charTable.repeatStringNTimes(charTable.getThumbsUp(), 2));
     }
 
+    public static String getFileName(){
+        boolean goodInput = false;
+        Scanner input = new Scanner(System.in);
+        System.out.printf("%s%n%18s%n%s%n%10s%n%s ",
+                        "What would you like to name", "this entry?",
+                        "multiple words?? use \"-\" or \"_\"",
+                        charTable.repeatStringNTimes(charTable.getThumbsUp(), 2)
+                                + " Example: \"giant-steps\" " +
+                                charTable.repeatStringNTimes(charTable.getThumbsUp(), 2),
+                "Type into the mic ...... " + charTable.getMicrophone());
+        try{
+            String filename = input.next();
+            goodInput = true;
+            return filename;
+        }catch (InputMismatchException e){
+            System.out.println(e);
+        }
+        while (!goodInput){ //loop until user input is acceptable
+            Scanner input1 = new Scanner(System.in);
+            System.out.printf("%20s%n%s",
+                    "Let's try again: example \"my song\"",
+                    charTable.getMicrophone());
+            try {
+                String filename = input.next();
+                goodInput = true;
+                return filename;
+            }catch (InputMismatchException e){
+                System.out.println(e);
+            }
+
+        }
+        return "input"; // we'll never get here but this can be our default
+    }
+
+
     /**
      * The purpose of this method is to retrieve an integer representing the
      * number of notes in the next chord the user will enter
@@ -65,7 +100,7 @@ public class ChordEntryView {
      */
     public static int getNumNotes(){
         Scanner num = new Scanner(System.in);
-        System.out.printf("%s%n%s ", "How many notes in this chord?", "Type into the mic ...... " + charTable.getMicrophone());
+        System.out.printf("%n%s%n%s ", "How many notes in this chord?", "Type into the mic ...... " + charTable.getMicrophone());
         try{
             int num_notes = num.nextInt();
             return num_notes;

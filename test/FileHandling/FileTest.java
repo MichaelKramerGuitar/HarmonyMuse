@@ -24,6 +24,7 @@ class FileTest {
     private String[] data;
     private String[] data1;
     private String[] data2;
+    private String filename = "testInput";
 
     @BeforeEach
     void setUp() {
@@ -34,6 +35,7 @@ class FileTest {
         String[] data2 = new String[]{"c", "f#", "a#"}; // create more input data
         this.data2 = data2;
 
+
     }
 
     /**
@@ -43,9 +45,10 @@ class FileTest {
      */
     @Test
     void TestWriteToFile() {
-        WriteToFile.writeToFile(data);
-        WriteToFile.writeToFile(data1);
-        WriteToFile.writeToFile(data2);
+        WriteToFile.clearFile(this.filename); // clear the default file
+        WriteToFile.writeToFile(this.filename, data);
+        WriteToFile.writeToFile(this.filename, data1);
+        WriteToFile.writeToFile(this.filename, data2);
     }
 
     /**
@@ -58,7 +61,7 @@ class FileTest {
     @Test
     void TestReadFromFile(){
 
-        ArrayList<Chord> chordsOnFile = ReadFromFile.readFile();
+        ArrayList<Chord> chordsOnFile = ReadFromFile.readFile(this.filename);
         // successful major triad
         Assertions.assertTrue(chordsOnFile.get(0) instanceof MajorTriad);
         // successful minor triad

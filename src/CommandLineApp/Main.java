@@ -1,23 +1,32 @@
 package CommandLineApp;
 
 import AbstractStructures.Chord;
+import Builders.ChordBuilder;
 import Builders.InvalidNoteException;
+import Builders.Note;
 import FileHandling.ReadFromFile;
 import FileHandling.WriteToFile;
+import FourNoteStructures.DominantSeventhChord;
+import ThreeNoteStructures.MajorTriad;
+import Utilities.ArrayMethods;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 /**
  * @author Michael Kramer
  * Date: 1/23/2022
- * The purpose of this class is...
+ * The purpose of this class is to be the controller class in the MVC design
+ * pattern
  */
 public class Main {
+
     public static void main(String[] args) {
         ChordEntryView.welcome();
         ChordEntryView.acceptedInput();
-        WriteToFile.clearFile(); // reset file, this is temporary
+        //WriteToFile.clearFile(); // reset file, this is temporary
+        String filename = ChordEntryView.getFileName();
         int num_notes = -1;
         boolean moreInput = true;
         while (moreInput) {
@@ -31,7 +40,7 @@ public class Main {
                     String[] rawInput = ChordEntryView.getNotes(num_notes, chordInput);
                     System.out.println(Arrays.toString(rawInput));
                     goodInput = true;
-                    WriteToFile.writeToFile(rawInput);
+                    WriteToFile.writeToFile(filename, rawInput);
 
                 } catch (InvalidNoteException e) {
                     System.out.println(e);
@@ -39,8 +48,32 @@ public class Main {
             }
             moreInput = ChordEntryView.moreChords();
         }
-        ArrayList<Chord> chordsOnFile = ReadFromFile.readFile();
+        ArrayList<Chord> chordsOnFile = ReadFromFile.readFile(filename);
         ChordEntryView.displayChordsOnFile(chordsOnFile);
+
+        // Test Dominant Seventh Chord
+        String[] data = new String[]{"c", "e", "g", "b-"}; // create input data
+        // Create a ChordBuilder instance from input data called rawData
+        Note[] notes = new Note[data.length];
+        for (int i = 0; i < data.length; i++){
+            try{
+                notes[i] = new Note(data[i]);
+            } catch (InvalidNoteException e){
+                System.out.println(e);
+            }
+        }
+        ChordBuilder rawData = new ChordBuilder(notes);
+        ChordBuilder chordSlice = ArrayMethods.getSlice(rawData, 0, 2);
+        MajorTriad majorTriad = new MajorTriad(chordSlice);
+        majorTriad.setRoot(rawData.getNotes()[0]);
+        majorTriad.setThird(rawData.getNotes()[1]);
+        majorTriad.setFifth(rawData.getNotes()[2]);
+        System.out.println(rawData.getNotes()[3]);
+        Note seventh = rawData.getNotes()[3];
+        DominantSeventhChord domSev = new DominantSeventhChord(majorTriad, seventh);
+        domSev.setQuality("Dominant Seventh");
+        domSev.setInversion("root position");
+        System.out.println(domSev);
     }
 }
 

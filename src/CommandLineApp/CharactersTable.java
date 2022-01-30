@@ -22,6 +22,14 @@ public class CharactersTable {
     private String guitar = "\uD83C\uDFB8";
     private String piano = "\uD83C\uDFB9";
     private String microphone = "\uD83C\uDFA4";
+    private String one = "\u2160"; // Roman numerals
+    private String two = "\u2161";
+    private String three = "\u2162";
+    private String four = "\u2163";
+    private String five = "\u2164";
+    private String six = "\u2165";
+    private String seven = "\u2166";
+
 
     /**
      * The purpose of this method is to instantiate this class for access to
@@ -105,5 +113,46 @@ public class CharactersTable {
 
     public String getMicrophone() {
         return microphone;
+    }
+
+    public String getOne() {return one;}
+
+    public String getTwo() { return two; }
+
+    public String getThree() {
+        return three;
+    }
+
+    public String getFour() {
+        return four;
+    }
+
+    public String getFive() {
+        return five;
+    }
+
+    public String getSix() {
+        return six;
+    }
+
+    public String getSeven() {
+        return seven;
+    }
+
+    public static void main(String[] args) {
+        CharactersTable charactersTable = new CharactersTable();
+        String one = charactersTable.getOne();
+        System.out.println(one); // major chords
+        System.out.println(one.toLowerCase()); // minor chords
+        String two = charactersTable.getTwo();
+        System.out.println(two.toLowerCase());
+
+        String three = charactersTable.getThree();
+        String four = charactersTable.getFour();
+        String five = charactersTable.getFive();
+        String six = charactersTable.getSix();
+        String seven = charactersTable.getSeven();
+
+        System.out.printf("%s%n%s%n%s%n%s%n%s%n", three, four, five, six, seven);
     }
 }
