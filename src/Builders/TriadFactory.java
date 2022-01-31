@@ -45,9 +45,22 @@ public class TriadFactory<T extends Triad> {
         /*
         TODO something like if(quality == triadClassifier.getTriadQualities()[2]) this is majorIntervals
          */
-        Integer[] distances = new Integer[]{3, 5}; // 3rd family, 5th family
+        Integer[] distances = getDistances(); // 3rd family, 5th family
 
-        Integer[] majorIntervals = new Integer[]{4, 7}; //major third, perfect fifth
+        Integer[] intervals = new Integer[2]; // initialize empty container
+
+        if(triad.getQuality() == triadClassifier.getTriadQualities()[0]){ // diminished
+            intervals = getFormulas().get(0);
+        }
+        else if(triad.getQuality() == triadClassifier.getTriadQualities()[1]){ // minor
+            intervals = getFormulas().get(1);
+        }
+        else if(triad.getQuality() == triadClassifier.getTriadQualities()[2]){ // major
+            intervals = getFormulas().get(2);
+        }
+        else if(triad.getQuality() == triadClassifier.getTriadQualities()[3]){ // augmented
+            intervals = getFormulas().get(3);
+        }
 
         try {
             Object thrdName = cllNames.distance(Character.toString(n), distances[0]);
@@ -56,8 +69,8 @@ public class TriadFactory<T extends Triad> {
             Map<Integer, ArrayList<String>> notesMap = root.getNotesMap();
 
             //int thrdIntValue = root.getIntValue() + majorIntervals[0];
-            Integer thrdIntValue = (Integer) cllIntervals.distance(root.getIntValue(), majorIntervals[0]);
-            Integer fifthIntValue = (Integer) cllIntervals.distance(root.getIntValue(), majorIntervals[1]);
+            Integer thrdIntValue = (Integer) cllIntervals.distance(root.getIntValue(), intervals[0]);
+            Integer fifthIntValue = (Integer) cllIntervals.distance(root.getIntValue(), intervals[1]);
 
             ArrayList<String> thirdFamily = notesMap.get(thrdIntValue);
             ArrayList<String> fifthFamily = notesMap.get(fifthIntValue);
@@ -93,5 +106,9 @@ public class TriadFactory<T extends Triad> {
 
     public Integer[] getMajorIntervals() {
         return majorIntervals;
+    }
+
+    public ArrayList<Integer[]> getFormulas() {
+        return formulas;
     }
 }

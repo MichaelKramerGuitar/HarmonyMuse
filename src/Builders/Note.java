@@ -260,6 +260,7 @@ public class Note {
         // enharmonics b
         notesMap.get(11).add("b");
         notesMap.get(11).add("c-");
+        notesMap.get(11).add("a##");
 
         this.notesMap = notesMap;
     }

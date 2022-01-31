@@ -42,6 +42,12 @@ public class MajorTriad extends Chord implements Triad {
         Note[] notes = data.getNotes();
     }
 
+    /**
+     * The purpose of this method is to build a major triad given a Note root
+     * <p>Precondition: there has been instantiated a valid Note root</p>
+     * <p>Postcondition: The MajorTriad object corresponding to said root
+     * is instantiated</p>
+     */
     public MajorTriad(Note root){
 
         TriadClassifier triadClassifier = new TriadClassifier();
@@ -51,61 +57,9 @@ public class MajorTriad extends Chord implements Triad {
 
         TriadFactory tf = new TriadFactory<>();
         tf.buildTriad(this, root, this.quality);
-//        CircularlyLinkedList cllNames = new CircularlyLinkedList();
-//
-//        String[] names = new String[]{"a", "b", "c", "d", "e", "f", "g"};
-//        for(int i = 0; i < names.length; i++){
-//            cllNames.add(names[i]);
-//        }
-//
-//        Integer[] halfSteps = new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-//        CircularlyLinkedList cllIntervals = new CircularlyLinkedList();
-//        for (int j = 0; j < halfSteps.length; j++){
-//            cllIntervals.add(halfSteps[j]);
-//        }
-//
-//        char n = root.getName().charAt(0); //get the name family of passed root
-//
-//        Integer[] distances = new Integer[]{3, 5}; // 3rd family, 5th family
-//
-//        Integer[] majorIntervals = new Integer[]{4, 7}; //major third, perfect fifth
-//
-//        try {
-//            Object thrdName = cllNames.distance(Character.toString(n), distances[0]);
-//            Object fifthName = cllNames.distance(Character.toString(n), distances[1]);
-//
-//            Map<Integer, ArrayList<String>> notesMap = root.getNotesMap();
-//
-//            //int thrdIntValue = root.getIntValue() + majorIntervals[0];
-//            Integer thrdIntValue = (Integer) cllIntervals.distance(root.getIntValue(), majorIntervals[0]);
-//            Integer fifthIntValue = (Integer) cllIntervals.distance(root.getIntValue(), majorIntervals[1]);
-//
-//            ArrayList<String> thirdFamily = notesMap.get(thrdIntValue);
-//            ArrayList<String> fifthFamily = notesMap.get(fifthIntValue);
-//
-//
-//            for (int i = 0; i < thirdFamily.size(); i++){
-//                if(thirdFamily.get(i).contains((String) thrdName)){
-//                    thrdName = thirdFamily.get(i);
-//                }
-//            }
-//            Note third = new Note((String)thrdName);
-//            this.setThird(third);
-//
-//
-//            for (int j = 0; j < fifthFamily.size(); j++){
-//                if(fifthFamily.get(j).contains((String) fifthName)){
-//                    fifthName = fifthFamily.get(j);
-//                }
-//            }
-//            Note fifth = new Note((String)fifthName);
-//            this.setFifth(fifth);
-//
-//        }catch (Exception e){
-//            System.out.println(e);
-//        }
 
     }
+
     /**
      * The purpose of this method is to get the Note root for this Triad
      * @return the Note object root

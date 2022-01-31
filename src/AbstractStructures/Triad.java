@@ -38,6 +38,14 @@ public interface Triad<T> {
     public abstract T getFifth();
 
     /**
+     * The purpose of this method is to get the Quality of this triad
+     * <p>Precondition: A Triad object has been instantiated with a quality
+     * attribute</p>
+     * <p>Postcondition:  The quality attribute has been returned </p>
+     */
+    public abstract String getQuality();
+
+    /**
      * The purpose of this method is to set a particular Note object as the
      * root of this triad
      * <p>Precondition: The Triad object extending this interface has
@@ -45,6 +53,7 @@ public interface Triad<T> {
      * <p>Postcondition: The Note object is set as the root of the classified
      * Triad Chord object extending this class</p>
      */
+
     public abstract void setRoot(Note note);
 
 

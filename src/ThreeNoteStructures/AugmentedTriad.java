@@ -4,7 +4,10 @@ package ThreeNoteStructures;
 import AbstractStructures.Chord;
 import Builders.ChordBuilder;
 import AbstractStructures.Triad;
+import Builders.InvalidNoteException;
 import Builders.Note;
+import Builders.TriadFactory;
+import Classifiers.TriadClassifier;
 
 /**
  * @author Michael Kramer
@@ -37,7 +40,23 @@ public class AugmentedTriad extends Chord implements Triad {
         Note[] notes = data.getNotes();
 
     }
+    /**
+     * The purpose of this method is to build a augmented triad given a Note root
+     * <p>Precondition: there has been instantiated a valid Note root</p>
+     * <p>Postcondition: The AugmentedTriad object corresponding to said root
+     * is instantiated</p>
+     */
+    public AugmentedTriad(Note root){
 
+        TriadClassifier triadClassifier = new TriadClassifier();
+        this.setRoot(root);
+        this.setQuality(triadClassifier.getTriadQualities()[3]); // augmented triad
+        this.setInversion("root position");
+
+        TriadFactory tf = new TriadFactory<>();
+        tf.buildTriad(this, root, this.quality);
+
+    }
     /**
      * The purpose of this method is to get the Note root for this Triad
      * @return the Note object root
@@ -128,5 +147,42 @@ public class AugmentedTriad extends Chord implements Triad {
                 "root: " + root + "\n" +
                 "third: " + third + "\n" +
                 "fifth: " + fifth);
+    }
+    public static void main(String[] args) {
+        try {
+            Note c = new Note("c");
+            AugmentedTriad C = new AugmentedTriad(c);
+            System.out.println(C);
+        }catch (InvalidNoteException e){
+            System.out.println(e);
+        }
+        try {
+            Note e = new Note("e");
+            AugmentedTriad E = new AugmentedTriad(e);
+            System.out.println(E);
+        }catch (InvalidNoteException e){
+            System.out.println(e);
+        }
+        try {
+            Note gFlat = new Note("g-");
+            AugmentedTriad Gflat = new AugmentedTriad(gFlat);
+            System.out.println(Gflat);
+        }catch (InvalidNoteException e){
+            System.out.println(e);
+        }
+        try {
+            Note eFlat = new Note("e-");
+            AugmentedTriad Eflat = new AugmentedTriad(eFlat);
+            System.out.println(Eflat);
+        }catch (InvalidNoteException e){
+            System.out.println(e);
+        }
+        try {
+            Note dSharp = new Note("d#");
+            AugmentedTriad Dsharp = new AugmentedTriad(dSharp);
+            System.out.println(Dsharp);
+        }catch (InvalidNoteException e){
+            System.out.println(e);
+        }
     }
 }
