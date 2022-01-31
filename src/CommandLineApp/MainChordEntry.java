@@ -12,27 +12,37 @@ import Utilities.ArrayMethods;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 
 
 /**
  * @author Michael Kramer
  * Date: 1/23/2022
  * The purpose of this class is to be the controller class in the MVC design
- * pattern
+ * pattern for the ChordEntryView where users first tell the system how many
+ * notes are in the next chord and then proceed to enter each note one by one.
+ * The system responds by writing to file, then reading file, analyzing and
+ * classifying input and neatly displaying to the console
  */
-public class Main {
+public class MainChordEntry {
 
     public static void main(String[] args) {
         ChordEntryView.welcome();
         ChordEntryView.acceptedInput();
-        //WriteToFile.clearFile(); // reset file, this is temporary
-        String filename = ChordEntryView.getFileName();
+        String filename = CommonView.getFileName();
         int num_notes = -1;
+        boolean goodNotes = false;
+        while (!goodNotes)
+            while (num_notes < 0) {
+                try {
+                    num_notes = ChordEntryView.getNumNotes();
+                } catch (InputMismatchException | InvalidNotesNumberException e) {
+                    System.out.println(e);
+                }
+                goodNotes = true;
+            }
         boolean moreInput = true;
         while (moreInput) {
-            while (num_notes < 0) {
-                num_notes = ChordEntryView.getNumNotes();
-            }
             String[] chordInput = new String[num_notes];
             boolean goodInput = false;
             while (!goodInput) {
@@ -47,18 +57,31 @@ public class Main {
                 }
             }
             moreInput = ChordEntryView.moreChords();
+            goodNotes = false;
+            if (moreInput) {
+                while (!goodNotes) {
+                    try {
+                        num_notes = ChordEntryView.getNumNotes();
+                    } catch (InputMismatchException | InvalidNotesNumberException e) {
+                        System.out.println(e);
+                    }
+                    goodNotes = true;
+                }
+            }
         }
         ArrayList<Chord> chordsOnFile = ReadFromFile.readFile(filename);
         ChordEntryView.displayChordsOnFile(chordsOnFile);
+
+
 
         // Test Dominant Seventh Chord
         String[] data = new String[]{"c", "e", "g", "b-"}; // create input data
         // Create a ChordBuilder instance from input data called rawData
         Note[] notes = new Note[data.length];
-        for (int i = 0; i < data.length; i++){
-            try{
+        for (int i = 0; i < data.length; i++) {
+            try {
                 notes[i] = new Note(data[i]);
-            } catch (InvalidNoteException e){
+            } catch (InvalidNoteException e) {
                 System.out.println(e);
             }
         }
@@ -74,8 +97,9 @@ public class Main {
         domSev.setQuality("Dominant Seventh");
         domSev.setInversion("root position");
         System.out.println(domSev);
-    }
+        }
 }
+
 
     /*
     // Actor creates array of Objects that extend the Chord abstract class

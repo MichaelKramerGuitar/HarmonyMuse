@@ -13,11 +13,11 @@ import java.util.Scanner;
  * <p>
  * The purpose of this class is to be the View in the MVC design pattern
  * for the command line interface for the page on which users can enter chords
- * and see them immediately analyzed and classified
+ * note by note and see them immediately analyzed and classified
  */
 public class ChordEntryView {
 
-    private static CharactersTable charTable = new CharactersTable();
+    private static CharactersTable charTable = CommonView.getCharTable();
 
     /**
      * The purpose of this method is print a friendly and inviting welcome
@@ -52,40 +52,6 @@ public class ChordEntryView {
                 " Example \"c#\" or \"a-\" " + charTable.repeatStringNTimes(charTable.getThumbsUp(), 2));
     }
 
-    public static String getFileName(){
-        boolean goodInput = false;
-        Scanner input = new Scanner(System.in);
-        System.out.printf("%s%n%18s%n%s%n%10s%n%s ",
-                        "What would you like to name", "this entry?",
-                        "multiple words?? use \"-\" or \"_\"",
-                        charTable.repeatStringNTimes(charTable.getThumbsUp(), 2)
-                                + " Example: \"giant-steps\" " +
-                                charTable.repeatStringNTimes(charTable.getThumbsUp(), 2),
-                "Type into the mic ...... " + charTable.getMicrophone());
-        try{
-            String filename = input.next();
-            goodInput = true;
-            return filename;
-        }catch (InputMismatchException e){
-            System.out.println(e);
-        }
-        while (!goodInput){ //loop until user input is acceptable
-            Scanner input1 = new Scanner(System.in);
-            System.out.printf("%20s%n%s",
-                    "Let's try again: example \"my song\"",
-                    charTable.getMicrophone());
-            try {
-                String filename = input.next();
-                goodInput = true;
-                return filename;
-            }catch (InputMismatchException e){
-                System.out.println(e);
-            }
-
-        }
-        return "input"; // we'll never get here but this can be our default
-    }
-
 
     /**
      * The purpose of this method is to retrieve an integer representing the
@@ -98,11 +64,14 @@ public class ChordEntryView {
      * @return an int is return with the user's response for number
      * of notes in the next chord
      */
-    public static int getNumNotes(){
+    public static int getNumNotes() throws InputMismatchException, InvalidNotesNumberException{
         Scanner num = new Scanner(System.in);
         System.out.printf("%n%s%n%s ", "How many notes in this chord?", "Type into the mic ...... " + charTable.getMicrophone());
         try{
             int num_notes = num.nextInt();
+            if(num_notes > 7 || num_notes < 1){
+                throw new InvalidNotesNumberException(num_notes + " is not a number between 1 and 7, please try again.");
+            }
             return num_notes;
         }catch (InputMismatchException e){
             System.out.println(e);
@@ -145,17 +114,6 @@ public class ChordEntryView {
         }
         return notes;
     }
-
-//    public static boolean validateNotes(String[] notes) throws InvalidNoteException{
-//        boolean goodNote = false;
-//        for(int i = 0; i < notes.length; i++)
-//            if(notes[i].matches("[a-gA-G] | [a-gA-G]+[-#] | [a-gA-G]+[##] | [a-gA-G]+[--]")){
-//                goodNote = true;
-//            }
-//            else throw new InvalidNoteException("invalid note entry");
-//
-//        return goodNote;
-//    }
 
     /**
      * The purpose of this method is to determine whether the user would like

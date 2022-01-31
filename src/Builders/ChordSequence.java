@@ -1,6 +1,10 @@
 package Builders;
 
 import AbstractStructures.Chord;
+import ThreeNoteStructures.AugmentedTriad;
+import ThreeNoteStructures.DiminishedTriad;
+import ThreeNoteStructures.MajorTriad;
+import ThreeNoteStructures.MinorTriad;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -73,6 +77,7 @@ public class ChordSequence<E extends Chord> {
         Collections.addAll(this.sequence, firstChord, secondChord, thirdChord, fourthChord);
         this.size += 4;
         this.tonalCenter = tonalCenter;
+        setProgression();
     }
 
     /**
@@ -151,6 +156,32 @@ public class ChordSequence<E extends Chord> {
             Note note = this.sequence.get(i).getRoot();
             Interval interval = new Interval(new Pair<>(this.tonalCenter, note));
             this.progression.add(interval);
+        }
+    }
+
+    public static void main(String[] args) {
+
+        try {
+            Note c = new Note("c");
+            MajorTriad C = new MajorTriad(c);
+
+            Note e = new Note("e");
+            MinorTriad E = new MinorTriad(e);
+
+            Note gFlat = new Note("g-");
+            DiminishedTriad Gflat = new DiminishedTriad(gFlat);
+
+            Note eFlat = new Note("e-");
+            AugmentedTriad Eflat = new AugmentedTriad(eFlat);
+
+            ChordSequence chordSequence = new ChordSequence(C, E, Gflat, Eflat, c);
+
+            for (int i = 0; i < chordSequence.getSize(); i++){
+                Interval interval = (Interval) chordSequence.getProgression().get(i);
+                System.out.print(interval.getIntValue() + " ");
+            }
+        }catch (InvalidNoteException e){
+            System.out.println(e);
         }
     }
 }

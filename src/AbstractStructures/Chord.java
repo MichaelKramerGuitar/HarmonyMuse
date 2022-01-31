@@ -90,6 +90,10 @@ public abstract class Chord {
      */
     public abstract Note getRoot(); // every chord has to have a root
 
+    public String getQuality() {
+        return quality;
+    }
+
     /**
      * The purpose of this method is to set the quality of this Chord object
      * <p>
@@ -102,6 +106,9 @@ public abstract class Chord {
      *
      *
      */
+
+
+
     public abstract void setQuality(String quality);
 
     /**
