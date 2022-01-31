@@ -14,17 +14,17 @@ package Utilities;
  *  i.e. any version of a note with prefix "c" ("c#", "c-" etc.) as bottom and
  *  any version of note with prefic "e" as top ("e-", "e#") are a 3rd apart
  */
-public class CircularlyLinkedList {
+public class CircularlyLinkedList<E> {
 
     /**
      * The purpose of this embedded class is to create the Node data structure
      * for each element in the CircularlyLinkedList class
      */
     public class Node{
-        Object data;
+        E data;
         Node next;
-        public Node(Object E) {
-            this.data = E;
+        public Node(E e) {
+            this.data = e;
         }
     }
 
@@ -44,7 +44,7 @@ public class CircularlyLinkedList {
      * @param data in the context of HarmonyMuse is a String of each letter in
      *             the musical alphabet (range "a to g")
      */
-    public void add(Object data){
+    public void add(E data){
         //Create new node
         Node newNode = new Node(data);
         //Checks if the list is empty.
@@ -133,7 +133,7 @@ public class CircularlyLinkedList {
      * @throws Exception when the list is empty or if one of the @params is
      * not in the list (i.e. not in the range of the musical alphabet)
      */
-    public int distance(Object bottom, Object top) throws Exception{
+    public int distance(E bottom, E top) throws Exception{
         boolean foundBottom = false;
         boolean foundTop = false;
         int count = 1; // initialize to 1 because the measure of no distance is 1
@@ -173,6 +173,102 @@ public class CircularlyLinkedList {
         return count;
     }
 
+    /**
+     * The purpose of this method is to find the Interval family of a Note
+     * <p>Precondition: There is an object of generic type representing a note</p>
+     * <p>Postcondition: Another object representing the note in the Interval
+     * family provided as a parameter is returned</p>
+     *
+     * @param bottom is an object of generic type representing a Note, presumably
+     *               a root of a chord or tonal center of a scale
+     *
+     * @param get is an Integer object representing the Interval family from
+     *            the "bottom" object param (i.e. if bottom = "c" and get = 3 then
+     *            "e" is returned)
+     * @return An object of generic type representing the note name of the Interval
+     * family provided as a parameter
+     *
+     * @throws Exception if @param bottom is not in the linked list
+     */
+    public E distance(E bottom, Integer get) throws Exception{
+        boolean foundBottom = false;
+        boolean foundTop = false;
+        int count = 0; // initialize to 1 because the measure of no distance is 1
+        Node current = head;
+        if (head == null){
+            throw new Exception("List is empty");
+        }
+        else {
+            // search for bottom
+            while(!foundBottom && count <= this.getSize() + 2){ // catch bottom not in list
+                if (count == this.getSize() + 2) {
+                    throw new Exception("Bottom note " + bottom + " does not exist");
+                }
+                else if (!current.data.equals(bottom)) {
+                    current = current.next;
+                    count++;
+                }
+                else {
+                    foundBottom = true;
+                }
+            }
+        }
+        count = 1; // reset count
+        while (count < get){
+            count++;
+            current = current.next;
+        }
+        return current.data;
+    }
+
+    /**
+     * The purpose of this method is to get the distance of a note name
+     * family based on the intValue of the note family (accounting for enharmonic
+     * pitches) to another note family
+     * <p>Precondition: There exists a circularly linked list of intValues in
+     * range 0-11 representing each pitch class' intValues</p>
+     * <p>Postcondition: The pitch class is returned that meets the requirement
+     * of the specified interval</p>
+     *
+     * @param bottom The intValue of the pitch class that is the bottom note of the
+     *               Interval
+     *
+     * @param get the intValue of the Interval we'd like to retrieve from the @param
+     *            bottom pitch class
+     * @return The pitch class (i.e. intValue) of the pitch that is the Intervals
+     * intValue distance from the @param bottom
+     */
+    public E distance(Integer bottom, Integer get) throws Exception{
+        boolean foundBottom = false;
+        boolean foundTop = false;
+        int count = 0; // initialize to 1 because the measure of no distance is 1
+        Node current = head;
+        if (head == null){
+            throw new Exception("List is empty");
+        }
+        else {
+            // search for bottom
+            while(!foundBottom && count <= this.getSize() + 2){ // catch bottom not in list
+                if (count == this.getSize() + 2) {
+                    throw new Exception("Bottom note " + bottom + " does not exist");
+                }
+                else if (!current.data.equals(bottom)) {
+                    current = current.next;
+                    count++;
+                }
+                else {
+                    foundBottom = true;
+                }
+            }
+        }
+        count = 0; // reset count
+        while (count < get){
+            count++;
+            current = current.next;
+        }
+        return current.data;
+    }
+
     public static void main(String[] args) {
         CircularlyLinkedList cll = new CircularlyLinkedList();
         //Adds data to the list
@@ -206,6 +302,29 @@ public class CircularlyLinkedList {
 
         } catch (Exception exception){
             System.out.println(exception);
+        }
+
+        try{
+            Object name = cll.distance(new String("c"), new Integer(3));
+            Object name1 = cll.distance(new String("c"), new Integer(5));
+            Object name2 = cll.distance(new String("c"), new Integer(7));
+            System.out.println(name + " " + name1 + " " + name2);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        Integer[] halfSteps = new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+        CircularlyLinkedList cllIntervals = new CircularlyLinkedList();
+        for (int j = 0; j < halfSteps.length; j++){
+            cllIntervals.add(halfSteps[j]);
+        }
+        try{
+            Object name = cllIntervals.distance(new Integer(4), new Integer(4));
+            Object name1 = cllIntervals.distance(new Integer(4), new Integer(7));
+            Object name2 = cllIntervals.distance(new Integer(4), new Integer(11));
+            System.out.println(name + " " + name1 + " " + name2);
+        }catch (Exception e){
+            System.out.println(e);
         }
     }
 }

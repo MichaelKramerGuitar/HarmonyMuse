@@ -147,6 +147,12 @@ public class Note {
         return goodNote;
     }
 
+    /**
+     * The purpose of this method is to get a notesMap
+     * @return Map -> Integer:ArrayList of Strings notesMap
+     */
+    public Map<Integer, ArrayList<String>> getNotesMap() { return notesMap; }
+
     // setters
     /**
      * The purpose of this method is to set the name attribute of this Note object

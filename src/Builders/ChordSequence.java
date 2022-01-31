@@ -17,8 +17,8 @@ import java.util.Collections;
 public class ChordSequence<E extends Chord> {
 
     private ArrayList<E> sequence = new ArrayList<>(0); // ArrayList needed for dynamic size
-
-    private ArrayList<Interval> progression = new ArrayList<>(0); // i.e. represents ii-V-I ---> [d, g, c]
+    // i.e. represents ii-V-I ---> [d, g, c] or [2, 7, 0] (intValues)
+    private ArrayList<Interval> progression = new ArrayList<>(0);
 
     private Note tonalCenter;
 
