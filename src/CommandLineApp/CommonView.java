@@ -3,7 +3,10 @@ package CommandLineApp;
 import AbstractStructures.Triad;
 import Builders.ChordSequence;
 import Builders.Interval;
+import Builders.InvalidNoteException;
 import Builders.Note;
+import Classifiers.TriadClassifier;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -93,6 +96,14 @@ public class CommonView {
         return temp;
     }
 
+    /**
+     * The purpose of this method is to get the roman numeral representation
+     * of a chord progression or chord sequence
+     * <p>Precondition: A ChordSequence object exists</p>
+     * <p>Postcondition: The Roman Numeral representation of the object is returned</p>
+     *
+     * @param chordSequence is a ChordSequence object
+     */
     public static <T extends Triad> String[] addRomanNumeral(ChordSequence chordSequence){
         CharactersTable cTable = new CharactersTable();
         ArrayList<Interval> intervals = chordSequence.getProgression();
@@ -101,8 +112,8 @@ public class CommonView {
         for (int i = 0; i < chordSequence.getSize(); i++){
             Interval interval = (Interval) chordSequence.getProgression().get(i);
             T chord = (T) chordSequence.getChord(i);
-            Note thrd = (Note) chord.getThird();
-            int thirdInt = thrd.getIntValue();
+            Interval third = new Interval(new Pair<Note, Note>((Note) chord.getRoot(), (Note) chord.getThird()));
+            Integer thirdInt = third.getIntValue();
 
             if (thirdInt == 3 && interval.getIntValue() == 0) { // minor third -> lower case, I chord
                     romans[i] = cTable.getOne().toLowerCase();
@@ -186,7 +197,76 @@ public class CommonView {
         return romans;
     }
 
+    /**
+     * The purpose of this method is to get a valid root to construct a chord
+     * that can be constructed by passing a root
+     * <p>Precondition: there is a valid String input representation of a note</p>
+     * <p>Postcondition: a Note object is returned </p>
+     */
+    public Note getValidRoot() throws InvalidNoteException {
+        boolean goodRoot = false;
+        Note root = new Note();
+        while (!goodRoot) {
+            Scanner sc = new Scanner(System.in);
+            System.out.printf("%s ", "\nPlease enter root " + charTable.getEighthNote() + " ... " + charTable.getMicrophone());
+            String next_note = sc.nextLine();
+            if (next_note.toString().matches("[a-gA-G]")) {
+                goodRoot = true;
+                root = new Note(next_note.toString());
+            } else if (next_note.toString().matches("[a-gA-G]+[#-]")) {
+                goodRoot = true;
+                root = new Note(next_note.toString());
+            } else if (next_note.toString().matches("[a-gA-G]##")) {
+                goodRoot = true;
+                root = new Note(next_note.toString());
+            } else if (next_note.toString().matches("[a-gA-G]--")) {
+                goodRoot = true;
+                root = new Note(next_note.toString());
+            }else throw new InvalidNoteException("invalid note entry");
+        }
+        return root;
+    }
+
+    /**
+     * The purpose of this method is to get a valid String representing Chord
+     * quality in order to direct the system logic to construct the appropriate
+     * quality chord from the input
+     * <p>Precondition: A string is inputted to the system</p>
+     * <p>Postcondition: the String is validated and the appropriate chord
+     * quality is returned</p>
+     */
+    public String getValidQuality() throws InvalidInputException{
+        /*
+        TODO currently only handilng triad qualities, will need to factor more qualities as needed
+         */
+        TriadClassifier tc = new TriadClassifier();
+        boolean goodQuality = false;
+        String quality = null;
+        while (!goodQuality){
+            Scanner sc = new Scanner(System.in);
+            System.out.printf("%s ", "\nPlease enter quality ... " + charTable.getMicrophone());
+            String qual = sc.nextLine().toLowerCase();
+            if(qual.contains("dim")){
+                quality = tc.getTriadQualities()[0]; // diminished triad
+            }
+            else if(qual.contains("min")){
+                quality = tc.getTriadQualities()[1]; // minor triad
+            }
+            else if(qual.contains("maj")){
+                quality = tc.getTriadQualities()[2];
+            }
+            else if(qual.contains("aug")){
+                quality = tc.getTriadQualities()[3];
+            }
+            else throw new InvalidInputException("Please enter one of the following qualitites: " + tc.getTriadQualities().toString());
+        }
+        return quality;
+    }
+
     public static CharactersTable getCharTable() {
         return charTable;
     }
+
 }
+
+

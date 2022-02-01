@@ -10,7 +10,17 @@ import Builders.Note;
  * @param <T> a Generic object
  */
 public interface Triad<T> {
-
+    /**
+     * The purpose of this method is to get the Note object
+     * that represents the root of this Triad
+     * <p>Precondition: This method is called on a Triad object that
+     * extends this interface</p>
+     * <p>Postcondition: A Note object is returned that represents the root of this chord</p>
+     *
+     * @return A Note object is returned that represents the root
+     *       of this chord
+     */
+    public abstract T getRoot();
     /**
      * The purpose of this method is to get the Note object
      * that represents the third degree of this Triad
