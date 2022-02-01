@@ -1,10 +1,11 @@
 package CommandLineApp;
 
-import AbstractStructures.Chord;
+import AbstractStructures.Triad;
 import Builders.ChordSequence;
 import Builders.Interval;
 import Builders.Note;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -67,7 +68,7 @@ public class CommonView {
      * @param note a Note object
      * @return A String builder with accidental replaced by unicode symbol
      */
-    public StringBuilder replaceAccidental(Note note){
+    public static StringBuilder replaceAccidental(Note note){
         CharactersTable cTable = new CharactersTable();
         String n = note.toString();
         StringBuilder temp = new StringBuilder(note.toString());
@@ -92,27 +93,97 @@ public class CommonView {
         return temp;
     }
 
-    public StringBuilder addRomanNumeral(ChordSequence chordSequence){
+    public static <T extends Triad> String[] addRomanNumeral(ChordSequence chordSequence){
         CharactersTable cTable = new CharactersTable();
-        StringBuilder temp = new StringBuilder(chordSequence.getProgression().toString());
+        ArrayList<Interval> intervals = chordSequence.getProgression();
+        String[] romans = new String[intervals.size()];
 
         for (int i = 0; i < chordSequence.getSize(); i++){
             Interval interval = (Interval) chordSequence.getProgression().get(i);
-            Chord chord = chordSequence.getChord(i);
-            if (    chord.getQuality().contains("min") ||
-                    chord.getQuality().contains("dim") &&
-                    interval.getIntValue() == 0) {
-                temp.deleteCharAt(i);
-                temp.append(cTable.getOne().toLowerCase());
+            T chord = (T) chordSequence.getChord(i);
+            Note thrd = (Note) chord.getThird();
+            int thirdInt = thrd.getIntValue();
+
+            if (thirdInt == 3 && interval.getIntValue() == 0) { // minor third -> lower case, I chord
+                    romans[i] = cTable.getOne().toLowerCase();
             }
-            if (    chord.getQuality().contains("maj") ||
-                    chord.getQuality().contains("dim") &&
-                            interval.getIntValue() == 0) {
-                temp.deleteCharAt(i);
-                temp.append(cTable.getOne().toLowerCase());
+            else if (interval.getIntValue() == 0) {
+                romans[i] = cTable.getOne();
+            }
+            else if (thirdInt == 3 && interval.getIntValue() == 1) { // bII
+                romans[i] = cTable.getFlat() + cTable.getTwo().toLowerCase();
+            }
+            else if (interval.getIntValue() == 1) {
+                romans[i] = cTable.getFlat() + cTable.getTwo();
+            }
+            else if (thirdInt == 3 && interval.getIntValue() == 2) { // II
+                romans[i] = cTable.getTwo().toLowerCase();
+            }
+            else if (interval.getIntValue() == 2) {
+                romans[i] = cTable.getTwo();
+            }
+            else if (thirdInt == 3 && interval.getIntValue() == 3) { // bIII
+                romans[i] = cTable.getFlat() + cTable.getThree().toLowerCase();
+            }
+            else if (interval.getIntValue() == 3) {
+                romans[i] = cTable.getFlat() + cTable.getThree();
+            }
+            else if (thirdInt == 3 && interval.getIntValue() == 4) { // III
+                romans[i] = cTable.getTwo().toLowerCase();
+            }
+            else if (interval.getIntValue() == 4) {
+                romans[i] = cTable.getThree();
+            }
+            else if (thirdInt == 3 && interval.getIntValue() == 5) { // IV
+                romans[i] = cTable.getFour().toLowerCase();
+            }
+            else if (interval.getIntValue() == 5) {
+                romans[i] = cTable.getFour();
+            }
+            else if (thirdInt == 3 && interval.getIntValue() == 6) { // bV
+                romans[i] = cTable.getFlat() + cTable.getFive().toLowerCase();
+            }
+            else if (interval.getIntValue() == 6) {
+                romans[i] = cTable.getFlat() + cTable.getFive();
+            }
+            else if (thirdInt == 3 && interval.getIntValue() == 7) { // bV
+                romans[i] = cTable.getFive().toLowerCase();
+            }
+            else if (interval.getIntValue() == 7) {
+                romans[i] = cTable.getFive();
+            }
+            else if (thirdInt == 3 && interval.getIntValue() == 8) { // bVI
+                romans[i] = cTable.getFlat() + cTable.getSix().toLowerCase();
+            }
+            else if (interval.getIntValue() == 8) {
+                romans[i] = cTable.getFlat() + cTable.getSix();
+            }
+            else if (thirdInt == 3 && interval.getIntValue() == 9) { // bV
+                romans[i] = cTable.getSix().toLowerCase();
+            }
+            else if (interval.getIntValue() == 9) {
+                romans[i] = cTable.getSix();
+            }
+            else if (thirdInt == 3 && interval.getIntValue() == 10) { // bVII
+                romans[i] = cTable.getFlat() + cTable.getSeven().toLowerCase();
+            }
+            else if (interval.getIntValue() == 10) {
+                romans[i] = cTable.getFlat() + cTable.getSeven();
+            }
+            else if (thirdInt == 3 && interval.getIntValue() == 11) { // VII
+                romans[i] = cTable.getSeven().toLowerCase();
+            }
+            else if (interval.getIntValue() == 11) {
+                romans[i] = cTable.getSeven();
+            }
+            if(chord.getQuality().contains("aug")){
+                romans[i] += cTable.getAugmented(); // augmented symbol
+            }
+            if(chord.getQuality().contains("dim")){
+                romans[i] += cTable.getDiminished();
             }
         }
-        return temp;
+        return romans;
     }
 
     public static CharactersTable getCharTable() {

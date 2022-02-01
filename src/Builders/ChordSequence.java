@@ -1,6 +1,7 @@
 package Builders;
 
 import AbstractStructures.Chord;
+import CommandLineApp.CommonView;
 import ThreeNoteStructures.AugmentedTriad;
 import ThreeNoteStructures.DiminishedTriad;
 import ThreeNoteStructures.MajorTriad;
@@ -177,10 +178,16 @@ public class ChordSequence<E extends Chord> {
             ChordSequence chordSequence = new ChordSequence(C, E, Gflat, Eflat, c);
 
             for (int i = 0; i < chordSequence.getSize(); i++){
-                Interval interval = (Interval) chordSequence.getProgression().get(i);
-                System.out.print(interval.getIntValue() + " ");
+                System.out.println(chordSequence.getChord(i));
             }
-        }catch (InvalidNoteException e){
+            String[] romans = CommonView.addRomanNumeral(chordSequence);
+            System.out.println("Sequence tonal center: " + chordSequence.getTonalCenter().toString().toUpperCase());
+            for (String roman: romans
+                 ) {
+                System.out.print(roman + " ");
+            }
+            System.out.println();
+        } catch (InvalidNoteException e){
             System.out.println(e);
         }
     }

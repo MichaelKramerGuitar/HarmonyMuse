@@ -29,6 +29,9 @@ public class CharactersTable {
     private String five = "\u2164";
     private String six = "\u2165";
     private String seven = "\u2166";
+    private String diminished = "\u05AF";
+    //private String diminished = "\u25E6";
+    private String augmented = "\uFF0B";
 
 
     /**
@@ -138,6 +141,12 @@ public class CharactersTable {
     public String getSeven() {
         return seven;
     }
+
+    public String getDiminished() { return diminished; }
+
+    public String getAugmented() {return augmented; }
+
+
 
     public static void main(String[] args) {
         CharactersTable charactersTable = new CharactersTable();
