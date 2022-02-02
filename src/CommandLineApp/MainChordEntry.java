@@ -56,7 +56,7 @@ public class MainChordEntry {
                     System.out.println(e);
                 }
             }
-            moreInput = ChordEntryView.moreChords();
+            moreInput = CommonView.moreChords();
             goodNotes = false;
             if (moreInput) {
                 while (!goodNotes) {

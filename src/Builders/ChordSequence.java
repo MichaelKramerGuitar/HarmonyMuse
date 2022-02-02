@@ -81,6 +81,14 @@ public class ChordSequence<E extends Chord> {
         setProgression();
     }
 
+    public ChordSequence(ArrayList<E> chords, Note tonalCenter){
+        for(int i = 0; i < chords.size(); i++){
+            this.sequence.add(chords.get(i));
+            this.size++;
+        }
+        this.tonalCenter = tonalCenter;
+        setProgression();
+    }
     /**
      * The purpose of this method is to return the ArrayList sequence
      * <p>Precondition: A ChordSequence object exists constructed with

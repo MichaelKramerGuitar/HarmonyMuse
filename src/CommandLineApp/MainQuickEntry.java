@@ -1,5 +1,9 @@
 package CommandLineApp;
 
+import Builders.ChordSequence;
+import FileHandling.ReadFromFile;
+import FileHandling.WriteToFile;
+
 /**
  * @author Michael Kramer
  * <p>
@@ -11,9 +15,73 @@ package CommandLineApp;
  */
 public class MainQuickEntry {
 
+    public static String getCleanRoot(){
+        boolean goodNote;
+        goodNote = false; // reset boolean
+        String root = null;
+        while(!goodNote) {
+            root = QuickEntryView.getSequence(); // roots of chords in sequence
+            if (root != null){
+                goodNote = true;
+            }
+        }
+        return root;
+    }
+
+    public static String getCleanQuality(){
+        boolean goodQuality = false;
+        String quality = null;
+        while (!goodQuality){
+            try {
+                quality = CommonView.getValidQuality();
+                if(quality != null) {
+                    goodQuality = true;
+                }
+            }catch (InvalidInputException e){
+                System.out.println(e);
+            }
+        }
+        return quality;
+    }
     public static void main(String[] args) {
 
         QuickEntryView.welcome();
         QuickEntryView.acceptedInput();
+        String filename = CommonView.getFileName();
+        boolean goodNote = false;
+        String tc = null;
+        while (!goodNote) {
+            tc = QuickEntryView.getSequenceTonalCenter();
+            if (tc != null) {
+                goodNote = true;
+            }
+        }
+
+        WriteToFile.writeToFile(filename, tc);
+
+        String root = getCleanRoot();
+
+        String quality = getCleanQuality();
+
+        WriteToFile.writeToFile(filename, root + " " + quality);
+
+        boolean moreInput = true;
+        moreInput = CommonView.moreChords();
+        while (moreInput){
+            String nextRoot = getCleanRoot();
+            String nextQuality = getCleanQuality();
+            WriteToFile.writeToFile(filename, nextRoot + " " + nextQuality);
+            moreInput = CommonView.moreChords();
+        }
+        ChordSequence chordSequence = ReadFromFile.readFile(filename, new ChordSequence());
+        String[] romans = CommonView.addRomanNumeral(chordSequence);
+        System.out.println("Sequence tonal center: " + chordSequence.getTonalCenter().toString().toUpperCase());
+        for (String roman: romans
+        ) {
+            System.out.print(roman + " ");
+        }
+
+        WriteToFile.writeToFile(filename, chordSequence);
     }
 }
+

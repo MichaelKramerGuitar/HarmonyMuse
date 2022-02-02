@@ -9,6 +9,7 @@ import Classifiers.TriadClassifier;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -22,7 +23,7 @@ import java.util.Scanner;
  */
 public class CommonView {
 
-    private static CharactersTable charTable = new CharactersTable();
+    private static final CharactersTable charTable = new CharactersTable();
     /**
      * The purpose of this method is to get the desired file name for this
      * sequence of chords of user input
@@ -203,28 +204,28 @@ public class CommonView {
      * <p>Precondition: there is a valid String input representation of a note</p>
      * <p>Postcondition: a Note object is returned </p>
      */
-    public Note getValidRoot() throws InvalidNoteException {
-        boolean goodRoot = false;
-        Note root = new Note();
-        while (!goodRoot) {
+    public static Note getValidNote() throws InvalidNoteException {
+        boolean goodNote = false;
+        Note note = new Note();
+        while (!goodNote) {
             Scanner sc = new Scanner(System.in);
-            System.out.printf("%s ", "\nPlease enter root " + charTable.getEighthNote() + " ... " + charTable.getMicrophone());
+            System.out.printf("%s ", "\nPlease enter note " + charTable.getEighthNote() + " ... " + charTable.getMicrophone());
             String next_note = sc.nextLine();
             if (next_note.toString().matches("[a-gA-G]")) {
-                goodRoot = true;
-                root = new Note(next_note.toString());
+                goodNote = true;
+                note = new Note(next_note.toString());
             } else if (next_note.toString().matches("[a-gA-G]+[#-]")) {
-                goodRoot = true;
-                root = new Note(next_note.toString());
+                goodNote = true;
+                note = new Note(next_note.toString());
             } else if (next_note.toString().matches("[a-gA-G]##")) {
-                goodRoot = true;
-                root = new Note(next_note.toString());
+                goodNote = true;
+                note = new Note(next_note.toString());
             } else if (next_note.toString().matches("[a-gA-G]--")) {
-                goodRoot = true;
-                root = new Note(next_note.toString());
+                goodNote = true;
+                note = new Note(next_note.toString());
             }else throw new InvalidNoteException("invalid note entry");
         }
-        return root;
+        return note;
     }
 
     /**
@@ -235,7 +236,7 @@ public class CommonView {
      * <p>Postcondition: the String is validated and the appropriate chord
      * quality is returned</p>
      */
-    public String getValidQuality() throws InvalidInputException{
+    public static String getValidQuality() throws InvalidInputException{
         /*
         TODO currently only handilng triad qualities, will need to factor more qualities as needed
          */
@@ -248,19 +249,41 @@ public class CommonView {
             String qual = sc.nextLine().toLowerCase();
             if(qual.contains("dim")){
                 quality = tc.getTriadQualities()[0]; // diminished triad
+                goodQuality = true;
             }
             else if(qual.contains("min")){
                 quality = tc.getTriadQualities()[1]; // minor triad
+                goodQuality = true;
             }
             else if(qual.contains("maj")){
                 quality = tc.getTriadQualities()[2];
+                goodQuality = true;
             }
             else if(qual.contains("aug")){
                 quality = tc.getTriadQualities()[3];
+                goodQuality = true;
             }
-            else throw new InvalidInputException("Please enter one of the following qualitites: " + tc.getTriadQualities().toString());
+            else throw new InvalidInputException("Please enter one of the following qualitites: " + Arrays.toString(tc.getTriadQualities()));
         }
         return quality;
+    }
+
+    /**
+     * The purpose of this method is to determine whether the user would like
+     * to continue entering chords
+     * <p>Precondition: The user has entered at least one chord</p>
+     * <p>Postcondition: either the user is prompted to enter more chords or
+     * the system proceeds to read the chords entered from the file and
+     * present the classification and analysis to the user</p>
+     *
+     * @return a boolean indicating whether the user wishes to continue to enter
+     * chords or not
+     */
+    public static boolean moreChords(){
+        Scanner query = new Scanner(System.in);
+        System.out.printf("%s%n???", "More chords? (\"y\" or \"n\")");
+        String moreChords = query.next();
+        return moreChords.toString().matches("[yY]");
     }
 
     public static CharactersTable getCharTable() {

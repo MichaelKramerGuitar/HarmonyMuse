@@ -21,10 +21,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class TriadClassifier {
 
-    private final String[] triadQualities = new String[]{ "diminished triad",
-                                                          "minor triad",
-                                                          "major triad",
-                                                          "augmented triad"};
+    private final String[] triadQualities = new String[]{ "diminished-triad",
+                                                          "minor-triad",
+                                                          "major-triad",
+                                                          "augmented-triad"};
 
     /**
      * The purpose of this method is to instantiate an empty TriadClassifier

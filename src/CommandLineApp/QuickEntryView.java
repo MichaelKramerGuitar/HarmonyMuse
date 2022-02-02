@@ -1,5 +1,8 @@
 package CommandLineApp;
 
+import Builders.InvalidNoteException;
+import Builders.Note;
+
 public class QuickEntryView {
 
     private static CharactersTable charTable = new CharactersTable();
@@ -39,6 +42,41 @@ public class QuickEntryView {
                 "\"aug\" for \"augmented\"",
                 charTable.repeatStringNTimes(charTable.getThumbsUp(), 1) +
                         " Ex: \"c# maj\" or \"a- dim\" " + charTable.repeatStringNTimes(charTable.getThumbsUp(), 1));
+    }
+
+    /**
+     * The purpose of this method is to obtain the tonal sequence
+     */
+    public static String getSequenceTonalCenter() {
+
+        System.out.printf("%n%s%n", charTable.getTrebleClef() + " Please enter the tonal center of this sequence " + charTable.getTrebleClef());
+        String toFile = null;
+        try {
+            Note tonalCenter = CommonView.getValidNote();
+            toFile = tonalCenter.getName();
+
+        } catch (InvalidNoteException e) {
+            System.out.println(e);
+        }
+        return toFile;
+    }
+
+    /**
+     * The purpose of this method is to obtain the next chords root
+     * <p>Precondition: a tonal center has been accepted by the system</p>
+     * <p>Postcondition: a String of the next chords root is returned</p>
+     */
+    public static String getSequence(){
+        System.out.printf("%n%s%n", charTable.getTrebleClef() + " Please enter next chord's root " + charTable.getTrebleClef());
+        String toFile = null;
+        try {
+            Note root = CommonView.getValidNote();
+            toFile = root.getName();
+
+        } catch (InvalidNoteException e) {
+            System.out.println(e);
+        }
+        return toFile;
     }
 
 }

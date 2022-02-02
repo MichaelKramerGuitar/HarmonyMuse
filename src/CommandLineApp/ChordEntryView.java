@@ -115,23 +115,6 @@ public class ChordEntryView {
         return notes;
     }
 
-    /**
-     * The purpose of this method is to determine whether the user would like
-     * to continue entering chords
-     * <p>Precondition: The user has entered at least one chord</p>
-     * <p>Postcondition: either the user is prompted to enter more chords or
-     * the system proceeds to read the chords entered from the file and
-     * present the classification and analysis to the user</p>
-     *
-     * @return a boolean indicating whether the user wishes to continue to enter
-     * chords or not
-     */
-    public static boolean moreChords(){
-        Scanner query = new Scanner(System.in);
-        System.out.printf("%s%n???", "More chords? (\"y\" or \"n\")");
-        String moreChords = query.next();
-        return moreChords.toString().matches("[yY]");
-    }
 
     /**
      * The purpose of this method is to print the chords read from file
