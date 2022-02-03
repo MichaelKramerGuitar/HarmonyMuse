@@ -1,23 +1,35 @@
-#Builders 
-
 ##CS622 Spring 1 Advanced Programming Techniques Project
 
-**Current functionality is shown by running `Builders.Main1.java`**
-* Can simply Run the file `Main.java`
+**Current functionality is shown by running one of two controllers**
+* For Chord entry by individual notes run `CommandLineApp.MainChordEntry.java`
+* For Sequence entry (multiple chords) and sequence Roman Numeral Harmonic Analysis _**Assignment 3**_ run `CommandLindApp.MainQuickEntry`
   * See document `metcs622_Assignment2_mgkramer.docx` in assignments dirctory for detailed project description 
 
 _All other classes containing main functions are for debugging purposes as this is a work in progress
 and are not intended for public use, however these can be run to see isolated class functionality_
 
+###Note on case representation of musical data as Strings
+* Notes are lower case letters 
+* Chords are upper case letters
+* Roman Numerals 
+  * Upper case indicates a Major 3rd 
+  * Lower case indicates Minor 3rd 
+
 ###All tests are runable
-* Current Testing Coverage
+* _**Current Testing Coverage**_
   * Note constructor 
   * Comprehensive Interval construction
     * The Interval class is key to the vision for this project
   * Chord Builder constructor 
-* More testing coverage is needed '
+  * TriadClassifier
+  * TriadFactory (via ThreeNoteStructures)
+  * FileHandling 
+
+
 
 ####Examples of Interval Calculations
+_The below examples illustrate the non-trivial task of calculating intervals in a compression function (i.e. everything analyzed within one octave)_
+
         /**
          *     example1:
          *     bottomNote = e-
