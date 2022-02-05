@@ -8,6 +8,10 @@ import ThreeNoteStructures.MajorTriad;
 import ThreeNoteStructures.MinorTriad;
 import javafx.util.Pair;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -19,12 +23,17 @@ import java.util.Collections;
  * The purpose of this class is to provide a framework for the concept of a
  * harmonic phrase (such as ii-V-I)
  */
+@XmlRootElement(name="chordSequence")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ChordSequence<E extends Chord> {
 
+    //@XmlElement specifies XML element name for each object in the List
+    @XmlElement(name="chord")
     private ArrayList<E> sequence = new ArrayList<>(0); // ArrayList needed for dynamic size
     // i.e. represents ii-V-I ---> [d, g, c] or [2, 7, 0] (intValues)
     private ArrayList<Interval> progression = new ArrayList<>(0);
 
+    @XmlElement(name="tonalCenter")
     private Note tonalCenter;
 
     private int size;
@@ -45,6 +54,7 @@ public class ChordSequence<E extends Chord> {
         Collections.addAll(this.sequence, firstChord, secondChord);
         this.size += 2;
         this.tonalCenter = tonalCenter;
+        this.setProgression();
     }
 
     /**
@@ -78,7 +88,7 @@ public class ChordSequence<E extends Chord> {
         Collections.addAll(this.sequence, firstChord, secondChord, thirdChord, fourthChord);
         this.size += 4;
         this.tonalCenter = tonalCenter;
-        setProgression();
+        this.setProgression();
     }
 
     public ChordSequence(ArrayList<E> chords, Note tonalCenter){
@@ -167,6 +177,10 @@ public class ChordSequence<E extends Chord> {
             this.progression.add(interval);
         }
     }
+
+    public void setTonalCenter(Note note){this.tonalCenter = tonalCenter;}
+
+    public void setSize(int size){this.size = size;}
 
     public static void main(String[] args) {
 

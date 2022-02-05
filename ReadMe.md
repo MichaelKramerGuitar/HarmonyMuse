@@ -3,7 +3,7 @@
 **Current functionality is shown by running one of two controllers**
 * For Chord entry by individual notes run `CommandLineApp.MainChordEntry.java`
 * For Sequence entry (multiple chords) and sequence Roman Numeral Harmonic Analysis _**Assignment 3**_ run `CommandLindApp.MainQuickEntry`
-  * See document `metcs622_Assignment2_mgkramer.docx` in assignments dirctory for detailed project description 
+  * See document `metcs622_Assignment<highestInt>_mgkramer.docx` in assignments dirctory for detailed project description 
 
 _All other classes containing main functions are for debugging purposes as this is a work in progress
 and are not intended for public use, however these can be run to see isolated class functionality_

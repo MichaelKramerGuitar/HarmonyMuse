@@ -3,8 +3,13 @@ package Builders;
 import AbstractStructures.Chord;
 import Classifiers.InvalidTriadException;
 import Classifiers.TriadClassifier;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -33,7 +38,6 @@ public class ChordBuilder extends Chord {
                                                         "minor 7",
                                                         "dominant 7",
                                                         "major 7"};
-    private String quality;
     // constructor
     public ChordBuilder(Note[] data) {
         super(data);
@@ -113,24 +117,6 @@ public class ChordBuilder extends Chord {
         return inversions;
     }
 
-    /**
-     * The purpose of this method is override the Chord class' method such
-     * that this ChordBuilder can be instantiated as a concrete class
-     */
-    public void setQuality(String quality){
-        quality = null;
-        this.quality = quality;
-    }
-
-    /**
-     * The purpose of this method is a getter for this ChordBuilder's quality
-     * attribute. If calling this method on a Chord[] polymophically the
-     * null return value will either indicate that Chord object is a ChordBuilder
-     * or an object that has not been fully classified upon instantiation
-     */
-    public String getQuality(){
-        return quality; // return null
-    }
 
     /**
      * The purpose of this method is to provide a String representation of this
@@ -143,5 +129,18 @@ public class ChordBuilder extends Chord {
     @Override
     public String toString(){
         return String.format(super.toString());
+    }
+
+    @Override
+    public JsonElement serialize(Chord chord, Type type, JsonSerializationContext jsonSerializationContext) {
+        String notes = "Notes";
+        String intervals = "Intervals";
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(notes, Arrays.toString(super.getNotes()));
+        jsonObject.addProperty(intervals, super.getIntervals().toString());
+
+        return jsonObject;
+
     }
 }

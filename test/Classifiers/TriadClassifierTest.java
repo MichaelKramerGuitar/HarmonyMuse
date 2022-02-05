@@ -30,9 +30,11 @@ class TriadClassifierTest {
     private ChordBuilder gSharpDimFirstInv;
     private ChordBuilder bAugmentedRootPos;
     private ChordBuilder triadFail;
+    private TriadClassifier tc;
 
     @BeforeEach
     void setUp() {
+        this.tc = new TriadClassifier();
         // Test Root Position Major
         String[] data = new String[]{"d-", "f", "a-"}; // create input data
         // Create a ChordBuilder instance from input data called rawData
@@ -142,7 +144,7 @@ class TriadClassifierTest {
         assertEquals("f", ((MajorTriad) majTriad).getThird().toString());
         assertEquals("a-", ((MajorTriad) majTriad).getFifth().toString());
         assertEquals("root position", ((MajorTriad) majTriad).getInversion());
-        assertEquals("major triad", ((MajorTriad) majTriad).getQuality());
+        assertEquals(tc.getTriadQualities()[2], ((MajorTriad) majTriad).getQuality());
     }
 
     /**
@@ -163,7 +165,7 @@ class TriadClassifierTest {
         assertEquals("g", ((MinorTriad) minTriad).getThird().toString());
         assertEquals("b", ((MinorTriad) minTriad).getFifth().toString());
         assertEquals("second inversion", ((MinorTriad) minTriad).getInversion());
-        assertEquals("minor triad", ((MinorTriad) minTriad).getQuality());
+        assertEquals(tc.getTriadQualities()[1], ((MinorTriad) minTriad).getQuality());
     }
 
     /**
@@ -184,7 +186,7 @@ class TriadClassifierTest {
         assertEquals("b", ((DiminishedTriad) dimTriad).getThird().toString());
         assertEquals("d", ((DiminishedTriad) dimTriad).getFifth().toString());
         assertEquals("first inversion", ((DiminishedTriad) dimTriad).getInversion());
-        assertEquals("diminished triad", ((DiminishedTriad) dimTriad).getQuality());
+        assertEquals(tc.getTriadQualities()[0], ((DiminishedTriad) dimTriad).getQuality());
     }
 
     /**
@@ -205,7 +207,7 @@ class TriadClassifierTest {
         assertEquals("d#", ((AugmentedTriad) augTriad).getThird().toString());
         assertEquals("f##", ((AugmentedTriad) augTriad).getFifth().toString());
         assertEquals("root position", ((AugmentedTriad) augTriad).getInversion());
-        assertEquals("augmented triad", ((AugmentedTriad) augTriad).getQuality());
+        assertEquals(tc.getTriadQualities()[3], ((AugmentedTriad) augTriad).getQuality());
     }
 
     /**

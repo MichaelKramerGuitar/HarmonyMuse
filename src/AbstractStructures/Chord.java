@@ -3,8 +3,13 @@ package AbstractStructures;
 import Builders.Interval;
 import Builders.Note;
 import CommandLineApp.CharactersTable;
+import com.google.gson.InstanceCreator;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import javafx.util.Pair;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,7 +26,7 @@ import java.util.Arrays;
  *
  */
 
-public abstract class Chord {
+public abstract class Chord implements JsonSerializer<Chord> {
 
     private Note[] rawData;
     private String quality; // i.e. "Major Triad", "Minor Seven"
@@ -62,7 +67,6 @@ public abstract class Chord {
      * extending subclass
      * </p>
      *
-     * @return a Note array of raw Note objects in this Chord
      */
     public Note[] getNotes(){return rawData;}
 
@@ -107,9 +111,7 @@ public abstract class Chord {
      *
      */
 
-
-
-    public abstract void setQuality(String quality);
+    public void setQuality(String quality) {this.quality = quality;};
 
     /**
      * The purpose of this method is to replace system placeholders for academic
@@ -156,5 +158,21 @@ public abstract class Chord {
     @Override
     public String toString(){
         return String.format(Arrays.toString(rawData));
+    }
+
+    private class ChordInstanceCreator implements InstanceCreator<Chord>{
+        public Chord createInstance(Type type){
+            return new Chord() {
+                @Override
+                public Note getRoot() {
+                    return null;
+                }
+
+                @Override
+                public JsonElement serialize(Chord chord, Type type, JsonSerializationContext jsonSerializationContext) {
+                    return null;
+                }
+            }; // end ChordInstanceCreator class
+        }
     }
 }

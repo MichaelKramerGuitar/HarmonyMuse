@@ -2,12 +2,17 @@ package ThreeNoteStructures;
 
 
 import AbstractStructures.Chord;
-import Builders.ChordBuilder;
 import AbstractStructures.Triad;
+import Builders.ChordBuilder;
 import Builders.InvalidNoteException;
 import Builders.Note;
 import Builders.TriadFactory;
 import Classifiers.TriadClassifier;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+
+import java.lang.reflect.Type;
 
 /**
  * @author Michael Kramer
@@ -22,7 +27,6 @@ public class AugmentedTriad extends Chord implements Triad {
     private Note root;
     private Note third;
     private Note fifth;
-    private String quality;
     private String inversion;
 
     /**
@@ -50,11 +54,11 @@ public class AugmentedTriad extends Chord implements Triad {
 
         TriadClassifier triadClassifier = new TriadClassifier();
         this.setRoot(root);
-        this.setQuality(triadClassifier.getTriadQualities()[3]); // augmented triad
+        super.setQuality(triadClassifier.getTriadQualities()[3]); // augmented
         this.setInversion("root position");
 
         TriadFactory tf = new TriadFactory<>();
-        tf.buildTriad(this, root, this.quality);
+        Triad majorTriad = tf.buildTriad(this, root, super.getQuality());
 
     }
     /**
@@ -75,12 +79,6 @@ public class AugmentedTriad extends Chord implements Triad {
      */
     public Note getFifth() {return this.fifth;}
 
-    /**
-     * The purpose of this method is to get the quality attribute for this
-     * Triad
-     * @return a String representation of the quality of this triad
-     */
-    public String getQuality() {return quality;}
 
     /**
      * The purpose of this method is to get the inversion attribute for this
@@ -110,12 +108,6 @@ public class AugmentedTriad extends Chord implements Triad {
      */
     public void setFifth(Note fifth) {this.fifth = fifth;}
 
-    /**
-     * The purpose of this method is to set a Note object as the root of this
-     * triad in the Classifiers.TriadClassifier class
-     * @param  quality is a String
-     */
-    public void setQuality(String quality){this.quality = quality;}
 
     /**
      * The purpose of this method is to set a Note object as the root of this
@@ -123,6 +115,41 @@ public class AugmentedTriad extends Chord implements Triad {
      * @param  inversion is a String
      */
     public void setInversion(String inversion){this.inversion = inversion;}
+
+
+    /**
+     * The purpose of this method is to create the format for the serialized
+     * object and to override the Inherited abstract method from JsonSerializer
+     * <p>Precondition: An instance of this class exits</p>
+     * <p>Postcondition: a Serialized version of this object is returned to
+     * write to file</p>
+     *
+     * @param chord is an instance of this class
+     *
+     * @param type is the type of this object
+     *
+     * @param jsonSerializationContext is the context object for serialization of
+     *                                 this object
+     * @return JsonElement to write to file
+     */
+    @Override
+    public JsonElement serialize(Chord chord, Type type, JsonSerializationContext jsonSerializationContext) {
+        String root = "Root";
+        String third = "Third";
+        String fifth = "Fifth";
+        String quality = "Quality";
+        String inversion = "Inversion";
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(root, getRoot().toString());
+        jsonObject.addProperty(third, getThird().toString());
+        jsonObject.addProperty(fifth, getFifth().toString());
+        jsonObject.addProperty(quality, super.getQuality());
+        jsonObject.addProperty(inversion, getInversion());
+
+        return jsonObject;
+    }
+
 
     /**
      * The purpose of this method is to return a human-readable String

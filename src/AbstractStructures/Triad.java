@@ -55,6 +55,8 @@ public interface Triad<T> {
      */
     public abstract String getQuality();
 
+    public abstract void setQuality(String quality);
+
     /**
      * The purpose of this method is to set a particular Note object as the
      * root of this triad

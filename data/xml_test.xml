@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<chordSequence>
+    <chord>
+        <quality>major-triad</quality>
+    </chord>
+    <chord>
+        <quality>major-triad</quality>
+    </chord>
+    <tonalCenter>
+        <intValue>0</intValue>
+        <midiInt>0</midiInt>
+        <name>c</name>
+        <octave>0</octave>
+        <velocity>0</velocity>
+    </tonalCenter>
+    <size>2</size>
+</chordSequence>
