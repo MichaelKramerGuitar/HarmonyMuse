@@ -20,6 +20,7 @@ package Builders;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +33,7 @@ import java.util.Map;
  * The purpose of this class is to provide a data structure foundation for one
  * of the main building blocks of harmony representation, the individual note.
  */
-public class Note {
+public class Note implements Serializable {
 
     /*
     Philosophy for lower case: note names are lower case, chord names are upper case.

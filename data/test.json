@@ -420,6 +420,7 @@
         }
       },
       "inversion": "root position",
+      "isOpen": false,
       "quality": "minor-triad",
       "intervals": []
     },
@@ -631,6 +632,7 @@
         }
       },
       "inversion": "root position",
+      "isOpen": false,
       "quality": "augmented-triad",
       "intervals": []
     },
@@ -842,6 +844,7 @@
         }
       },
       "inversion": "root position",
+      "isOpen": false,
       "quality": "diminished-triad",
       "intervals": []
     }

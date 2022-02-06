@@ -1,8 +1,0 @@
-g- b-- d- 
-g b- d- 
-a c# e# 
-f# a c# 
-f# c# a 
-f# a c# 
-f# a c# 
-c# e# g# 

@@ -1,5 +1,0 @@
-c
-c major-triad
-e minor-triad
-g- diminished-triad
-e- augmented-triad

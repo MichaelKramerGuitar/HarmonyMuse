@@ -3,6 +3,8 @@ package Builders;
 import Utilities.CircularlyLinkedList;
 import javafx.util.Pair;
 
+import java.io.Serializable;
+
 /**
  * @author Michael Kramer
  * <p>
@@ -11,7 +13,7 @@ import javafx.util.Pair;
  * The purpose of this class is to serve as a fundamental data structure for
  * this system providing the ability to correctly classify Chord Objects
  */
-public class Interval {
+public class Interval implements Serializable {
 
     private final int halfStepsInUnison = 0;
     private final int halfStepsInMinorSecond = 1;

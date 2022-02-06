@@ -8,10 +8,7 @@ import ThreeNoteStructures.MajorTriad;
 import ThreeNoteStructures.MinorTriad;
 import javafx.util.Pair;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -23,17 +20,13 @@ import java.util.Collections;
  * The purpose of this class is to provide a framework for the concept of a
  * harmonic phrase (such as ii-V-I)
  */
-@XmlRootElement(name="chordSequence")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class ChordSequence<E extends Chord> {
 
-    //@XmlElement specifies XML element name for each object in the List
-    @XmlElement(name="chord")
+public class ChordSequence<E extends Chord> implements Serializable {
+
     private ArrayList<E> sequence = new ArrayList<>(0); // ArrayList needed for dynamic size
     // i.e. represents ii-V-I ---> [d, g, c] or [2, 7, 0] (intValues)
     private ArrayList<Interval> progression = new ArrayList<>(0);
 
-    @XmlElement(name="tonalCenter")
     private Note tonalCenter;
 
     private int size;
@@ -52,7 +45,7 @@ public class ChordSequence<E extends Chord> {
     public ChordSequence(E firstChord, E secondChord, Note tonalCenter){
 
         Collections.addAll(this.sequence, firstChord, secondChord);
-        this.size += 2;
+        this.size = 2;
         this.tonalCenter = tonalCenter;
         this.setProgression();
     }
@@ -69,7 +62,7 @@ public class ChordSequence<E extends Chord> {
                         E thirdChord, Note tonalCenter){
 
         Collections.addAll(this.sequence, firstChord, secondChord, thirdChord);
-        this.size += 3;
+        this.size = 3;
         this.tonalCenter = tonalCenter;
         this.setProgression();
     }
@@ -86,7 +79,7 @@ public class ChordSequence<E extends Chord> {
                          E thirdChord, E fourthChord,
                         Note tonalCenter){
         Collections.addAll(this.sequence, firstChord, secondChord, thirdChord, fourthChord);
-        this.size += 4;
+        this.size = 4;
         this.tonalCenter = tonalCenter;
         this.setProgression();
     }
@@ -135,17 +128,18 @@ public class ChordSequence<E extends Chord> {
      * @param index the index of the desired Chord
      * @return the Chord at the given index passed as an argument
      */
-    public E getChord(int index)
-        throws IndexOutOfBoundsException{
-        E chordTarget;
-        if(index >= this.size || index < 0){
-            throw new IndexOutOfBoundsException("Error: index must be in range 0-" + (this.size - 1));
+    public E getChord(int index) {
+        IndexOutOfBoundsException e = new IndexOutOfBoundsException("Error: index must be in range 0-" + (this.size - 1));
+            E chordTarget;
+            if (index >= this.size) {
+                throw e;
+            } else if (index < 0) {
+                throw e;
+            } else {
+                chordTarget = this.sequence.get(index);
+            }
+            return chordTarget;
         }
-        else{
-            chordTarget = this.sequence.get(index);
-        }
-        return chordTarget;
-    }
 
     /**
      * The purpose of this method is to return the size of the sequence array

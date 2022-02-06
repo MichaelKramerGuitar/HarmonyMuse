@@ -8,6 +8,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+/**
+ * @author Michael Kramer
+ * <p>
+ * CS622 Spring 1, 2022 Advanced Programming Techniques
+ * <p>
+ * The purpose of this class is to facilitate quickly building a concrete triad
+ * from within the constructor of a class that extends the
+ * ThreeNoteStructure.ConcreteTriad class
+ */
 public class TriadFactory<T extends Triad> {
 
     private Integer[] distances = new Integer[]{3, 5}; // 3rd family, 5th family
@@ -24,6 +33,18 @@ public class TriadFactory<T extends Triad> {
 
     public TriadFactory(){}
 
+    /**
+     * The purpose of this method is to build a triad given n triad container
+     * a Note root and a String quality
+     * <p>Precondition: A ConcreteTriad or extending class is being constructed </p>
+     * <p>Postcondition: A ConcreteTriad of any type is created and returned</p>
+     *
+     * @param triad is a generic type triad, empty container to be populated
+     *              according to its quality
+     * @param root is the Note root of this triad
+     * @param quality is the String quality of this triad
+     * @return A ConcreteTriad of any type
+     */
     public T buildTriad(T triad, Note root, String quality){
 
         TriadClassifier triadClassifier = new TriadClassifier();
@@ -100,6 +121,10 @@ public class TriadFactory<T extends Triad> {
         return triad;
     }
 
+    /**
+     * The purpose of this method is to return the distances Integer[] of this
+     * class
+     */
     public Integer[] getDistances() {
         return distances;
     }
@@ -108,6 +133,10 @@ public class TriadFactory<T extends Triad> {
         return majorIntervals;
     }
 
+    /**
+     * The purpose of this method is to return the formulas ArrayList
+     * of Integers of this class
+     */
     public ArrayList<Integer[]> getFormulas() {
         return formulas;
     }

@@ -9,6 +9,7 @@ import Builders.TriadFactory;
 import Classifiers.TriadClassifier;
 import com.google.gson.*;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 
 /**
@@ -20,7 +21,7 @@ import java.lang.reflect.Type;
  * of any quality between Individual Triad Quality Classes and the abstract
  * Chord class and Triad interface -> useful for serialization
  */
-public class ConcreteTriad extends Chord implements Triad {
+public class ConcreteTriad extends Chord implements Triad, Serializable {
 
     private Note root;
     private Note third;
@@ -62,11 +63,11 @@ public class ConcreteTriad extends Chord implements Triad {
 
         //TriadClassifier triadClassifier = new TriadClassifier();
         this.setRoot(root);
-        super.setQuality(quality); // major triad
+        super.setQuality(quality);
         this.setInversion("root position");
 
         TriadFactory tf = new TriadFactory<>();
-        Triad majorTriad = tf.buildTriad(this, root, super.getQuality());
+        tf.buildTriad(this, root, super.getQuality());
     }
 
     public ConcreteTriad(String asString) {
@@ -195,7 +196,7 @@ public class ConcreteTriad extends Chord implements Triad {
     }
 
 
-    public MajorTriad deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+    public ConcreteTriad deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
         return new MajorTriad(json.getAsJsonPrimitive().getAsString());
     }
