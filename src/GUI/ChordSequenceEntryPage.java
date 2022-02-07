@@ -4,23 +4,28 @@ import AbstractStructures.Chord;
 import Builders.ChordSequence;
 import Builders.InvalidNoteException;
 import Builders.Note;
-import CommandLineApp.CommonView;
+import CommandLineApp.CharactersTable;
 import FileHandling.WriteToJSON;
 import ThreeNoteStructures.MajorTriad;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
 public class ChordSequenceEntryPage extends Application {
 
+    CharactersTable ctable = new CharactersTable();
     private ArrayList<Chord> temp = new ArrayList<>(0);
 
     private ChordSequence chordSequence;
@@ -30,6 +35,8 @@ public class ChordSequenceEntryPage extends Application {
     final Label fileLabel = new Label();
 
     final Label noteLabel = new Label();
+
+    final Label accedentalLabel = new Label();
 
     private Note tonalCenter;
 
@@ -48,55 +55,119 @@ public class ChordSequenceEntryPage extends Application {
 
     public void start(Stage mainStage)
     {
-        //Creating a GridPane container
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setVgap(5);
-        grid.setHgap(5);
-    //Defining the Filename text field
-        final TextField filename = new TextField();
-        filename.setPromptText("Enter a filename");
-        filename.setPrefColumnCount(10);
-        GridPane.setConstraints(filename, 0, 0);
-        grid.getChildren().add(filename);
 
-        Button submitFileName = new Button("Submit");
-        GridPane.setConstraints(submitFileName, 1, 0);
-        grid.getChildren().add(submitFileName);
+        Insets insets = new Insets(10, 40, 10, 10);
 
-        GridPane.setConstraints(fileLabel, 0, 3);
-        GridPane.setColumnSpan(fileLabel, 3);
-        grid.getChildren().add(fileLabel);
+        BorderPane borderPane = new BorderPane();
 
-        GridPane.setConstraints(noteLabel, 5, 0);
-        GridPane.setColumnSpan(noteLabel, 3);
-        grid.getChildren().add(noteLabel);
+        //Defining the Filename text field
+        final TextField filenameField = new TextField();
+        filenameField.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+        filenameField.setPromptText("Enter a filename");
+        filenameField.setPrefColumnCount(10);
+        HBox fileEntry = new HBox();
 
-        Button c = new Button("c");
-        GridPane.setConstraints(c, 3, 0);
-        grid.getChildren().add(c);
 
-        Button f = new Button("f");
-        GridPane.setConstraints(f, 4, 0);
-        grid.getChildren().add(f);
+        Button submitFileName = new Button("Submit Filename");
+        submitFileName.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
+        //GridPane.setConstraints(submitFileName, 1, 0);
 
-        Button maj = new Button("major-triad");
-        GridPane.setConstraints(maj, 4, 3);
-        grid.getChildren().add(maj);
+        fileEntry.getChildren().addAll(filenameField, submitFileName, fileLabel);
+        borderPane.setTop(fileEntry);
+        borderPane.setMargin(fileEntry, insets);
 
-        Button sharp = new Button(CommonView.getCharTable().getSharp());
-        GridPane.setConstraints(sharp, 3, 3);
-        grid.getChildren().add(sharp);
+        ToggleGroup toggleGroupRoots = new ToggleGroup();
+
+
+        RadioButton aButton = new RadioButton("a");
+        RadioButton bButton = new RadioButton("b");
+        RadioButton cButton = new RadioButton("c");
+        RadioButton dButton = new RadioButton("d");
+        RadioButton eButton = new RadioButton("e");
+        RadioButton fButton = new RadioButton("f");
+        RadioButton gButton = new RadioButton("g");
+
+        aButton.setToggleGroup(toggleGroupRoots);
+        bButton.setToggleGroup(toggleGroupRoots);
+        cButton.setToggleGroup(toggleGroupRoots);
+        dButton.setToggleGroup(toggleGroupRoots);
+        eButton.setToggleGroup(toggleGroupRoots);
+        fButton.setToggleGroup(toggleGroupRoots);
+        gButton.setToggleGroup(toggleGroupRoots);
+
+
+        VBox roots = new VBox();
+        roots.getChildren().addAll( aButton, bButton, cButton, dButton, eButton, fButton, gButton, noteLabel);
+
+        toggleGroupRoots.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                {
+
+                    RadioButton rb = (RadioButton) toggleGroupRoots.getSelectedToggle();
+
+                    if (rb != null) {
+                        String s = rb.getText();
+
+                        // change the label
+                        noteLabel.setText(s + " selected");
+                    }
+                }
+            }
+        });
+
+        borderPane.setLeft(roots);
+        borderPane.setMargin(roots, insets);
+
+
+        ToggleGroup toggleGroupAccidentals = new ToggleGroup();
+
+        RadioButton sharp = new RadioButton(ctable.getSharp());
+        RadioButton flat = new RadioButton(ctable.getFlat());
+        RadioButton doubleSharp = new RadioButton(ctable.getDoubleSharp());
+        RadioButton doubleFlat = new RadioButton(ctable.repeatStringNTimes(ctable.getFlat(), 2));
+
+        sharp.setToggleGroup(toggleGroupAccidentals);
+        flat.setToggleGroup(toggleGroupAccidentals);
+        doubleSharp.setToggleGroup(toggleGroupAccidentals);
+        doubleFlat.setToggleGroup(toggleGroupAccidentals);
+
+        toggleGroupAccidentals.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                {
+
+                    RadioButton rb = (RadioButton) toggleGroupAccidentals.getSelectedToggle();
+
+                    if (rb != null) {
+                        String s = rb.getText();
+
+                        // change the label
+                        accedentalLabel.setText(s + " selected");
+                    }
+                }
+            }
+        });
+
+        VBox accidentals = new VBox();
+        accidentals.getChildren().addAll(sharp, flat, doubleSharp, doubleFlat, accedentalLabel);
+
+        borderPane.setCenter(accidentals);
+        borderPane.setMargin(accidentals, insets);
+
 
         Button submitChord = new Button("Submit Chord");
-        GridPane.setConstraints(submitChord, 5, 0);
-        grid.getChildren().add(submitChord);
+        submitChord.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+        HBox chordSubmit = new HBox(submitChord);
+        borderPane.setBottom(chordSubmit);
+        borderPane.setMargin(chordSubmit, insets);
+
 
         submitFileName.setOnAction( event ->
                 {
-                    this.filename = filename.getText();
+                    this.filename = filenameField.getText();
                     if ((this.filename != null && !this.filename.isEmpty())){
-                        fileLabel.setText(filename.getText() + " was accepted, Thank you!");
+                        fileLabel.setText(filenameField.getText() + " was accepted, Thank you!");
                     }
                     else {
                         fileLabel.setText("Please enter a filename");
@@ -104,21 +175,42 @@ public class ChordSequenceEntryPage extends Application {
                 }
         );
 
-        c.setOnAction( event ->
+        submitChord.setOnAction( event ->
+            /*
+            TODO how to unselect above radios on Chord submission
+             */
                 {
-                    setMajorTriad(c);
+
+                    String newRoot = "";
+                    RadioButton rts = (RadioButton) toggleGroupRoots.getSelectedToggle();
+                    RadioButton accidents = (RadioButton) toggleGroupAccidentals.getSelectedToggle();
+
+                    if (rts != null) {
+                        String s = rts.getText();
+                        // change the label
+                        newRoot += s;
+                    }
+                    if (accidents != null) {
+                        String s = accidents.getText();
+                        // change the label
+                        newRoot += s;
+                    }
+
+                    try{
+                        Note rt = new Note(newRoot);
+                        MajorTriad newChord = new MajorTriad(rt);
+                        this.temp.add(newChord);
+                        this.tonalCenter = rt;
+                    }catch (InvalidNoteException e){
+                        System.out.println(e);
+                    }
+
                 }
         );
 
-        f.setOnAction( event ->
-                {
-                    setMajorTriad(f);
-                }
-        );
-
-        Scene scene = new Scene(grid, 500, 500, Color.FUCHSIA);
+        Scene scene = new Scene(borderPane, 500, 500, Color.FUCHSIA);
         mainStage.setScene(scene);
-        mainStage.setTitle("Welcome to HarmonyMuse Chord Sequence Entry!");
+        mainStage.setTitle(ctable.getBeamedEighths() + " Welcome to HarmonyMuse Chord Sequence Entry " + ctable.getBeamedEighths());
         mainStage.show();
     }
 
@@ -126,7 +218,9 @@ public class ChordSequenceEntryPage extends Application {
     {
         chordSequence = new ChordSequence(temp, tonalCenter);
         WriteToJSON writer = new WriteToJSON();
-        writer.writeSequenceToJSON(this.filename, this.chordSequence);
-        System.out.println(filename + " in \\data folder");
+        if(this.filename != null && !filename.isEmpty()) {
+            writer.writeSequenceToJSON(this.filename, this.chordSequence);
+            System.out.println(filename + " in \\data folder");
+        }else System.out.println("Nothing written to file");
     }
 }
