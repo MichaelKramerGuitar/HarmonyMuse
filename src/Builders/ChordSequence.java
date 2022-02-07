@@ -1,16 +1,17 @@
 package Builders;
 
 import AbstractStructures.Chord;
+import Classifiers.TriadClassifier;
 import CommandLineApp.CommonView;
-import ThreeNoteStructures.AugmentedTriad;
-import ThreeNoteStructures.DiminishedTriad;
-import ThreeNoteStructures.MajorTriad;
-import ThreeNoteStructures.MinorTriad;
+import ThreeNoteStructures.*;
 import javafx.util.Pair;
+import org.junit.jupiter.api.Assertions;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Stream;
 
 /**
  * @author Michael Kramer
@@ -175,6 +176,42 @@ public class ChordSequence<E extends Chord> implements Serializable {
     public void setTonalCenter(Note note){this.tonalCenter = tonalCenter;}
 
     public void setSize(int size){this.size = size;}
+
+
+    /**
+     * The purpose of this method is to convert a ChordSequence object
+     * into a Stream of Chords for manipulation
+     * <p>Precondition: A ChordSequence has successfully been deserialized</p>
+     * <p>Postcondition: a Stream of Chords is returned</p>
+     *
+     * @param chordSequence is a ChordSequence to be returned as a Stream
+     *                             of Chords
+     */
+    public Stream<Chord> chordSequenceToChordStream(ChordSequence<Chord> chordSequence) {
+        /*
+        TODO account to for Chord qualities as that functionality is developed
+         */
+        TriadClassifier tc = new TriadClassifier();
+        Chord[] chordsFromFile = new Chord[chordSequence.getSize()];
+        for (int i = 0; i < chordSequence.getSize(); i++) {
+            Assertions.assertTrue(chordSequence.getChord(i) instanceof ConcreteTriad);
+            if (chordSequence.getChord(i).getQuality().equals(tc.getTriadQualities()[0])) {
+                DiminishedTriad diminishedTriad = new DiminishedTriad(chordSequence.getChord(i).getRoot());
+                chordsFromFile[i] = diminishedTriad;
+            } else if (chordSequence.getChord(i).getQuality().equals(tc.getTriadQualities()[1])) {
+                MinorTriad minorTriad = new MinorTriad(chordSequence.getChord(i).getRoot());
+                chordsFromFile[i] = minorTriad;
+            } else if (chordSequence.getChord(i).getQuality().equals(tc.getTriadQualities()[2])) {
+                MajorTriad majorTriad = new MajorTriad(chordSequence.getChord(i).getRoot());
+                chordsFromFile[i] = majorTriad;
+            } else if (chordSequence.getChord(i).getQuality().equals(tc.getTriadQualities()[3])) {
+                AugmentedTriad augmentedTriad = new AugmentedTriad(chordSequence.getChord(i).getRoot());
+                chordsFromFile[i] = augmentedTriad;
+            }
+        }
+        Stream<Chord> chordSequenceStream = Arrays.stream(chordsFromFile);
+        return chordSequenceStream;
+    }
 
     public static void main(String[] args) {
 

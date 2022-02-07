@@ -98,7 +98,7 @@ class WriteReadFromJSONTest {
                 Assertions.assertTrue(augmentedTriad instanceof AugmentedTriad);
             }
         }
-        System.out.println("\nWriteReadFromJSONTest.TestReadChordSequenceFromFromJSON");
+        System.out.println("\nWriteReadFromJSONTest.TestReadChordSequenceFromJSON");
         String[] romans = CommonView.addRomanNumeral(chordSequence);
         System.out.println("Sequence tonal center: " + chordSequence.getTonalCenter().toString().toUpperCase());
         for (String roman: romans
@@ -120,7 +120,7 @@ class WriteReadFromJSONTest {
     void TestChordStreamFilterInstanceof(){
         System.out.println("\nWriteReadFromJSONTest.TestChordStreamFilterInstanceof");
         ChordSequence deserializedSequence = reader.readChordSequenceFromJSON(this.filename);
-        Stream<Chord> chordStream = reader.deserializedJSONToChordStream(deserializedSequence);
+        Stream<Chord> chordStream = deserializedSequence.chordSequenceToChordStream(deserializedSequence);
         chordStream.filter(i -> i instanceof AugmentedTriad).forEach(i -> System.out.println(i));
     }
 
@@ -137,7 +137,7 @@ class WriteReadFromJSONTest {
     void TestChordStreamForEach(){
         System.out.println("\nWriteReadFromJSONTest.TestChordStreamForEach:");
         ChordSequence deserializedSequence = reader.readChordSequenceFromJSON(this.filename);
-        Stream<Chord> chordStream = reader.deserializedJSONToChordStream(deserializedSequence);
+        Stream<Chord> chordStream = deserializedSequence.chordSequenceToChordStream(deserializedSequence);
         chordStream.forEach(i -> System.out.println(i));
     }
 }
