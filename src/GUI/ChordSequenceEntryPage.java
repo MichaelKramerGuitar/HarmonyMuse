@@ -1,11 +1,8 @@
 package GUI;
 
 import AbstractStructures.Chord;
-import Builders.ChordSequence;
 import Builders.InvalidNoteException;
 import Builders.Note;
-import Classifiers.TriadClassifier;
-import CommandLineApp.CharactersTable;
 import FileHandling.WriteToJSON;
 import ThreeNoteStructures.AugmentedTriad;
 import ThreeNoteStructures.DiminishedTriad;
@@ -20,7 +17,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -37,10 +33,9 @@ import java.util.ArrayList;
  */
 public class ChordSequenceEntryPage extends Application {
 
-    CharactersTable ctable = new CharactersTable();
-    private ArrayList<Chord> temp = new ArrayList<>(0);
+    private ChordEntryGUIController controller = new ChordEntryGUIController();
 
-    private ChordSequence chordSequence;
+    private ArrayList<Chord> temp = new ArrayList<>(0);
 
     private String filename;
 
@@ -57,26 +52,6 @@ public class ChordSequenceEntryPage extends Application {
     final Label quality = new Label();
 
     private Note tonalCenter;
-
-    private TriadClassifier tc = new TriadClassifier();
-
-    /**
-     * The purpose of this method is the purpose of this method is to take user
-     * input from GUI buttons and build a Chord data structure
-     * <p>Precondition: A user has entered and submitted a chord</p>
-     * <p>Postcondition: A Chord is created and added to an Array List of
-     * Chords </p>
-     */
-    public void setMajorTriad(Button chord){
-        try {
-            Note note = new Note(chord.getText());
-            MajorTriad triad = new MajorTriad(note);
-            temp.add(triad);
-            tonalCenter = note; // temporary
-        }catch (InvalidNoteException e){
-            noteLabel.setText("Invalid Note");
-        }
-    }
 
 
     /**
@@ -103,6 +78,8 @@ public class ChordSequenceEntryPage extends Application {
         submitFileName.setFont(Font.font("Roboto", FontWeight.BOLD, 11));
         //GridPane.setConstraints(submitFileName, 1, 0);
 
+        fileLabel.setText("enter a filename");
+        fileLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
         fileEntry.getChildren().addAll(filenameField, submitFileName, fileLabel);
         borderPane.setTop(fileEntry);
         borderPane.setMargin(fileEntry, insets);
@@ -126,6 +103,8 @@ public class ChordSequenceEntryPage extends Application {
         fButton.setToggleGroup(toggleGroupRoots);
         gButton.setToggleGroup(toggleGroupRoots);
 
+        noteLabel.setText("choose sequence tonal center");
+        noteLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
 
         VBox roots = new VBox();
         roots.getChildren().addAll( aButton, bButton, cButton, dButton, eButton, fButton, gButton, noteLabel);
@@ -135,36 +114,37 @@ public class ChordSequenceEntryPage extends Application {
 
         ComboBox tonalCenterSelection = new ComboBox();
         tonalCenterSelection.getItems().add("C");
-        tonalCenterSelection.getItems().add("C" + ctable.getSharp());
-        tonalCenterSelection.getItems().add("D" + ctable.getFlat());
+        tonalCenterSelection.getItems().add("C" + controller.getCTable().getSharp());
+        tonalCenterSelection.getItems().add("D" + controller.getCTable().getFlat());
         tonalCenterSelection.getItems().add("D");
-        tonalCenterSelection.getItems().add("E" + ctable.getFlat());
+        tonalCenterSelection.getItems().add("E" + controller.getCTable().getFlat());
         tonalCenterSelection.getItems().add("E");
         tonalCenterSelection.getItems().add("F");
-        tonalCenterSelection.getItems().add("F" + ctable.getSharp());
-        tonalCenterSelection.getItems().add("G" + ctable.getFlat());
+        tonalCenterSelection.getItems().add("F" + controller.getCTable().getSharp());
+        tonalCenterSelection.getItems().add("G" + controller.getCTable().getFlat());
         tonalCenterSelection.getItems().add("G");
-        tonalCenterSelection.getItems().add("A" + ctable.getFlat());
+        tonalCenterSelection.getItems().add("A" + controller.getCTable().getFlat());
         tonalCenterSelection.getItems().add("A");
-        tonalCenterSelection.getItems().add("B" + ctable.getFlat());
+        tonalCenterSelection.getItems().add("B" + controller.getCTable().getFlat());
         tonalCenterSelection.getItems().add("B");
 
         Button submitTonalCenter = new Button("choose tonal center");
-        submitTonalCenter.setFont(Font.font("Roboto", FontWeight.BOLD, 11));
+        submitTonalCenter.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
         VBox tonalCenters = new VBox(tCenter, tonalCenterSelection, submitTonalCenter);
         tonalCenters.setMinWidth(Control.USE_PREF_SIZE);
         borderPane.setRight(tonalCenters);
         borderPane.setMargin(tonalCenterSelection, insets);
         tCenter.setText("choose sequence tonal center");
+        tCenter.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
 
 
 
         ToggleGroup toggleGroupAccidentals = new ToggleGroup();
 
-        RadioButton sharp = new RadioButton(ctable.getSharp());
-        RadioButton flat = new RadioButton(ctable.getFlat());
-        RadioButton doubleSharp = new RadioButton(ctable.getDoubleSharp());
-        RadioButton doubleFlat = new RadioButton(ctable.repeatStringNTimes(ctable.getFlat(), 2));
+        RadioButton sharp = new RadioButton(controller.getCTable().getSharp());
+        RadioButton flat = new RadioButton(controller.getCTable().getFlat());
+        RadioButton doubleSharp = new RadioButton(controller.getCTable().getDoubleSharp());
+        RadioButton doubleFlat = new RadioButton(controller.getCTable().repeatStringNTimes(controller.getCTable().getFlat(), 2));
 
         sharp.setToggleGroup(toggleGroupAccidentals);
         flat.setToggleGroup(toggleGroupAccidentals);
@@ -213,26 +193,32 @@ public class ChordSequenceEntryPage extends Application {
             }
         });
 
+        accedentalLabel.setText("select an accidental");
+        accedentalLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
         VBox accidentals = new VBox();
         accidentals.getChildren().addAll(sharp, flat, doubleSharp, doubleFlat, accedentalLabel);
-
 
         borderPane.setCenter(accidentals);
         borderPane.setMargin(accidentals, insets);
 
 
         ComboBox qualities = new ComboBox();
-        qualities.getItems().add(tc.getTriadQualities()[2]);
-        qualities.getItems().add(tc.getTriadQualities()[1]);
-        qualities.getItems().add(tc.getTriadQualities()[0]);
-        qualities.getItems().add(tc.getTriadQualities()[3]);
+        qualities.getItems().add(controller.getTC().getTriadQualities()[2]);
+        qualities.getItems().add(controller.getTC().getTriadQualities()[1]);
+        qualities.getItems().add(controller.getTC().getTriadQualities()[0]);
+        qualities.getItems().add(controller.getTC().getTriadQualities()[3]);
         VBox quals = new VBox(qualities, quality);
 
+        quality.setFont(Font.font("Roboto", FontWeight.BOLD, 10));
         quality.setText("Choose a quality");
 
+
         Button submitChord = new Button("Submit Chord");
-        submitChord.setFont(Font.font("Roboto", FontWeight.BOLD, 11));
-        HBox chordSubmit = new HBox(quals, submitChord, chordLabel);
+        submitChord.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
+        Button submitSequence = new Button("Submit Chord Sequence");
+        submitSequence.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
+        chordLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
+        HBox chordSubmit = new HBox(quals, submitChord, submitSequence, chordLabel);
         borderPane.setBottom(chordSubmit);
         borderPane.setMargin(chordSubmit, insets);
 
@@ -287,35 +273,35 @@ public class ChordSequenceEntryPage extends Application {
                         }
                         if (accidents != null) {
                             submission += accidents.getText();
-                            if(accidents.getText().equals(ctable.getSharp())){
+                            if(accidents.getText().equals(controller.getCTable().getSharp())){
                                 newRoot += "#";
                             }
-                            else if(accidents.getText().equals(ctable.getFlat())){
+                            else if(accidents.getText().equals(controller.getCTable().getFlat())){
                                 newRoot += "-";
                             }
-                            else if(accidents.getText().equals(ctable.getDoubleSharp())){
+                            else if(accidents.getText().equals(controller.getCTable().getDoubleSharp())){
                                 newRoot += "##";
                             }
-                            else if(accidents.getText().equals(ctable.repeatStringNTimes(ctable.getFlat(), 2))){
+                            else if(accidents.getText().equals(controller.getCTable().repeatStringNTimes(controller.getCTable().getFlat(), 2))){
                                 newRoot += "--";
                             }
                         }
 
                         try{
                             Note rt = new Note(newRoot);
-                            if(q.equals(tc.getTriadQualities()[0])) {
+                            if(q.equals(controller.getTC().getTriadQualities()[0])) {
                                 DiminishedTriad newChord = new DiminishedTriad(rt);
                                 this.temp.add(newChord);
                             }
-                            else if(q.equals(tc.getTriadQualities()[1])){
+                            else if(q.equals(controller.getTC().getTriadQualities()[1])){
                                 MinorTriad newChord = new MinorTriad(rt);
                                 this.temp.add(newChord);
                             }
-                            else if(q.equals(tc.getTriadQualities()[2])){
+                            else if(q.equals(controller.getTC().getTriadQualities()[2])){
                                 MajorTriad newChord = new MajorTriad(rt);
                                 this.temp.add(newChord);
                             }
-                            else if(q.equals(tc.getTriadQualities()[3])){
+                            else if(q.equals(controller.getTC().getTriadQualities()[3])){
                                 AugmentedTriad newChord = new AugmentedTriad(rt);
                                 this.temp.add(newChord);
                             }
@@ -342,13 +328,21 @@ public class ChordSequenceEntryPage extends Application {
 
         );
 
+        /**
+         * The purpose of this method is to write the ChordSequence submitted
+         * to file
+         * <p>Precondition: a filename, tonal center and chords have successfully
+         * been entered</p>
+         * <p>Postcondition: the ChordSequence is written to the specified file
+         * in the default location</p>
+         */
         submitTonalCenter.setOnAction( event ->
                 {
                     String tc = tonalCenterSelection.getValue().toString().toLowerCase();
-                    if(tc.contains(ctable.getFlat())){
+                    if(tc.contains(controller.getCTable().getFlat())){
                         tc = tc.charAt(0) + "-";
                     }
-                    else if(tc.contains(ctable.getSharp())){
+                    else if(tc.contains(controller.getCTable().getSharp())){
                         tc = tc.charAt(0) + "#";
                     }
                     try {
@@ -362,22 +356,35 @@ public class ChordSequenceEntryPage extends Application {
 
         );
 
+        submitSequence.setOnAction( event ->
+        {
+            if(this.filename != null && !filename.isEmpty() && this.tonalCenter != null && !this.temp.isEmpty()) {
+                controller.setChordSequence(temp, tonalCenter);
+                WriteToJSON writer = controller.getJSONWriter();
+                writer.writeSequenceToJSON(this.filename, controller.getChordSequence());
+                chordLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 14));
+                chordLabel.setText(filename + " in \\data folder");
+            }else System.out.println("Nothing written to file");
+        });
+
         noteLabel.setText("select root for next chord");
-        Scene scene = new Scene(borderPane, 500, 500, Color.FUCHSIA);
+        Scene scene = new Scene(borderPane, 700, 400);
+        scene.getStylesheets().add("file:assets/styles.css");
+        borderPane.setId("border-pane-chordEntry");
         mainStage.setScene(scene);
-        mainStage.setTitle(ctable.getBeamedEighths() + " Welcome to HarmonyMuse Chord Sequence Entry " + ctable.getBeamedEighths());
+        //mainStage.initStyle(StageStyle.TRANSPARENT);
+        mainStage.setTitle(controller.getCTable().getBeamedEighths() + " Welcome to HarmonyMuse Chord Sequence Entry " + controller.getCTable().getBeamedEighths());
         mainStage.show();
 
     }
 
-
     public void stop()
     {
-        if(this.filename != null && !filename.isEmpty() && this.tonalCenter != null && !this.temp.isEmpty()) {
-            chordSequence = new ChordSequence(temp, tonalCenter);
-            WriteToJSON writer = new WriteToJSON();
-            writer.writeSequenceToJSON(this.filename, this.chordSequence);
-            System.out.println(filename + " in \\data folder");
-        }else System.out.println("Nothing written to file");
+        System.out.printf("%n%s%n%s%n%s%n",
+                controller.getCTable().repeatStringNTimes(controller.getCTable().getBeamedEighths(), 28),
+                controller.getCTable().repeatStringNTimes(controller.getCTable().getGuitar(), 2) +
+                " Thank you for using HarmonyMuse " +
+                        controller.getCTable().repeatStringNTimes(controller.getCTable().getTrebleClef(), 2),
+                controller.getCTable().repeatStringNTimes(controller.getCTable().getBeamedEighths(), 28));
     }
 }

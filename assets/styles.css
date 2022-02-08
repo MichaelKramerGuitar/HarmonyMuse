@@ -1,0 +1,20 @@
+
+#border-pane-chordEntry{
+    -fx-background-image: url('../images/PatMetheny-Rejoicing.PNG');
+    -fx-background-color: transparent;
+    -fx-opacity: 0.9;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #FF7A33, #33FFF6);
+    -fx-background-size: 500 500;
+    -fx-background-position: center center;
+}
+
+#border-pane-chordRead{
+    -fx-background-image: url('../images/KennyWheeler-GnuHigh.png');
+    -fx-background-color: transparent;
+    -fx-opacity: 0.9;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #F9C481, #81ACF9);
+    -fx-background-size: 500 500;
+    -fx-background-position: center center;
+}
