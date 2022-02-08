@@ -71,15 +71,14 @@
         }
       },
       "third": {
-        "name": "e",
-        "intValue": 4,
+        "name": "e-",
+        "intValue": 3,
         "midiInt": 0,
         "velocity": 0,
         "octave": 0,
         "goodNote": true,
         "enharmonics": [
-          "d##",
-          "f-"
+          "d#"
         ],
         "notesMap": {
           "0": [
@@ -149,6 +148,217 @@
         "enharmonics": [
           "f##",
           "a--"
+        ],
+        "notesMap": {
+          "0": [
+            "c",
+            "b#",
+            "d--"
+          ],
+          "1": [
+            "c#",
+            "d-"
+          ],
+          "2": [
+            "d",
+            "c##",
+            "e--"
+          ],
+          "3": [
+            "d#",
+            "e-"
+          ],
+          "4": [
+            "e",
+            "d##",
+            "f-"
+          ],
+          "5": [
+            "f",
+            "e#",
+            "g--"
+          ],
+          "6": [
+            "f#",
+            "g-"
+          ],
+          "7": [
+            "g",
+            "f##",
+            "a--"
+          ],
+          "8": [
+            "g#",
+            "a-"
+          ],
+          "9": [
+            "a",
+            "g##",
+            "b--"
+          ],
+          "10": [
+            "a#",
+            "b-"
+          ],
+          "11": [
+            "b",
+            "c-",
+            "a##"
+          ]
+        }
+      },
+      "inversion": "root position",
+      "isOpen": false,
+      "quality": "minor-triad",
+      "intervals": []
+    },
+    {
+      "root": {
+        "name": "e-",
+        "intValue": 3,
+        "midiInt": 0,
+        "velocity": 0,
+        "octave": 0,
+        "goodNote": true,
+        "enharmonics": [
+          "d#"
+        ],
+        "notesMap": {
+          "0": [
+            "c",
+            "b#",
+            "d--"
+          ],
+          "1": [
+            "c#",
+            "d-"
+          ],
+          "2": [
+            "d",
+            "c##",
+            "e--"
+          ],
+          "3": [
+            "d#",
+            "e-"
+          ],
+          "4": [
+            "e",
+            "d##",
+            "f-"
+          ],
+          "5": [
+            "f",
+            "e#",
+            "g--"
+          ],
+          "6": [
+            "f#",
+            "g-"
+          ],
+          "7": [
+            "g",
+            "f##",
+            "a--"
+          ],
+          "8": [
+            "g#",
+            "a-"
+          ],
+          "9": [
+            "a",
+            "g##",
+            "b--"
+          ],
+          "10": [
+            "a#",
+            "b-"
+          ],
+          "11": [
+            "b",
+            "c-",
+            "a##"
+          ]
+        }
+      },
+      "third": {
+        "name": "g",
+        "intValue": 7,
+        "midiInt": 0,
+        "velocity": 0,
+        "octave": 0,
+        "goodNote": true,
+        "enharmonics": [
+          "f##",
+          "a--"
+        ],
+        "notesMap": {
+          "0": [
+            "c",
+            "b#",
+            "d--"
+          ],
+          "1": [
+            "c#",
+            "d-"
+          ],
+          "2": [
+            "d",
+            "c##",
+            "e--"
+          ],
+          "3": [
+            "d#",
+            "e-"
+          ],
+          "4": [
+            "e",
+            "d##",
+            "f-"
+          ],
+          "5": [
+            "f",
+            "e#",
+            "g--"
+          ],
+          "6": [
+            "f#",
+            "g-"
+          ],
+          "7": [
+            "g",
+            "f##",
+            "a--"
+          ],
+          "8": [
+            "g#",
+            "a-"
+          ],
+          "9": [
+            "a",
+            "g##",
+            "b--"
+          ],
+          "10": [
+            "a#",
+            "b-"
+          ],
+          "11": [
+            "b",
+            "c-",
+            "a##"
+          ]
+        }
+      },
+      "fifth": {
+        "name": "b-",
+        "intValue": 10,
+        "midiInt": 0,
+        "velocity": 0,
+        "octave": 0,
+        "goodNote": true,
+        "enharmonics": [
+          "a#"
         ],
         "notesMap": {
           "0": [
@@ -428,15 +638,14 @@
     },
     {
       "root": {
-        "name": "c",
-        "intValue": 0,
+        "name": "g-",
+        "intValue": 6,
         "midiInt": 0,
         "velocity": 0,
         "octave": 0,
         "goodNote": true,
         "enharmonics": [
-          "b#",
-          "d--"
+          "f#"
         ],
         "notesMap": {
           "0": [
@@ -497,15 +706,14 @@
         }
       },
       "third": {
-        "name": "e",
-        "intValue": 4,
+        "name": "b-",
+        "intValue": 10,
         "midiInt": 0,
         "velocity": 0,
         "octave": 0,
         "goodNote": true,
         "enharmonics": [
-          "d##",
-          "f-"
+          "a#"
         ],
         "notesMap": {
           "0": [
@@ -566,15 +774,15 @@
         }
       },
       "fifth": {
-        "name": "g",
-        "intValue": 7,
+        "name": "d",
+        "intValue": 2,
         "midiInt": 0,
         "velocity": 0,
         "octave": 0,
         "goodNote": true,
         "enharmonics": [
-          "f##",
-          "a--"
+          "c##",
+          "e--"
         ],
         "notesMap": {
           "0": [
@@ -636,7 +844,7 @@
       },
       "inversion": "root position",
       "isOpen": false,
-      "quality": "major-triad",
+      "quality": "augmented-triad",
       "intervals": []
     }
   ],
@@ -687,15 +895,14 @@
       ],
       "rawInterval": {
         "key": {
-          "name": "c",
-          "intValue": 0,
+          "name": "b-",
+          "intValue": 10,
           "midiInt": 0,
           "velocity": 0,
           "octave": 0,
           "goodNote": true,
           "enharmonics": [
-            "b#",
-            "d--"
+            "a#"
           ],
           "notesMap": {
             "0": [
@@ -825,9 +1032,9 @@
           }
         }
       },
-      "intValue": 0,
-      "distance": 1,
-      "quality": "unison/octave"
+      "intValue": 2,
+      "distance": 2,
+      "quality": "major second"
     },
     {
       "halfStepsInUnison": 0,
@@ -875,15 +1082,200 @@
       ],
       "rawInterval": {
         "key": {
-          "name": "c",
-          "intValue": 0,
+          "name": "b-",
+          "intValue": 10,
           "midiInt": 0,
           "velocity": 0,
           "octave": 0,
           "goodNote": true,
           "enharmonics": [
-            "b#",
-            "d--"
+            "a#"
+          ],
+          "notesMap": {
+            "0": [
+              "c",
+              "b#",
+              "d--"
+            ],
+            "1": [
+              "c#",
+              "d-"
+            ],
+            "2": [
+              "d",
+              "c##",
+              "e--"
+            ],
+            "3": [
+              "d#",
+              "e-"
+            ],
+            "4": [
+              "e",
+              "d##",
+              "f-"
+            ],
+            "5": [
+              "f",
+              "e#",
+              "g--"
+            ],
+            "6": [
+              "f#",
+              "g-"
+            ],
+            "7": [
+              "g",
+              "f##",
+              "a--"
+            ],
+            "8": [
+              "g#",
+              "a-"
+            ],
+            "9": [
+              "a",
+              "g##",
+              "b--"
+            ],
+            "10": [
+              "a#",
+              "b-"
+            ],
+            "11": [
+              "b",
+              "c-",
+              "a##"
+            ]
+          }
+        },
+        "value": {
+          "name": "e-",
+          "intValue": 3,
+          "midiInt": 0,
+          "velocity": 0,
+          "octave": 0,
+          "goodNote": true,
+          "enharmonics": [
+            "d#"
+          ],
+          "notesMap": {
+            "0": [
+              "c",
+              "b#",
+              "d--"
+            ],
+            "1": [
+              "c#",
+              "d-"
+            ],
+            "2": [
+              "d",
+              "c##",
+              "e--"
+            ],
+            "3": [
+              "d#",
+              "e-"
+            ],
+            "4": [
+              "e",
+              "d##",
+              "f-"
+            ],
+            "5": [
+              "f",
+              "e#",
+              "g--"
+            ],
+            "6": [
+              "f#",
+              "g-"
+            ],
+            "7": [
+              "g",
+              "f##",
+              "a--"
+            ],
+            "8": [
+              "g#",
+              "a-"
+            ],
+            "9": [
+              "a",
+              "g##",
+              "b--"
+            ],
+            "10": [
+              "a#",
+              "b-"
+            ],
+            "11": [
+              "b",
+              "c-",
+              "a##"
+            ]
+          }
+        }
+      },
+      "intValue": 5,
+      "distance": 4,
+      "quality": "perfect fourth"
+    },
+    {
+      "halfStepsInUnison": 0,
+      "halfStepsInMinorSecond": 1,
+      "halfStepsInMajorSecond": 2,
+      "halfStepsInMinorThird": 3,
+      "halfStepsInMajorThird": 4,
+      "halfStepsInPerfectFourth": 5,
+      "halfStepsInTritone": 6,
+      "halfStepsInPerfectFifth": 7,
+      "halfStepsInMinorSixth": 8,
+      "halfStepsInMajorSixth": 9,
+      "halfStepsInMinorSeventh": 10,
+      "halfStepsInMajorSeventh": 11,
+      "halfStepsInOctave": 12,
+      "intervalQualities": [
+        "unison/octave",
+        "minor second",
+        "major second",
+        "minor third",
+        "major third",
+        "perfect fourth",
+        "tritone",
+        "perfect fifth",
+        "minor sixth",
+        "major sixth",
+        "minor seventh",
+        "major seventh",
+        "octave"
+      ],
+      "enharmonicQualities": [
+        "diminished second",
+        "augmented unison",
+        "diminished third",
+        "augmented second",
+        "diminished fourth",
+        "augmented third",
+        "diminished fifth",
+        "diminished sixth",
+        "augmented fifth",
+        "diminished seventh",
+        "augmented sixth",
+        "augmented seventh",
+        "augmented fourth"
+      ],
+      "rawInterval": {
+        "key": {
+          "name": "b-",
+          "intValue": 10,
+          "midiInt": 0,
+          "velocity": 0,
+          "octave": 0,
+          "goodNote": true,
+          "enharmonics": [
+            "a#"
           ],
           "notesMap": {
             "0": [
@@ -1013,9 +1405,9 @@
           }
         }
       },
-      "intValue": 5,
-      "distance": 4,
-      "quality": "perfect fourth"
+      "intValue": 7,
+      "distance": 5,
+      "quality": "perfect fifth"
     },
     {
       "halfStepsInUnison": 0,
@@ -1063,15 +1455,14 @@
       ],
       "rawInterval": {
         "key": {
-          "name": "c",
-          "intValue": 0,
+          "name": "b-",
+          "intValue": 10,
           "midiInt": 0,
           "velocity": 0,
           "octave": 0,
           "goodNote": true,
           "enharmonics": [
-            "b#",
-            "d--"
+            "a#"
           ],
           "notesMap": {
             "0": [
@@ -1132,15 +1523,14 @@
           }
         },
         "value": {
-          "name": "c",
-          "intValue": 0,
+          "name": "g-",
+          "intValue": 6,
           "midiInt": 0,
           "velocity": 0,
           "octave": 0,
           "goodNote": true,
           "enharmonics": [
-            "b#",
-            "d--"
+            "f#"
           ],
           "notesMap": {
             "0": [
@@ -1201,21 +1591,20 @@
           }
         }
       },
-      "intValue": 0,
-      "distance": 1,
-      "quality": "unison/octave"
+      "intValue": 8,
+      "distance": 6,
+      "quality": "minor sixth"
     }
   ],
   "tonalCenter": {
-    "name": "c",
-    "intValue": 0,
+    "name": "b-",
+    "intValue": 10,
     "midiInt": 0,
     "velocity": 0,
     "octave": 0,
     "goodNote": true,
     "enharmonics": [
-      "b#",
-      "d--"
+      "a#"
     ],
     "notesMap": {
       "0": [
@@ -1275,5 +1664,5 @@
       ]
     }
   },
-  "size": 3
+  "size": 4
 }
