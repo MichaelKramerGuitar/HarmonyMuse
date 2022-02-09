@@ -1,33 +1,44 @@
-##CS622 Spring 1 Advanced Programming Techniques Project
+# CS622 Spring 1 Advanced Programming Techniques Project
 
-**Current functionality is shown by running one of two controllers**
-* For Chord entry by individual notes run `CommandLineApp.MainChordEntry.java`
+**Current functionality is shown by running one of the following**
+* For ChordSequence entry in the gui run `gui.ChordSequenceEntryPage.java`
+* To read and receive analysis of previously entered ChordSequences run `gui.ReadSequencePage.java`
+  * Current functionality only supports classification and analysis of Triads _any inversion_
+    * The intent is to greatly expand this 
+* For Chord entry by individual notes run `commandline.app.MainChordEntry.java`
 * For Sequence entry (multiple chords) and sequence Roman Numeral Harmonic Analysis _**Assignment 3**_ run `CommandLindApp.MainQuickEntry`
-  * See document `metcs622_Assignment<highestInt>_mgkramer.docx` in assignments dirctory for detailed project description 
+  * See document `assignments/metcs622_Assignment<highestInt>_mgkramer.docx` in assignments dirctory for detailed project description 
 
 _All other classes containing main functions are for debugging purposes as this is a work in progress
 and are not intended for public use, however these can be run to see isolated class functionality_
 
-###Note on case representation of musical data as Strings
+### Note on dead code
+* This project is still _**VERY MUCH**_ a work in progress
+  * An effort is made on each _CS622_ submission to label with `TODO` where appropriate
+    * Otherwise, please consider the above point implied if dead code or unused classes are encountered 
+    * _EXAMPLE_ the `file.handling.WriteToDAT.java` and `file.handling.ReadFromDAT.java` files are not currently in use other than tests but pertain directly to Assignment 4 and may be useful in the future
+
+
+### Note on case representation of musical data as Strings
 * Notes are lower case letters 
 * Chords are upper case letters
 * Roman Numerals 
   * Upper case indicates a Major 3rd 
   * Lower case indicates Minor 3rd 
 
-###All tests are runable
+### All tests are runable
 * _**Current Testing Coverage**_
   * Note constructor 
   * Comprehensive Interval construction
     * The Interval class is key to the vision for this project
   * Chord Builder constructor 
   * TriadClassifier
-  * TriadFactory (via ThreeNoteStructures)
+  * TriadFactory (via three.note.structures)
   * FileHandling 
 
 
 
-####Examples of Interval Calculations
+#### Examples of Interval Calculations
 _The below examples illustrate the non-trivial task of calculating intervals in a compression function (i.e. everything analyzed within one octave)_
 
         /**
