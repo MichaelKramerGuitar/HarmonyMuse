@@ -19,13 +19,13 @@ import java.util.Map;
  */
 public class TriadFactory<T extends Triad> {
 
-    private Integer[] distances = new Integer[]{3, 5}; // 3rd family, 5th family
+    private final Integer[] distances = new Integer[]{3, 5}; // 3rd family, 5th family
 
-    private Integer[] majorIntervals = new Integer[]{4, 7}; //major third, perfect fifth
-    private Integer[] minorIntervals = new Integer[]{3, 7}; //major third, perfect fifth
-    private Integer[] diminishedIntervals = new Integer[]{3, 6}; //major third, perfect fifth
-    private Integer[] augmentedIntervals = new Integer[]{4, 8}; //major third, perfect fifth
-    private ArrayList<Integer[]> formulas = new ArrayList<Integer[]>(
+    private final Integer[] majorIntervals = new Integer[]{4, 7}; //major third, perfect fifth
+    private final Integer[] minorIntervals = new Integer[]{3, 7}; //major third, perfect fifth
+    private final Integer[] diminishedIntervals = new Integer[]{3, 6}; //major third, perfect fifth
+    private final Integer[] augmentedIntervals = new Integer[]{4, 8}; //major third, perfect fifth
+    private final ArrayList<Integer[]> formulas = new ArrayList<Integer[]>(
             Arrays.asList(diminishedIntervals,
                     minorIntervals,
                     majorIntervals,

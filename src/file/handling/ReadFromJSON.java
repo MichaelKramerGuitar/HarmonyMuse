@@ -44,4 +44,30 @@ public class ReadFromJSON<T extends Chord> {
         }
         return null;
     }
+
+
+    /**
+     * The purpose of this method is to deserialize a ChordSequence object from
+     * a file in public library that stores common chord progressions to popular
+     * songs in single files that many users may be concurrently accessing
+     * <p>Precondition: a file exists of the passed filename param with
+     * a serialized ChordSequence Object</p>
+     * <p>Postcondition: The ChordSequence is read back into memory and returned</p>
+     *
+     * @param filename the file to be read
+     */
+    public ChordSequence<Chord> readChordSequenceFromLibJSON(String filename){
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        try {
+            // you have to give it a concrete type
+            Type type = new TypeToken<ChordSequence<ConcreteTriad>>(){}.getType();
+            ChordSequence<Chord> deserializedSequence = gson.fromJson(new FileReader("data\\concurrencyLib\\" + filename + ".json"), type);
+
+            return deserializedSequence;
+        } catch (IOException e){
+            System.out.println(e);
+        }
+        return null;
+    }
 }

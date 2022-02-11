@@ -6,10 +6,13 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -17,9 +20,9 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 /**
  * @author Michael Kramer
@@ -38,17 +41,59 @@ public class ReadSequencePage extends Application {
 
     private final Label fileChooserLabel = new Label();
 
+    final Label pubLibLabel = new Label();
+
+    private ComboBox filesInPubLib = new ComboBox();
+
+    private Button readPubFile = new Button();
+
+    private VBox publicLibrary = new VBox(filesInPubLib, pubLibLabel, readPubFile);
+
+    public ComboBox getFilesInPubLib() {
+        return filesInPubLib;
+    }
+
+    private void configurePubLibMenu(){
+        ArrayList<String> files = new ArrayList<String>();
+
+        String currentDir = System.getProperty("user.dir");
+        Path path = Paths.get(currentDir, "data", "concurrencyLib");
+        File[] fileList = new File(String.valueOf(path)).listFiles();
+        for (File file:
+                fileList ) {
+            if(file.isFile()){
+                filesInPubLib.getItems().add(file);
+            }
+        }
+    }
     /**
      * The purpose of this method is to configure the FileChooser to only
      * look for files ending in the appropriate file extension and to
      * begin looking in the current user directory
      * the code comes in part from https://docs.oracle.com/javafx/2/ui_controls/file-chooser.htm
      */
-    private static void configureFileChooser(
+    private static void configureFileChooserUserLib(
             final FileChooser fileChooser) {
         fileChooser.setTitle("Open file");
+        String currentDir = System.getProperty("user.dir");
+        Path path = Paths.get(currentDir, "data");
+        File targetDir = path.toFile();
         fileChooser.setInitialDirectory(
-                new File(System.getProperty("user.dir"))
+                targetDir
+        );
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("JSON", "*.json")
+        );
+    }
+
+    private static void configureFileChooserPublicLib(
+            final FileChooser fileChooser) {
+        fileChooser.setTitle("Open file");
+        String currentDir = System.getProperty("user.dir");
+        Path path = Paths.get(currentDir, "data", "concurrencyLib");
+        File targetDir = path.toFile();
+        fileChooser.setInitialDirectory(
+                targetDir
         );
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("JSON", "*.json")
@@ -57,7 +102,8 @@ public class ReadSequencePage extends Application {
 
     /**
      * The purpose of this method is to return the name of a file whose contents
-     * are desired for harmonic analysis
+     * are desired for harmonic analysis in the users personal library simulated
+     * by the data folder
      * the code comes in part from https://docs.oracle.com/javafx/2/ui_controls/file-chooser.htm
      * <p>Precondition: The file exists</p>
      * <p>Postcondition: The file is opened and the files name minus the
@@ -66,19 +112,11 @@ public class ReadSequencePage extends Application {
      * @return String filename minus the file extension
      */
     private String openFile(File file) {
-        try {
-            CharSequence target = ".json";
-            CharSequence empty = "";
-            String filename = file.getName();
-            String noExt = filename.replace(target, empty);
-            desktop.open(file); // so we can see file contents, maybe remove?
-            return noExt;
-        } catch (IOException ex) {
-            Logger.getLogger(ReadSequencePage.class.getName()).log(
-                    Level.SEVERE, null, ex
-            );
-        }
-        return null;
+        CharSequence target = ".json";
+        CharSequence empty = "";
+        String filename = file.getName();
+        String noExt = filename.replace(target, empty);
+        return noExt;
     }
 
     @Override
@@ -93,32 +131,39 @@ public class ReadSequencePage extends Application {
         display.setFont(Font.font("Roboto", FontWeight.BOLD, 26));
         borderPane.setBottom(display);
 
-        Button fileChooser = new Button();
-        fileChooser.setText("Choose File");
-        fileChooser.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
+        Button myLibrary = new Button();
+        myLibrary.setText("My Library");
+        myLibrary.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
         fileChooserLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
-        HBox fileChooseButton = new HBox(fileChooser, fileChooserLabel);
+        HBox fileChooseButton = new HBox(myLibrary, fileChooserLabel);
 
 
         borderPane.setCenter(fileChooseButton);
+
+        configurePubLibMenu();
+        readPubFile.setText("Read Library Selection");
+        readPubFile.setFont(Font.font("Roboto", FontPosture.ITALIC, 12));
+        pubLibLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 14));
+        pubLibLabel.setText("Public Library");
+        borderPane.setRight(publicLibrary);
 
         /**
          * the purpose of this method is to search the users current directory
          * for the desired json file. For this project all data is in the
          * cwd/data folder.
          */
-        fileChooser.setOnAction( event ->
+        myLibrary.setOnAction(event ->
         {
-            fileChooser.setVisible(false);
+            myLibrary.setVisible(false);
             FileChooser fileSelector = new FileChooser();
-            configureFileChooser(fileSelector);
+            configureFileChooserUserLib(fileSelector);
             fileSelector.setTitle("Open Resource File");
 
             File file = fileSelector.showOpenDialog(mainStage);
 
-            if(file != null){
+            if (file != null) {
                 String filename = openFile(file);
-                if(filename != null && !filename.equals("")) {
+                if (filename != null && !filename.equals("")) {
                     ReadFromJSON reader = controller.getReader();
                     fileChooserLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 18));
                     fileChooserLabel.setText("See console for individual chords in " + filename);
@@ -129,9 +174,17 @@ public class ReadSequencePage extends Application {
             }
         });
 
+        readPubFile.setOnAction( event ->
+        {
+            String filePath = filesInPubLib.getValue().toString();
+            if(filePath != "" && filePath != null){
+                File path = new File(filePath);
+                String fileName = path.getAbsolutePath().substring(path.getAbsolutePath().lastIndexOf("\\")+1);
+                System.out.println(fileName);
+            }
+        });
 
-
-        Scene scene = new Scene(borderPane, 600, 400);
+        Scene scene = new Scene(borderPane, 800, 400);
         scene.getStylesheets().add("file:assets/styles.css");
         borderPane.setId("border-pane-chordRead");
         mainStage.setScene(scene);
@@ -144,8 +197,7 @@ public class ReadSequencePage extends Application {
      * the purpose of this method is to print a nicely formatted exit to the
      * console upon closing of this app
      */
-    public void stop()
-    {
+    public void stop() {
         System.out.printf("%n%s%n%s%n%s%n",
                 controller.getCTable().repeatStringNTimes(controller.getCTable().getBeamedEighths(), 28),
                 controller.getCTable().repeatStringNTimes(controller.getCTable().getGuitar(), 2) +
@@ -154,4 +206,14 @@ public class ReadSequencePage extends Application {
                 controller.getCTable().repeatStringNTimes(controller.getCTable().getBeamedEighths(), 28));
     }
 
+    public class ReadFromLibraryJSON implements Runnable {
+
+        private ReadFromJSON reader = new ReadFromJSON();
+
+        @Override
+        public void run() {
+
+
+        }
+    }
 }
