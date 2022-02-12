@@ -3,6 +3,7 @@ package gui;
 import builders.ChordSequence;
 import file.handling.ReadFromJSON;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,11 +19,12 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Michael Kramer
@@ -35,13 +37,17 @@ import java.util.ArrayList;
  */
 public class ReadSequencePage extends Application {
 
-    private Desktop desktop = Desktop.getDesktop();
-
     private ChordReadGUIController controller = new ChordReadGUIController();
 
     private final Label fileChooserLabel = new Label();
 
-    final Label pubLibLabel = new Label();
+    private final Text display = new Text();
+
+    private final Label pubLibLabel = new Label();
+
+    /*
+    TODO implement My Library in a dropdown like Public Library
+     */
 
     private ComboBox filesInPubLib = new ComboBox();
 
@@ -49,23 +55,37 @@ public class ReadSequencePage extends Application {
 
     private VBox publicLibrary = new VBox(filesInPubLib, pubLibLabel, readPubFile);
 
+    //Getters
+
     public ComboBox getFilesInPubLib() {
         return filesInPubLib;
     }
 
-    private void configurePubLibMenu(){
-        ArrayList<String> files = new ArrayList<String>();
+    public ChordReadGUIController getController() {
+        return controller;
+    }
+
+    public Label getPubLibLabel() {
+        return pubLibLabel;
+    }
+
+    public Text getDisplay() {
+        return display;
+    }
+
+    private void configurePubLibMenu() {
 
         String currentDir = System.getProperty("user.dir");
         Path path = Paths.get(currentDir, "data", "concurrencyLib");
         File[] fileList = new File(String.valueOf(path)).listFiles();
-        for (File file:
-                fileList ) {
-            if(file.isFile()){
+        for (File file :
+                fileList) {
+            if (file.isFile()) {
                 filesInPubLib.getItems().add(file);
             }
         }
     }
+
     /**
      * The purpose of this method is to configure the FileChooser to only
      * look for files ending in the appropriate file extension and to
@@ -77,20 +97,6 @@ public class ReadSequencePage extends Application {
         fileChooser.setTitle("Open file");
         String currentDir = System.getProperty("user.dir");
         Path path = Paths.get(currentDir, "data");
-        File targetDir = path.toFile();
-        fileChooser.setInitialDirectory(
-                targetDir
-        );
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("JSON", "*.json")
-        );
-    }
-
-    private static void configureFileChooserPublicLib(
-            final FileChooser fileChooser) {
-        fileChooser.setTitle("Open file");
-        String currentDir = System.getProperty("user.dir");
-        Path path = Paths.get(currentDir, "data", "concurrencyLib");
         File targetDir = path.toFile();
         fileChooser.setInitialDirectory(
                 targetDir
@@ -127,7 +133,6 @@ public class ReadSequencePage extends Application {
         BorderPane borderPane = new BorderPane();
         borderPane.setPadding(insets);
 
-        Text display = new Text();
         display.setFont(Font.font("Roboto", FontWeight.BOLD, 26));
         borderPane.setBottom(display);
 
@@ -174,13 +179,19 @@ public class ReadSequencePage extends Application {
             }
         });
 
-        readPubFile.setOnAction( event ->
+        /**
+         * The purpose of this method is to read a file from a library of common
+         * chord progressions and display the analysis for study
+         */
+        readPubFile.setOnAction(event ->
         {
-            String filePath = filesInPubLib.getValue().toString();
-            if(filePath != "" && filePath != null){
-                File path = new File(filePath);
-                String fileName = path.getAbsolutePath().substring(path.getAbsolutePath().lastIndexOf("\\")+1);
-                System.out.println(fileName);
+            ExecutorService executorService = Executors.newCachedThreadPool();
+            executorService.execute(new ReadFromLibraryJSON());
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(1, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
 
@@ -206,14 +217,37 @@ public class ReadSequencePage extends Application {
                 controller.getCTable().repeatStringNTimes(controller.getCTable().getBeamedEighths(), 28));
     }
 
+    /**
+     * @author Michael Kramer
+     * <p>
+     * CS622 Spring 1, 2022 Advanced Programming Techniques
+     * <p>
+     * The purpose of this class is to provide a threaded approach to reading
+     * files from a common library of shared files, not intended to be edited
+     * by the current user, only read, and could be read by many users at once
+     * at scale with ease
+     */
     public class ReadFromLibraryJSON implements Runnable {
-
-        private ReadFromJSON reader = new ReadFromJSON();
-
         @Override
         public void run() {
-
-
+            ComboBox filesInPubLib = getFilesInPubLib();
+            String filePath = filesInPubLib.getValue().toString();
+            if (filePath != "" && filePath != null) {
+                ReadFromJSON reader = getController().getReader();
+                ChordReadGUIController controller = getController();
+                Text display = getDisplay();
+                File path = new File(filePath);
+                File fileName = new File(path.getAbsolutePath().substring(path.getAbsolutePath().lastIndexOf("\\") + 1));
+                String nameNoExt = openFile(fileName);
+                ChordSequence seqFromLib = reader.readChordSequenceFromLibJSON(nameNoExt);
+                String analysis = controller.analyze(seqFromLib);
+                display.setText(analysis);
+                Platform.runLater(() ->
+                {
+                    Label pubLibLabel = getPubLibLabel();
+                    pubLibLabel.setText("\"" + nameNoExt + "\"" + " distinct chords on the console");
+                });
+            }
         }
     }
 }
