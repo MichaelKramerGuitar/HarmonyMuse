@@ -1,14 +1,11 @@
 package gui;
 
-import general.containers.Chord;
 import builders.InvalidNoteException;
 import builders.Note;
 import file.handling.WriteToJSON;
-import three.note.structures.AugmentedTriad;
-import three.note.structures.DiminishedTriad;
-import three.note.structures.MajorTriad;
-import three.note.structures.MinorTriad;
+import general.containers.Chord;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -20,8 +17,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import three.note.structures.AugmentedTriad;
+import three.note.structures.DiminishedTriad;
+import three.note.structures.MajorTriad;
+import three.note.structures.MinorTriad;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Michael Kramer
@@ -53,6 +57,17 @@ public class ChordSequenceEntryPage extends Application {
 
     private Note tonalCenter;
 
+    public ArrayList<Chord> getTemp() {
+        return temp;
+    }
+
+    public String getFileName() {
+        return filename;
+    }
+
+    public Note getTonalCenter() {
+        return tonalCenter;
+    }
 
     /**
      * The purpose of this method is purpose of this method is to override the
@@ -356,15 +371,31 @@ public class ChordSequenceEntryPage extends Application {
 
         );
 
+        /**
+         * The purpose of this method is to create a new thread to write the
+         * Current Sequence entry to file
+         */
         submitSequence.setOnAction( event ->
         {
-            if(this.filename != null && !filename.isEmpty() && this.tonalCenter != null && !this.temp.isEmpty()) {
-                controller.setChordSequence(temp, tonalCenter);
-                WriteToJSON writer = controller.getJSONWriter();
-                writer.writeSequenceToJSON(this.filename, controller.getChordSequence());
-                chordLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 14));
-                chordLabel.setText(filename + " in \\data folder");
-            }else System.out.println("Nothing written to file");
+            ExecutorService executorService = Executors.newCachedThreadPool();
+            executorService.execute(new ChordSequenceEntryPage.WriteToLibraryJSON());
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(1, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            submitFileName.setVisible(true);
+            fileLabel.setText("Enter another filename");
+            submitTonalCenter.setVisible(true);
+            tCenter.setText("Enter another tonal center");
+            tonalCenterSelection.getSelectionModel().clearSelection();
+            filenameField.clear();
+            noteLabel.setText("");
+            accedentalLabel.setText("");
+            qualities.getSelectionModel().clearSelection();
+            this.tonalCenter = null;
+            this.temp.clear();
         });
 
         noteLabel.setText("select root for next chord");
@@ -372,7 +403,6 @@ public class ChordSequenceEntryPage extends Application {
         scene.getStylesheets().add("file:assets/styles.css");
         borderPane.setId("border-pane-chordEntry");
         mainStage.setScene(scene);
-        //mainStage.initStyle(StageStyle.TRANSPARENT);
         mainStage.setTitle(controller.getCTable().getBeamedEighths() + " Welcome to HarmonyMuse Chord Sequence Entry " + controller.getCTable().getBeamedEighths());
         mainStage.show();
 
@@ -386,5 +416,32 @@ public class ChordSequenceEntryPage extends Application {
                 " Thank you for using HarmonyMuse " +
                         controller.getCTable().repeatStringNTimes(controller.getCTable().getTrebleClef(), 2),
                 controller.getCTable().repeatStringNTimes(controller.getCTable().getBeamedEighths(), 28));
+    }
+
+    /**
+     * @author Michael Kramer
+     * <p>
+     * CS622 Spring 1, 2022 Advanced Programming Techniques
+     * <p>
+     * The purpose of this class is to provide a threaded approach to writing
+     * files imagining that writing to file could take lots of time as functionality
+     * grows and more data can be written to file at a time, threading will not
+     * bog the GUI while data is being written to file in this way
+     */
+    public class WriteToLibraryJSON implements Runnable {
+
+        @Override
+        public void run() {
+            if(filename != null && !filename.isEmpty() && tonalCenter != null && !temp.isEmpty()) {
+                controller.setChordSequence(temp, tonalCenter);
+                WriteToJSON writer = controller.getJSONWriter();
+                writer.writeSequenceToJSON(filename, controller.getChordSequence());
+                Platform.runLater(() ->
+                {
+                    chordLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 14));
+                    chordLabel.setText(filename + " in \\data folder");
+                });
+            }else System.out.println("Nothing written to file");
+        }
     }
 }

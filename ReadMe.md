@@ -1,5 +1,17 @@
 # CS622 Spring 1 Advanced Programming Techniques Project
 
+## Description 
+
+_HarmonyMuse_ is a software for musical harmonic analysis
+
+## Dependencies 
+* Java 8
+* gson 2.8.5
+* javafx sdk 17.0.1
+* jetbrains annotations 16.0.2
+* junit-jupiter 5.5.2
+
+## How to Run
 **Current functionality is shown by running one of the following**
 * For ChordSequence entry in the gui run `gui.ChordSequenceEntryPage.java`
 * To read and receive analysis of previously entered ChordSequences run `gui.ReadSequencePage.java`

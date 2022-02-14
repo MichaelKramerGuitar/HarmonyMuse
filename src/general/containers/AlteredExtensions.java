@@ -1,5 +1,9 @@
 package general.containers;
 
+/*
+TODO Implement this interface for Appropriate Seventh Chords to facilitate increased analysis functionality
+ */
+
 /**
  * @author Michael Kramer
  * CS622 Spring 1, 2022 Advanced Programming Techniques.

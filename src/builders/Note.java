@@ -1,21 +1,14 @@
 package builders;
 
+/*
+TODO Integrate midi data/binary data into the Note class
+ */
 // https://newt.phys.unsw.edu.au/jw/notes.html
 
 // could use midi numbers instead
 
 // How to create midi messages
 //https://docs.oracle.com/javase/tutorial/sound/MIDI-messages.html
-
-/*
- - We imagine note input data to our system could come in a variety of types
- - We also might imagine Octave information might eventually come in with a note data
- - This class we can imagine gives an integer value as a compression function
- to a note (between 0-11) regardless of type or octave
- - The compression function will allow the Voicing functions to do their work
- and worry about Octave
- */
-
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

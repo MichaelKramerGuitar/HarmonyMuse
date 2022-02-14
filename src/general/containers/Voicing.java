@@ -1,5 +1,9 @@
 package general.containers;
 
+/*
+TODO Implement this interface in tandem with Notation rendering GUI capability
+ */
+
 /**
  * @author Michael Kramer
  * CS622 Spring 1, 2022 Advance Programming Techniques.

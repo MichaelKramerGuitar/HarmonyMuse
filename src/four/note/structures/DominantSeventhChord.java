@@ -18,9 +18,6 @@ import java.util.ArrayList;
  */
 public class DominantSeventhChord extends MajorTriad implements SeventhChord {
 
-    private Note root;
-    private Note third;
-    private Note fifth;
     private Note seventh;
     private String quality;
     private String inversion;
