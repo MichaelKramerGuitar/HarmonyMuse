@@ -24,6 +24,14 @@ _HarmonyMuse_ is a software for musical harmonic analysis
 _All other classes containing main functions are for debugging purposes as this is a work in progress
 and are not intended for public use, however these can be run to see isolated class functionality_
 
+### Current System Classification ability
+* All triad qualities and inversions in closed position
+  * TODO
+    * Open position triads
+    * Seventh Chords
+    * Extended Tertian (i.e. third based) harmony
+    * Potentially integrate with JMusic API https://sourceforge.net/projects/jmusic/
+
 ### Note on dead code
 * This project is still _**VERY MUCH**_ a work in progress
   * An effort is made on each _CS622_ submission to label with `TODO` where appropriate
