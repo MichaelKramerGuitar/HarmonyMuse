@@ -12,5 +12,14 @@
     <orderEntry type="library" name="junit.jupiter" level="project" />
     <orderEntry type="library" name="jetbrains.annotations" level="project" />
     <orderEntry type="library" name="google.code.gson" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/SQLite/Driver/sqlite-jdbc-3.36.0.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
