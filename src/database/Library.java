@@ -127,6 +127,8 @@ public class Library {
     }
 
     private static void insertSong(Connection conn, String title, String fname, String lname, String album, String label, Date release_date) {
+        String compose_first = fname;
+        String composer_last = lname;
         String composer2_first = null;
         String composer2_last = null;
         String composer3_first = null;
@@ -135,8 +137,8 @@ public class Library {
         String sql = "INSERT INTO songs(song_id, title, composer_first, composer_last, composer_id, composer2_first, composer2_last, composer2_id, composer3_first, composer3_last, composer3_id, album, label, release_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(2, title);
-            pstmt.setString(3, fname);
-            pstmt.setString(4, lname);
+            pstmt.setString(3, compose_first);
+            pstmt.setString(4, composer_last);
             try {
                 pstmt.setInt(5, getComposerID(conn, fname, lname));
             }catch (SQLException e){
@@ -155,9 +157,57 @@ public class Library {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
     }
 
+    /**
+     * over loaded method
+     * @param conn
+     * @param title
+     * @param fname
+     * @param lname
+     * @param fname2
+     * @param lname2
+     * @param album
+     * @param label
+     * @param release_date
+     */
+    private static void insertSong(Connection conn, String title, String fname, String lname,
+                                   String fname2, String lname2, String album, String label, Date release_date) {
+        String compose_first = fname;
+        String composer_last = lname;
+        String composer2_first = fname2;
+        String composer2_last = lname2;
+        String composer3_first = null;
+        String composer3_last = null;
+        int neg = -1;
+        String sql = "INSERT INTO songs(song_id, title, composer_first, composer_last, composer_id, composer2_first, composer2_last, composer2_id, composer3_first, composer3_last, composer3_id, album, label, release_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(2, title);
+            pstmt.setString(3, compose_first);
+            pstmt.setString(4, composer_last);
+            try {
+                pstmt.setInt(5, getComposerID(conn, compose_first, composer_last));
+            }catch (SQLException e){
+                System.out.println(e);
+            }
+            pstmt.setString(6, composer2_first);
+            pstmt.setString(7, composer2_last);
+            try {
+                pstmt.setInt(8, getComposerID(conn, composer2_first, composer2_last));
+            }catch (SQLException e){
+                System.out.println(e);
+            }
+            pstmt.setString(9, composer3_first);
+            pstmt.setString(10, composer3_last);
+            pstmt.setInt(11, neg);
+            pstmt.setString(12, album);
+            pstmt.setString(13, label);
+            pstmt.setDate(14, release_date);
+            pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
     private static void querySongs(Connection conn, String query){
         CharactersTable ct = CommonView.getCharTable();
         String sql = "SELECT song_id, title, composer_first, composer_last, release_date FROM songs WHERE title = '" + query +"' OR composer_first = '" + query + "' OR composer_last = '" + query + "'";
@@ -165,11 +215,11 @@ public class Library {
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             System.out.println();
-            System.out.printf("%s\t%s\t\t\t\t\t%-10s\t\t%-10s\t%s%n", "ID", "TITLE", "FIRST", "LAST", "RELEASE DATE");
+            System.out.printf("%s\t\t%-20s\t%-10s\t%-10s\t%-10s%n", "ID", "TITLE", "FIRST", "LAST", "RELEASE DATE");
             System.out.println(ct.repeatStringNTimes(ct.getTrebleClef(), 80));
             while (rs.next()) {
 
-                System.out.printf("%d\t%s\t\t%-10s\t\t%-10s\t%-10s%n",
+                System.out.printf("%s\t\t%-20s\t%-10s\t%-10s\t%-10s%n",
                         rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5));
             }
         } catch (SQLException throwables) {
@@ -177,7 +227,44 @@ public class Library {
         }
     }
 
-    public static void main(String[] args) {
+    private static void queryAllSongs(Connection conn){
+        String sql = "SELECT * from songs";
+        try(Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql)){
+            System.out.println();
+            System.out.printf("%s\t\t\t%-20s\t\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-20s%n",
+                    "ID", "TITLE", "FIRST", "LAST", "COMP ID",
+                    "FIRST2", "LAST2", "COMP2 ID", "FIRST3", "LAST3", "COMP3 ID",
+                    "ALBUM", "LABEL", "RELEASE DATE");
+            while(rs.next()){
+                System.out.printf("%s\t\t\t%-20s\t\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-20s%n",
+                        rs.getInt(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getInt(5),
+                        rs.getString(6), rs.getString(7), rs.getInt(8),
+                        rs.getString(9), rs.getString(10), rs.getInt(11),
+                        rs.getString(12), rs.getString(13), rs.getDate(14));
+            }
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+
+    private static void joinComposerWithSongs(Connection conn){
+
+        String sql = "SELECT title, primary_ensemble, release_date FROM songs JOIN composers USING (composer_id)";
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){
+            System.out.println();
+            while(rs.next()){
+                System.out.printf("%-10s\t\t\t%-10s\t%-10s%n", rs.getString(1), rs.getString(2), rs.getDate(3));
+
+            }
+    } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+        public static void main(String[] args) {
 
         createComposerTable();
         createSongsTable();
@@ -205,12 +292,24 @@ public class Library {
         }
         try (Connection conn = DriverManager.getConnection(url)){
             insertSong(conn, "No Woman, No Cry", "Bob", "Marley", "Natty Dread", "Island/Tuff Gong", Date.valueOf("1974-10-25"));
+            insertSong(conn, "Let It Be", "John", "Lennon", "Paul", "McCartney", "Let It Be", "EMI", Date.valueOf("1970-05-08"));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         try (Connection conn = DriverManager.getConnection(url)){
             querySongs(conn, "No Woman, No Cry");
+            querySongs(conn, "Lennon");
         } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try (Connection conn = DriverManager.getConnection(url)){
+            queryAllSongs(conn);
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+        try (Connection conn = DriverManager.getConnection(url)){
+            joinComposerWithSongs(conn);
+        }catch (SQLException throwables){
             throwables.printStackTrace();
         }
     }
