@@ -1,5 +1,6 @@
 package gui;
 
+import database.Library;
 import general.containers.Chord;
 import builders.ChordSequence;
 import commandline.app.CharactersTable;
@@ -23,6 +24,12 @@ public class ChordReadGUIController {
     private ReadFromJSON reader = new ReadFromJSON();
 
     private ChordSequence chordSequence;
+
+    private static Library library = new Library();
+
+    public static Library getLibrary() {
+        return library;
+    }
 
     // getters
 
@@ -64,8 +71,9 @@ public class ChordReadGUIController {
      */
     public String analyze(ChordSequence chordSequence){
         Stream<Chord> chordStream = chordSequence.chordSequenceToChordStream(chordSequence);
+        System.out.println();
         chordStream.forEach(i -> System.out.println(i));
-
+        System.out.println();
         String returnText = "";
         String[] romans = CommonView.addRomanNumeral(chordSequence);
         StringBuilder tonalCenter = CommonView.replaceAccidental(chordSequence.getTonalCenter());

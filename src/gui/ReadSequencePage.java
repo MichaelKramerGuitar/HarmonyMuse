@@ -1,6 +1,7 @@
 package gui;
 
 import builders.ChordSequence;
+import database.Library;
 import file.handling.ReadFromJSON;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,6 +23,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -38,6 +42,8 @@ import java.util.concurrent.TimeUnit;
 public class ReadSequencePage extends Application {
 
     private ChordReadGUIController controller = new ChordReadGUIController();
+
+    private Library library = ChordReadGUIController.getLibrary();
 
     private final Label fileChooserLabel = new Label();
 
@@ -128,6 +134,11 @@ public class ReadSequencePage extends Application {
     @Override
     public void start(Stage mainStage) throws Exception {
 
+        try (Connection conn = DriverManager.getConnection(library.getUrl())){
+            library.queryAllSongs(conn);
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         Insets insets = new Insets(10, 10, 10, 10);
 
         BorderPane borderPane = new BorderPane();
@@ -149,7 +160,7 @@ public class ReadSequencePage extends Application {
         readPubFile.setText("Read Library Selection");
         readPubFile.setFont(Font.font("Roboto", FontPosture.ITALIC, 12));
         pubLibLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 14));
-        pubLibLabel.setText("Public Library");
+        pubLibLabel.setText("Public Library: See Console for Library MetaData");
         borderPane.setRight(publicLibrary);
 
         /**
@@ -239,13 +250,20 @@ public class ReadSequencePage extends Application {
                 File path = new File(filePath);
                 File fileName = new File(path.getAbsolutePath().substring(path.getAbsolutePath().lastIndexOf("\\") + 1));
                 String nameNoExt = openFile(fileName);
+                String title = nameNoExt.replace("_", " ");
                 ChordSequence seqFromLib = reader.readChordSequenceFromLibJSON(nameNoExt);
+                try (Connection conn = DriverManager.getConnection(library.getUrl())){
+                    library.querySongs(conn, title);
+                }catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 String analysis = controller.analyze(seqFromLib);
                 display.setText(analysis);
                 Platform.runLater(() ->
                 {
                     Label pubLibLabel = getPubLibLabel();
-                    pubLibLabel.setText("\"" + nameNoExt + "\"" + " distinct chords on the console");
+                    pubLibLabel.setText("\"" + title + "\"" + " distinct chords and song info on the console");
+
                 });
             }
         }

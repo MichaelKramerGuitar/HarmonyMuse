@@ -1,8 +1,5 @@
 package database;
 
-import commandline.app.CharactersTable;
-import commandline.app.CommonView;
-
 import java.sql.*;
 
 
@@ -11,22 +8,28 @@ import java.sql.*;
  * <p>
  * CS622 Spring 1, 2022 Advanced Programming Techniques
  * <p>
- * The purpose of this class is ...
+ * The purpose of this class is to provide methods to interact with the Public
+ * Library feature corresponding to files housed in (data/concurrencyLib)
  */
 public class Library {
 
+    /**
+     * The purpose of this method is to get the .db file location on the
+     * current machine - note, this url will vary from machine to machine
+     * reconfigure as appropriate
+     */
+    public String getUrl() {
+
+        String url = "jdbc:sqlite:C:/SQLite/Library.db";
+        return url;
+    }
 
     /**
-     * The purpose of this method is ...
-     * <p>Precondition: </p>
-     * <p>Postcondition: </p>
-     *
-     * @return
+     * The purpose of this method is to create the songs table
      */
-    private static void createSongsTable() {
+    public void createSongsTable() {
         // SQLite connection string
-        String url = "jdbc:sqlite:C:/SQLite/Library.db";
-
+        String url = getUrl();
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS songs (\n"
                 + "	song_id integer PRIMARY KEY AUTOINCREMENT,\n"
@@ -59,15 +62,11 @@ public class Library {
     }
 
     /**
-     * The purpose of this method is ...
-     * <p>Precondition: </p>
-     * <p>Postcondition: </p>
-     *
-     * @return
+     * The purpose of this method is to create the composers table
      */
-    private static void createComposerTable(){
+    public void createComposerTable(){
         // SQLite connection string
-        String url = "jdbc:sqlite:C:/SQLite/Library.db";
+        String url = getUrl();
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS composers (\n"
                 + "	composer_id integer PRIMARY KEY AUTOINCREMENT,\n"
@@ -86,8 +85,20 @@ public class Library {
         }
     }
 
-    private static void insertComposer(Connection conn, String fname, String lname, String band) throws SQLException {
-        String sql = "INSERT INTO composers(composer_id, composer_first, composer_last, primary_ensemble) VALUES (?, ?, ?, ?)";
+    /**
+     * The purpose of this method is to insert a composer into the composers table
+     * <p>Precondition: A composer table exists in the Library.db file</p>
+     * <p>Postcondition: the composer entry is successfully inputted into the
+     * composers table of the Library.db file</p>
+     */
+    public void insertComposer(Connection conn,
+                                       String fname,
+                                       String lname,
+                                       String band) throws SQLException {
+
+        String sql = "INSERT INTO composers(composer_id, composer_first, " +
+                "composer_last, primary_ensemble) VALUES (?, ?, ?, ?)";
+
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(2, fname);
             pstmt.setString(3, lname);
@@ -96,25 +107,42 @@ public class Library {
         }
     }
 
-    private static void queryComposers(Connection conn) throws SQLException {
-        CharactersTable ct = CommonView.getCharTable();
-        String sql = "SELECT composer_id, composer_first, composer_last, primary_ensemble FROM composers ORDER BY composer_last";
+    public void queryComposers(Connection conn) throws SQLException {
+
+        String sql = "SELECT composer_id, composer_first, " +
+                "composer_last, primary_ensemble FROM composers ORDER BY composer_last";
 
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
-            System.out.printf("%s\t%-10s\t%-10s\t%-10s%n", "ID", "FIRST", "LAST", "ENSEMBLE");
-            System.out.println(ct.repeatStringNTimes(ct.getTrebleClef(), 50));
+            System.out.printf(
+                    "%s%n%s\t%-10s\t%-10s\t%-10s%n", "queryComposers:", "ID", "FIRST", "LAST", "ENSEMBLE");
             while (rs.next()) {
 
-                System.out.printf("%d\t%-10s\t%-10s\t%-10s%n",
-                        rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+                System.out.printf(
+                        "%d\t%-10s\t%-10s\t%-10s%n",
+                        rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4));
             }
         }
     }
 
-    private static int getComposerID(Connection conn, String fname, String lname) throws SQLException{
-        String sql = "SELECT composer_id FROM composers WHERE composer_first = '" + fname + "' AND composer_last = '" + lname + "'";
+    /**
+     * The purpose of this method is to get the composer_id given a composers
+     * first and last name if exists in the composers table of Library.db
+     * <p>Precondition: the composer exists in the composers table of Library.db</p>
+     * <p>Postcondition: the id (pk) is returned</p>
+     * @param conn a Connection object
+     * @param fname String composers first name
+     * @param lname String composers last name
+     * @return id (pk) is returned
+     */
+    public int getComposerID(Connection conn, String fname, String lname) throws SQLException{
+
+        String sql = "SELECT composer_id FROM composers WHERE composer_first = '"
+                + fname + "' AND composer_last = '" + lname + "'";
+
         int composer_id = -1;
+
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
@@ -126,7 +154,23 @@ public class Library {
         return composer_id;
     }
 
-    private static void insertSong(Connection conn, String title, String fname, String lname, String album, String label, Date release_date) {
+    /**
+     * The purpose of this method is to insert a song into the songs table of
+     * Library.db
+     * <p>Precondition: the songs table of Library.db exists</p>
+     * <p>Postcondition: the song is inserted into the appropriate table</p>
+     *
+     * @param conn A Connection object to the Library.db url on the current machine
+     * @param title String song title
+     * @param fname composers first name
+     * @param lname composers last name
+     * @param album album song was originally realeased on
+     * @param label label album was originally released on
+     * @param release_date Date object representing original release date
+     */
+    public void insertSong(Connection conn, String title,
+                                   String fname, String lname, String album,
+                                   String label, Date release_date) {
         String compose_first = fname;
         String composer_last = lname;
         String composer2_first = null;
@@ -134,7 +178,10 @@ public class Library {
         String composer3_first = null;
         String composer3_last = null;
         int neg = -1;
-        String sql = "INSERT INTO songs(song_id, title, composer_first, composer_last, composer_id, composer2_first, composer2_last, composer2_id, composer3_first, composer3_last, composer3_id, album, label, release_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO songs(song_id, title, composer_first," +
+                " composer_last, composer_id, composer2_first, composer2_last," +
+                " composer2_id, composer3_first, composer3_last, composer3_id, " +
+                "album, label, release_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(2, title);
             pstmt.setString(3, compose_first);
@@ -160,18 +207,22 @@ public class Library {
     }
 
     /**
-     * over loaded method
-     * @param conn
-     * @param title
-     * @param fname
-     * @param lname
-     * @param fname2
-     * @param lname2
-     * @param album
-     * @param label
-     * @param release_date
+     * The purpose of this method is to insert a song into the songs table of
+     * Library.db, overloaded to support two composer credits
+     * <p>Precondition: the songs table of Library.db exists</p>
+     * <p>Postcondition: the song is inserted into the appropriate table</p>
+     *
+     * @param conn A Connection object to the Library.db url on the current machine
+     * @param title String song title
+     * @param fname composers first name
+     * @param lname composers last name
+     * @param fname2 second composers first name
+     * @param lname2 second composers last name
+     * @param album album song was originally realeased on
+     * @param label label album was originally released on
+     * @param release_date Date object representing original release date
      */
-    private static void insertSong(Connection conn, String title, String fname, String lname,
+    public void insertSong(Connection conn, String title, String fname, String lname,
                                    String fname2, String lname2, String album, String label, Date release_date) {
         String compose_first = fname;
         String composer_last = lname;
@@ -180,7 +231,11 @@ public class Library {
         String composer3_first = null;
         String composer3_last = null;
         int neg = -1;
-        String sql = "INSERT INTO songs(song_id, title, composer_first, composer_last, composer_id, composer2_first, composer2_last, composer2_id, composer3_first, composer3_last, composer3_id, album, label, release_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO songs(song_id, title, composer_first," +
+                " composer_last, composer_id, composer2_first, composer2_last, " +
+                "composer2_id, composer3_first, composer3_last, composer3_id," +
+                " album, label, release_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(2, title);
             pstmt.setString(3, compose_first);
@@ -208,36 +263,146 @@ public class Library {
             throwables.printStackTrace();
         }
     }
-    private static void querySongs(Connection conn, String query){
-        CharactersTable ct = CommonView.getCharTable();
-        String sql = "SELECT song_id, title, composer_first, composer_last, release_date FROM songs WHERE title = '" + query +"' OR composer_first = '" + query + "' OR composer_last = '" + query + "'";
-        //String sql = "SELECT  song_id, title, composer_first, composer_last, release_date FROM songs WHERE title = '" + query + "'";
+
+    /**
+     * The purpose of this method is to insert a song into the songs table of
+     * Library.db, overloaded to support three composer credits
+     * <p>Precondition: the songs table of Library.db exists</p>
+     * <p>Postcondition: the song is inserted into the appropriate table</p>
+     *
+     * @param conn A Connection object to the Library.db url on the current machine
+     * @param title String song title
+     * @param fname composers first name
+     * @param lname composers last name
+     * @param fname2 second composers first name
+     * @param lname2 second composers last name
+     * @param fname3 third composers first name
+     * @param lname3 third composers last name
+     * @param album album song was originally realeased on
+     * @param label label album was originally released on
+     * @param release_date Date object representing original release date
+     */
+    public void insertSong(Connection conn, String title, String fname, String lname,
+                                   String fname2, String lname2, String fname3, String lname3,
+                                   String album, String label, Date release_date) {
+        String compose_first = fname;
+        String composer_last = lname;
+        String composer2_first = fname2;
+        String composer2_last = lname2;
+        String composer3_first = fname3;
+        String composer3_last = lname3;
+        int neg = -1;
+        String sql = "INSERT INTO songs(" +
+                "song_id, title, composer_first, composer_last, composer_id," +
+                " composer2_first, composer2_last, composer2_id, composer3_first, " +
+                "composer3_last, composer3_id, album, label, release_date)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(2, title);
+            pstmt.setString(3, compose_first);
+            pstmt.setString(4, composer_last);
+            try {
+                pstmt.setInt(5, getComposerID(conn, compose_first, composer_last));
+            }catch (SQLException e){
+                System.out.println(e);
+            }
+            pstmt.setString(6, composer2_first);
+            pstmt.setString(7, composer2_last);
+            try {
+                pstmt.setInt(8, getComposerID(conn, composer2_first, composer2_last));
+            }catch (SQLException e){
+                System.out.println(e);
+            }
+            pstmt.setString(9, composer3_first);
+            pstmt.setString(10, composer3_last);
+            pstmt.setInt(11, getComposerID(conn, composer3_first, composer3_last));
+            pstmt.setString(12, album);
+            pstmt.setString(13, label);
+            pstmt.setDate(14, release_date);
+            pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    /**
+     * The purpose of this method is to query the songs database with either a
+     * title or composers first name or last name
+     * <p>Precondition: the song exists in the database</p>
+     * <p>Postcondition: the song data is on the console</p>
+     */
+    public void querySongs(Connection conn, String query){
+
+        String sql = "SELECT song_id, title, composer_first, composer_last, album, release_date FROM songs WHERE title = '"
+                + query +"' OR composer_first = '" + query + "' OR composer_last = '" + query + "'";
+
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             System.out.println();
-            System.out.printf("%s\t\t%-20s\t%-10s\t%-10s\t%-10s%n", "ID", "TITLE", "FIRST", "LAST", "RELEASE DATE");
-            System.out.println(ct.repeatStringNTimes(ct.getTrebleClef(), 80));
+            System.out.printf("%s%n%s\t%-20s\t%-10s\t%-10s\t%-10s\t%-10s%n",
+                    "querySongs:", "ID", "TITLE", "FIRST", "LAST", "ALBUM", "RELEASE DATE");
             while (rs.next()) {
 
-                System.out.printf("%s\t\t%-20s\t%-10s\t%-10s\t%-10s%n",
-                        rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5));
+                System.out.printf("%s\t%-20s\t%-10s\t%-10s\t%-10s\t%-10s%n",
+                        rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getDate(6));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    private static void queryAllSongs(Connection conn){
+    /**
+     * The purpose of this method is to query the songs database given the
+     * primary key song_id of the song
+     * <p>Precondition: the song exists in Library.db songs table</p>
+     * <p>Postcondition: the title String is returned</p>
+     *
+     * @return the Title given the ID
+     */
+    public String querySongs(Connection conn, Integer id){
+
+        String sql = "SELECT song_id, title, composer_first, composer_last, release_date FROM songs WHERE song_id = " + id.toString();
+        String title = null;
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            System.out.println();
+            System.out.printf("%s%n%s\t%-20s\t%-10s\t%-10s\t%-10s\t%-10s%n",
+                    "querySongs:", "ID", "TITLE", "FIRST", "LAST", "ALBUM", "RELEASE DATE");
+            while (rs.next()) {
+                title = rs.getString(2);
+                System.out.printf("%s\t%-20s\t%-10s\t%-10s\t%-10s\t%-10s%n",
+                        rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getDate(6));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return title;
+    }
+
+    /**
+     * The purpose of this method is to return all the songs in the Library.db
+     * songs table
+     * <p>Precondition: there are entries in Library.db songs table and a
+     * valid connection object is passed in</p>
+     * <p>Postcondition: all songs in table are neatly on the console</p>
+     */
+    public void queryAllSongs(Connection conn){
         String sql = "SELECT * from songs";
         try(Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql)){
             System.out.println();
-            System.out.printf("%s\t\t\t%-20s\t\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-20s%n",
-                    "ID", "TITLE", "FIRST", "LAST", "COMP ID",
+            System.out.printf(
+                    "%s%n%s\t%-20s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-20s\t%-20s\t%-10s%n",
+                    "queryAllSongs:", "ID", "TITLE", "FIRST", "LAST", "COMP ID",
                     "FIRST2", "LAST2", "COMP2 ID", "FIRST3", "LAST3", "COMP3 ID",
                     "ALBUM", "LABEL", "RELEASE DATE");
             while(rs.next()){
-                System.out.printf("%s\t\t\t%-20s\t\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-20s%n",
+                System.out.printf(
+                        "%s\t%-20s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-20s\t%-20s\t%-10s%n",
                         rs.getInt(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), rs.getInt(5),
                         rs.getString(6), rs.getString(7), rs.getInt(8),
@@ -249,14 +414,24 @@ public class Library {
         }
     }
 
-    private static void joinComposerWithSongs(Connection conn){
+    /**
+     * The purpose of this method is to output the song, band and release date
+     * of a given song by joining the songs and composers table on the
+     * composers_id (pk to composers and foreign_key to songs)
+     * <p>Precondition: the song exists in songs and the composer exists in composers</p>
+     * <p>Postcondition: the output TITLE, BAND, RELEASE DATE is neatly on the console </p>
+     */
+    public void joinComposerWithSongs(Connection conn){
 
         String sql = "SELECT title, primary_ensemble, release_date FROM songs JOIN composers USING (composer_id)";
         try(Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)){
             System.out.println();
+            System.out.printf("%s%n%-20s\t%-20s\t%-10s%n",
+                    "joinComposerWithSongs:", "TITLE", "BAND", "RELEASE DATE");
             while(rs.next()){
-                System.out.printf("%-10s\t\t\t%-10s\t%-10s%n", rs.getString(1), rs.getString(2), rs.getDate(3));
+                System.out.printf("%-20s\t%-20s\t%-10s%n",
+                        rs.getString(1), rs.getString(2), rs.getDate(3));
 
             }
     } catch (SQLException throwables) {
@@ -264,53 +439,34 @@ public class Library {
         }
     }
 
-        public static void main(String[] args) {
+    /**
+     * The purpose of this method is to get the most recently released song
+     * with band information from both songs and composers tables of
+     * Library.db
+     * <p>Precondition: there are entries in songs and composers tables with
+     * Dates </p>
+     * <p>Postcondition: the most recent song is on the console neatly like
+     * so: TITLE, BAND, RELEASE DATE</p>
+     */
+    public void getLatestReleaseInLib(Connection conn){
+        String sql = "SELECT title, primary_ensemble, release_date FROM songs " +
+                "JOIN composers USING (composer_id)" +
+                "WHERE release_date=(SELECT MAX(release_date) FROM songs) ";
 
-        createComposerTable();
-        createSongsTable();
-        String url = "jdbc:sqlite:C:/SQLite/Library.db";
-        try (Connection conn = DriverManager.getConnection(url)) {
-            insertComposer(conn, "Bob", "Marley", "The Wailers");
-            insertComposer(conn, "Ronnie", "Van Zant", "Lynyrd Skynyrd");
-            insertComposer(conn, "Gary", "Rossington", "Lynyrd Skynyrd");
-            insertComposer(conn, "Ed", "King", "Lynyrd Skynyrd");
-            insertComposer(conn, "Paul", "McCartney", "The Beatles");
-            insertComposer(conn, "John", "Lennon", "The Beatles");
-            insertComposer(conn, "George", "Harrison", "The Beatles");
-            insertComposer(conn, "Robert", "Plant", "Led Zeppelin");
-            insertComposer(conn, "Jimmy", "Page", "Led Zeppelin");
-            insertComposer(conn, "Johnny", "Green", "Film Score Composer");
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){
+            System.out.println();
+            System.out.printf("%s%n%-20s\t%-10s\t\t%-10s%n",
+                    "getLatestReleaseInLib:", "TITLE", "BAND", "LATEST RELEASE DATE");
+            while(rs.next()){
+                System.out.printf("%-20s\t%-10s\t\t%-10s%n",
+                        rs.getString(1), rs.getString(2),
+                        rs.getDate(3));
 
-
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        try (Connection conn = DriverManager.getConnection(url)){
-            queryComposers(conn);
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try (Connection conn = DriverManager.getConnection(url)){
-            insertSong(conn, "No Woman, No Cry", "Bob", "Marley", "Natty Dread", "Island/Tuff Gong", Date.valueOf("1974-10-25"));
-            insertSong(conn, "Let It Be", "John", "Lennon", "Paul", "McCartney", "Let It Be", "EMI", Date.valueOf("1970-05-08"));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try (Connection conn = DriverManager.getConnection(url)){
-            querySongs(conn, "No Woman, No Cry");
-            querySongs(conn, "Lennon");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try (Connection conn = DriverManager.getConnection(url)){
-            queryAllSongs(conn);
-        }catch (SQLException throwables){
-            throwables.printStackTrace();
-        }
-        try (Connection conn = DriverManager.getConnection(url)){
-            joinComposerWithSongs(conn);
-        }catch (SQLException throwables){
-            throwables.printStackTrace();
-        }
+
     }
 }
