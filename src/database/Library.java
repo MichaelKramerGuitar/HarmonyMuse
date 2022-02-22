@@ -2,7 +2,6 @@ package database;
 
 import java.sql.*;
 
-
 /**
  * @author Michael Kramer
  * <p>
@@ -13,14 +12,14 @@ import java.sql.*;
  */
 public class Library {
 
+    // SQLite connection string
+    private String url = "jdbc:sqlite:C:/SQLite/Library.db";
     /**
      * The purpose of this method is to get the .db file location on the
      * current machine - note, this url will vary from machine to machine
      * reconfigure as appropriate
      */
     public String getUrl() {
-
-        String url = "jdbc:sqlite:C:/SQLite/Library.db";
         return url;
     }
 
@@ -28,7 +27,6 @@ public class Library {
      * The purpose of this method is to create the songs table
      */
     public void createSongsTable() {
-        // SQLite connection string
         String url = getUrl();
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS songs (\n"
@@ -107,6 +105,13 @@ public class Library {
         }
     }
 
+    /**
+     * The purpose of this method is to get a list of all of the composers in
+     * the Libary.db/composers table and list in lexicographical by last name
+     * <p>Precondition: A composers table exists in the Library.db file</p>
+     * <p>Postcondition: A list of composers in the Library.db/composers table
+     * are on the console lexicographical order by last name</p>
+     */
     public void queryComposers(Connection conn) throws SQLException {
 
         String sql = "SELECT composer_id, composer_first, " +
@@ -467,6 +472,5 @@ public class Library {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
     }
 }
