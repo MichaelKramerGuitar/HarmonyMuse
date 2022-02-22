@@ -17,6 +17,8 @@ _HarmonyMuse_ is a software for musical harmonic analysis
 * To read and receive analysis of previously entered ChordSequences run `gui.ReadSequencePage.java`
   * Current functionality only supports classification and analysis of Triads _any inversion_
     * The intent is to greatly expand this 
+* `TODO` implement an accounts concept 
+  * `gui.PublicLibraryEntryPageAdmin.java` allows an Admin account to input song data in the public library `data/concurrencyLib`
 * For Chord entry by individual notes run `commandline.app.MainChordEntry.java`
 * For Sequence entry (multiple chords) and sequence Roman Numeral Harmonic Analysis _**Assignment 3**_ run `CommandLindApp.MainQuickEntry`
   * See document `assignments/metcs622_Assignment<highestInt>_mgkramer.docx` in assignments dirctory for detailed project description 
@@ -55,6 +57,7 @@ and are not intended for public use, however these can be run to see isolated cl
   * TriadClassifier
   * TriadFactory (via three.note.structures)
   * FileHandling 
+  * Library/Database entry and query
 
 
 
